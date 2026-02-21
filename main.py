@@ -4,6 +4,15 @@ Fetches game data from IMLeagues API endpoint
 .
 """
 
+import sys
+import os
+# Force UTF-8 stdout/stderr so Windows cp1252 doesn't crash on non-ASCII team names
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+os.environ.setdefault("PYTHONUTF8", "1")
+
 from fastapi import FastAPI, HTTPException, Cookie, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -12,7 +21,6 @@ import httpx
 from bs4 import BeautifulSoup
 from typing import List, Optional, Dict
 from pydantic import BaseModel, EmailStr
-import os
 import json
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -118,7 +126,9 @@ class Position(BaseModel):
     away_shares: float
     avg_home_price: float
     avg_away_price: float
-    potential_payout: float
+    potential_payout: Optional[float] = None
+    current_value: Optional[float] = None
+    potential_return: Optional[float] = None
 
 
 class Portfolio(BaseModel):
@@ -147,6 +157,23 @@ class TradeResponse(BaseModel):
     message: str
     home_elo: Optional[float] = None
     away_elo: Optional[float] = None
+
+
+class SellRequest(BaseModel):
+    """Request to sell shares back to the market"""
+    market_id: str
+    outcome: str   # 'home' or 'away'
+    shares: float  # Number of shares to sell
+
+
+class SellResponse(BaseModel):
+    """Response from sell execution"""
+    success: bool
+    shares_sold: float
+    tokens_received: float
+    new_balance: float
+    new_position: Position
+    message: str
 
 
 class MarketsResponse(BaseModel):
@@ -213,7 +240,7 @@ def load_elo_data():
         total_teams = sum(len(v) for v in elo_data.values())
         print(f"Loaded Elo ratings for {total_teams} teams across {len(elo_data)} sports")
     except FileNotFoundError:
-        print(f"Elo ratings file not found: {ELO_RATINGS_FILE} — using default rating {ELO_BASE} for all teams")
+        print(f"Elo ratings file not found: {ELO_RATINGS_FILE} - using default rating {ELO_BASE} for all teams")
 
 
 def get_elo_seeded_shares(home_team: str, away_team: str, sport: str, b: float = LIQUIDITY_PARAMETER):
@@ -672,7 +699,17 @@ async def execute_trade(trade: TradeRequest, user: Optional[Dict] = Depends(get_
     
     # Save updated market to database
     db.upsert_market(market)
-    
+
+    # Record price snapshot for history
+    db.record_price_snapshot(
+        market_id=trade.market_id,
+        home_price=market["home_price"],
+        away_price=market["away_price"],
+        home_shares=market["home_shares"],
+        away_shares=market["away_shares"],
+        total_volume=market["total_volume"]
+    )
+
     # Update user position
     position = db.get_position(user_id, trade.market_id)
     
@@ -739,6 +776,152 @@ async def execute_trade(trade: TradeRequest, user: Optional[Dict] = Depends(get_
         home_elo=market.get("home_elo"),
         away_elo=market.get("away_elo"),
     )
+
+
+@app.post("/api/sell", response_model=SellResponse)
+async def execute_sell(sell: SellRequest, user: Optional[Dict] = Depends(get_current_user)):
+    """Sell shares back to the market using LMSR sell-back (no arbitrage)"""
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    user_id = user["id"]
+
+    market = db.get_market(sell.market_id)
+    if not market:
+        raise HTTPException(status_code=404, detail="Market not found")
+
+    if market["status"] != "open":
+        raise HTTPException(status_code=400, detail=f"Market is {market['status']}, cannot sell shares")
+
+    if sell.outcome not in ['home', 'away']:
+        raise HTTPException(status_code=400, detail="Outcome must be 'home' or 'away'")
+
+    if sell.shares <= 0:
+        raise HTTPException(status_code=400, detail="Shares must be positive")
+
+    position = db.get_position(user_id, sell.market_id)
+    if not position:
+        raise HTTPException(status_code=400, detail="No position in this market")
+
+    # Validate user has enough shares
+    if sell.outcome == 'home':
+        held = position["home_shares"]
+        current_side = market["home_shares"]
+        other_side = market["away_shares"]
+    else:
+        held = position["away_shares"]
+        current_side = market["away_shares"]
+        other_side = market["home_shares"]
+
+    if sell.shares > held + 0.001:
+        raise HTTPException(status_code=400, detail=f"Insufficient shares: have {held:.4f}, selling {sell.shares:.4f}")
+
+    shares_to_sell = min(sell.shares, held)
+
+    # LMSR sell-back value — no arbitrage guaranteed
+    tokens_received = calculate_sell_value(shares_to_sell, current_side, other_side)
+
+    # Update market shares, price and volume
+    if sell.outcome == 'home':
+        market["home_shares"] -= shares_to_sell
+    else:
+        market["away_shares"] -= shares_to_sell
+
+    market["total_volume"] += tokens_received  # volume tracks total liquidity flow
+
+    home_price, away_price = calculate_lmsr_price(market["home_shares"], market["away_shares"])
+    market["home_price"] = round(home_price, 2)
+    market["away_price"] = round(away_price, 2)
+
+    db.upsert_market(market)
+
+    # Record price snapshot
+    db.record_price_snapshot(
+        market_id=sell.market_id,
+        home_price=market["home_price"],
+        away_price=market["away_price"],
+        home_shares=market["home_shares"],
+        away_shares=market["away_shares"],
+        total_volume=market["total_volume"]
+    )
+
+    # Credit user balance
+    new_balance = user["balance"] + tokens_received
+    db.update_user_balance(user_id, new_balance)
+
+    # Update position
+    if sell.outcome == 'home':
+        position["home_shares"] -= shares_to_sell
+        if position["home_shares"] <= 0.001:
+            position["home_shares"] = 0
+            position["avg_home_price"] = 0
+    else:
+        position["away_shares"] -= shares_to_sell
+        if position["away_shares"] <= 0.001:
+            position["away_shares"] = 0
+            position["avg_away_price"] = 0
+
+    db.upsert_position(
+        user_id=user_id,
+        market_id=sell.market_id,
+        home_shares=position["home_shares"],
+        away_shares=position["away_shares"],
+        avg_home_price=position["avg_home_price"],
+        avg_away_price=position["avg_away_price"]
+    )
+    db.delete_empty_positions(user_id)
+
+    # Current value after sell
+    home_val = calculate_sell_value(position["home_shares"], market["home_shares"], market["away_shares"]) if position["home_shares"] > 0 else 0.0
+    away_val = calculate_sell_value(position["away_shares"], market["away_shares"], market["home_shares"]) if position["away_shares"] > 0 else 0.0
+
+    new_position = Position(
+        market_id=sell.market_id,
+        game=f"{market['home_team']} vs {market['away_team']}",
+        home_shares=position["home_shares"],
+        away_shares=position["away_shares"],
+        avg_home_price=round(position["avg_home_price"], 2),
+        avg_away_price=round(position["avg_away_price"], 2),
+        current_value=round(home_val + away_val, 2),
+        potential_return=round(max(position["home_shares"], position["away_shares"]), 2)
+    )
+
+    return SellResponse(
+        success=True,
+        shares_sold=round(shares_to_sell, 4),
+        tokens_received=round(tokens_received, 2),
+        new_balance=round(new_balance, 2),
+        new_position=new_position,
+        message=f"Sold {round(shares_to_sell, 4)} shares for {round(tokens_received, 2)} tokens"
+    )
+
+
+@app.get("/api/markets/{market_id}/history")
+async def get_market_price_history(market_id: str):
+    """Get price history for a market, always prepending the Elo-seeded opening price"""
+    market = db.get_market(market_id)
+    if not market:
+        raise HTTPException(status_code=404, detail="Market not found")
+
+    # Compute the original Elo-seeded opening price for this market
+    init_home_shares, init_away_shares, _, _, _ = get_elo_seeded_shares(
+        market["home_team"], market["away_team"], market["sport"]
+    )
+    open_home_price, open_away_price = calculate_lmsr_price(init_home_shares, init_away_shares)
+    opening_point = {
+        "id": 0,
+        "market_id": market_id,
+        "timestamp": market.get("created_at", ""),
+        "home_price": round(open_home_price, 2),
+        "away_price": round(open_away_price, 2),
+        "home_shares": round(init_home_shares, 4),
+        "away_shares": round(init_away_shares, 4),
+        "total_volume": 0,
+        "label": "Open"
+    }
+
+    history = db.get_price_history(market_id)
+    return {"success": True, "market_id": market_id, "history": [opening_point] + history}
 
 
 @app.get("/api/portfolio", response_model=Portfolio)

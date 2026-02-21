@@ -9,9 +9,35 @@
   <div id="app"></div>
   
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+  <script>
+    // Custom Chart.js interaction mode: show tooltip at any x hover position
+    // for stepped lines (finds last known value at cursor position).
+    Chart.Interaction.modes.steppedHover = function(chart, e, options) {
+      const mouseX = e.x;
+      const items = [];
+      chart.data.datasets.forEach(function(dataset, datasetIndex) {
+        const meta = chart.getDatasetMeta(datasetIndex);
+        if (!meta.visible) return;
+        const pts = meta.data;
+        // Walk forward; keep the last index whose pixel x <= cursor x
+        let found = -1;
+        for (let i = 0; i < pts.length; i++) {
+          if (pts[i].x <= mouseX) found = i;
+          else break;
+        }
+        if (found >= 0) {
+          items.push({ datasetIndex: datasetIndex, index: found, element: pts[found] });
+        }
+      });
+      return items;
+    };
+  </script>
   
   <script type="module">
-    const { createApp, ref, computed, onMounted } = Vue;
+    const { createApp, ref, computed, onMounted, watch, nextTick } = Vue;
     
     createApp({
       setup() {
@@ -43,6 +69,24 @@
         const tradeProcessing = ref(false);
         const tradeResult = ref(null);
 
+        // Sell state
+        const showSellModal = ref(false);
+        const sellPosition = ref(null);   // position being sold
+        const sellMarket = ref(null);     // corresponding market object
+        const sellOutcome = ref('home');  // 'home' or 'away'
+        const sellShares = ref(0);
+        const sellProcessing = ref(false);
+        const sellResult = ref(null);
+        const sellPreview = ref(null);    // estimated tokens to receive
+
+        // Price chart state
+        const showPriceChart = ref(false);
+        const priceChartData = ref(null);
+        const priceChartInstance = ref(null);
+        const priceChartCanvasRef = ref(null); // Vue template ref — always current DOM element
+        const chartRawHistory = ref([]);  // full history, unfiltered
+        const chartView = ref('1w');      // '1h', '1d', '1w'
+
         // Computed
         const uniqueSports = computed(() => {
           const sports = new Set(markets.value.map(m => m.sport));
@@ -53,6 +97,17 @@
           const dates = new Set(markets.value.map(m => m.game_date).filter(d => d));
           return Array.from(dates).sort();
         });
+
+        // Parse a market's date + time into a sortable timestamp
+        function gameDateTime(m) {
+          try {
+            const [mo, da, yr] = (m.game_date || '').split('/');
+            const t = m.game_time || '';
+            if (!t || t === 'TBD') return new Date(yr, mo - 1, da, 23, 59, 0).getTime();
+            if (t === 'FINAL' || t === 'BYE' || t === 'FORFEIT') return new Date(yr, mo - 1, da, 23, 59, 59).getTime();
+            return new Date(`${m.game_date} ${t}`).getTime();
+          } catch { return Infinity; }
+        }
 
         const filteredMarkets = computed(() => {
           let filtered = markets.value;
@@ -66,6 +121,14 @@
           if (selectedDate.value !== 'All') {
             filtered = filtered.filter(m => m.game_date === selectedDate.value);
           }
+
+          // Sort: open first, then closed, then settled; soonest game first within each group
+          const statusOrder = { open: 0, closed: 1, settled: 2 };
+          filtered = [...filtered].sort((a, b) => {
+            const sd = (statusOrder[a.status] ?? 1) - (statusOrder[b.status] ?? 1);
+            if (sd !== 0) return sd;
+            return gameDateTime(a) - gameDateTime(b);
+          });
           
           return filtered;
         });
@@ -285,6 +348,281 @@
           }
         }
 
+        // ---- Sell functionality ----
+        function openSellModal(position, outcome) {
+          const market = markets.value.find(m => m.market_id === position.market_id);
+          if (!market) return;
+          sellPosition.value = position;
+          sellMarket.value = market;
+          sellOutcome.value = outcome;
+          const maxShares = outcome === 'home' ? position.home_shares : position.away_shares;
+          sellShares.value = parseFloat(maxShares.toFixed(4));
+          sellResult.value = null;
+          updateSellPreview();
+          showSellModal.value = true;
+        }
+
+        function closeSellModal() {
+          showSellModal.value = false;
+          sellPosition.value = null;
+          sellMarket.value = null;
+          sellResult.value = null;
+          sellPreview.value = null;
+        }
+
+        function updateSellPreview() {
+          if (!sellMarket.value || !sellShares.value || sellShares.value <= 0) {
+            sellPreview.value = null;
+            return;
+          }
+          // LMSR sell-back: before - after of cost function (mirrors backend)
+          const b = 100;
+          const shares = parseFloat(sellShares.value);
+          let currentSide, otherSide;
+          if (sellOutcome.value === 'home') {
+            currentSide = sellMarket.value.home_shares;
+            otherSide   = sellMarket.value.away_shares;
+          } else {
+            currentSide = sellMarket.value.away_shares;
+            otherSide   = sellMarket.value.home_shares;
+          }
+          const before = b * Math.log(Math.exp(currentSide / b) + Math.exp(otherSide / b));
+          const after  = b * Math.log(Math.exp((currentSide - shares) / b) + Math.exp(otherSide / b));
+          sellPreview.value = Math.max(0, before - after);
+        }
+
+        async function executeSell() {
+          if (!token.value) return;
+          try {
+            sellProcessing.value = true;
+            sellResult.value = null;
+            const response = await fetch('/api/sell', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.value}`
+              },
+              body: JSON.stringify({
+                market_id: sellPosition.value.market_id,
+                outcome: sellOutcome.value,
+                shares: parseFloat(sellShares.value)
+              })
+            });
+            const data = await response.json();
+            if (response.ok && data.success) {
+              sellResult.value = { success: true, message: data.message };
+              await fetchMarkets();
+              await fetchPortfolio();
+              setTimeout(() => {
+                closeSellModal();
+              }, 1800);
+            } else {
+              sellResult.value = { success: false, message: data.detail || 'Sell failed' };
+            }
+          } catch (err) {
+            sellResult.value = { success: false, message: 'Error executing sell' };
+          } finally {
+            sellProcessing.value = false;
+          }
+        }
+
+        // ---- Price chart ----
+
+        // Parse SQLite UTC timestamp string → local Date object
+        function parseUTC(ts) {
+          if (!ts) return new Date();
+          // SQLite CURRENT_TIMESTAMP: "YYYY-MM-DD HH:MM:SS" — treat as UTC
+          return new Date(ts.trim().replace(' ', 'T') + 'Z');
+        }
+
+        async function openPriceChart(market) {
+          selectedMarket.value = market;
+          showPriceChart.value = true;
+          priceChartData.value = null;
+          chartView.value = '1w';
+          chartRawHistory.value = [];
+          if (priceChartInstance.value) {
+            priceChartInstance.value.destroy();
+            priceChartInstance.value = null;
+          }
+          try {
+            const res = await fetch(`/api/markets/${market.market_id}/history`);
+            const data = await res.json();
+            if (data.success) {
+              priceChartData.value = data.history;
+              chartRawHistory.value = data.history;
+              await nextTick();
+              renderPriceChart(data.history, market);
+            } else {
+              priceChartData.value = [];
+            }
+          } catch (err) {
+            console.error('Failed to load price history:', err);
+            priceChartData.value = [];
+          }
+        }
+
+        function closePriceChart() {
+          if (priceChartInstance.value) {
+            priceChartInstance.value.destroy();
+            priceChartInstance.value = null;
+          }
+          showPriceChart.value = false;
+          priceChartData.value = null;
+          chartRawHistory.value = [];
+        }
+
+        function setChartView(v) {
+          chartView.value = v;
+          if (priceChartInstance.value) {
+            priceChartInstance.value.destroy();
+            priceChartInstance.value = null;
+          }
+          // One rAF lets the browser flush the canvas clear that destroy() triggers,
+          // so the new Chart() always gets a clean, uncorrupted 2D context.
+          requestAnimationFrame(() => {
+            renderPriceChart(chartRawHistory.value, selectedMarket.value);
+          });
+        }
+
+        function renderPriceChart(history, market) {
+          // Use Vue template ref so we always get the current live canvas element
+          const canvas = priceChartCanvasRef.value;
+          if (!canvas || !history.length) return;
+
+          // Destroy any lingering instance on THIS canvas before creating a new one
+          if (priceChartInstance.value) {
+            try { priceChartInstance.value.destroy(); } catch (_) {}
+            priceChartInstance.value = null;
+          }
+
+          // Build time-based data points, converting UTC → local Date objects
+          const points = history.map(h => ({
+            x: parseUTC(h.timestamp),
+            home: h.home_price,
+            away: h.away_price
+          }));
+
+          // Determine x-axis window based on selected view
+          const now = new Date();
+          let xMin;
+          if (chartView.value === '1h') {
+            xMin = new Date(now.getTime() - 3600 * 1000);
+          } else if (chartView.value === '1d') {
+            xMin = new Date(now.getTime() - 86400 * 1000);
+          } else {
+            xMin = new Date(now.getTime() - 7 * 86400 * 1000);
+          }
+
+          // Split into points before and within the window
+          const before = points.filter(p => p.x < xMin);
+          const after  = points.filter(p => p.x >= xMin);
+
+          // Left anchor: last known price before the window, placed exactly at xMin.
+          // If no prior point exists, use the very first point's price (opening price).
+          const leftSrc = before.length ? before[before.length - 1] : (points[0] || { home: 50, away: 50 });
+          const leftAnchor = { x: new Date(xMin), home: leftSrc.home, away: leftSrc.away };
+
+          // Right anchor: extend last known price to 'now' so the line fills the window.
+          const rightSrc = after.length ? after[after.length - 1] : leftSrc;
+          const rightAnchor = { x: new Date(now), home: rightSrc.home, away: rightSrc.away };
+
+          // Combine: left anchor → points within window → right anchor
+          // Deduplicate in case a point lands exactly on xMin or now
+          const visiblePoints = [leftAnchor, ...after, rightAnchor];
+
+          // Determine tick granularity for readability
+          let timeUnit, tooltipFmt;
+          if (chartView.value === '1h') {
+            timeUnit = 'minute';
+            tooltipFmt = 'h:mm a';
+          } else if (chartView.value === '1d') {
+            timeUnit = 'hour';
+            tooltipFmt = 'h:mm a';
+          } else {
+            timeUnit = 'day';
+            tooltipFmt = 'MMM d, h:mm a';
+          }
+
+          priceChartInstance.value = new Chart(canvas, {
+            type: 'line',
+            data: {
+              datasets: [
+                {
+                  label: `${market.home_team}`,
+                  data: visiblePoints.map(p => ({ x: p.x, y: p.home })),
+                  borderColor: '#667eea',
+                  backgroundColor: 'rgba(102,126,234,0.08)',
+                  stepped: 'before',
+                  tension: 0,
+                  fill: true,
+                  pointRadius: 0,
+                  pointHoverRadius: 4,
+                  pointHoverBackgroundColor: '#667eea',
+                  borderWidth: 2,
+                  yAxisID: 'yHome'
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: { mode: 'steppedHover', intersect: false, axis: 'x' },
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    title: items => items[0] ? items[0].label : '',
+                    label: ctx => {
+                      const home = ctx.parsed.y;
+                      const away = 100 - home;
+                      return [
+                        `${market.home_team}: ${home.toFixed(1)}¢`,
+                        `${market.away_team}: ${away.toFixed(1)}¢`
+                      ];
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  type: 'time',
+                  time: {
+                    unit: timeUnit,
+                    tooltipFormat: tooltipFmt,
+                    displayFormats: {
+                      minute: 'h:mm a',
+                      hour:   'h a',
+                      day:    'MMM d'
+                    }
+                  },
+                  min: xMin,
+                  max: now,
+                  ticks: { maxTicksLimit: 7, maxRotation: 20 },
+                  grid: { color: 'rgba(0,0,0,0.04)' }
+                },
+                yHome: {
+                  position: 'left',
+                  min: 0,
+                  max: 100,
+                  ticks: { callback: v => v + '¢' },
+                  title: { display: true, text: `${market.home_team} →`, color: '#667eea', font: { weight: 'bold' } },
+                  grid: { color: 'rgba(0,0,0,0.06)' }
+                },
+                yAway: {
+                  position: 'right',
+                  min: 0,
+                  max: 100,
+                  ticks: { callback: v => (100 - v) + '¢' },
+                  title: { display: true, text: `← ${market.away_team}`, color: '#f97316', font: { weight: 'bold' } },
+                  grid: { drawOnChartArea: false }
+                }
+              }
+            }
+          });
+        }
+
+
         async function executeTrade() {
           if (!token.value) {
             openAuthModal('login');
@@ -443,7 +781,28 @@
           getStatusColor,
           getStatusIcon,
           getStatusText,
-          formatTokens
+          formatTokens,
+          // Sell
+          showSellModal,
+          sellPosition,
+          sellMarket,
+          sellOutcome,
+          sellShares,
+          sellProcessing,
+          sellResult,
+          sellPreview,
+          openSellModal,
+          closeSellModal,
+          updateSellPreview,
+          executeSell,
+          // Price chart
+          showPriceChart,
+          priceChartData,
+          priceChartCanvasRef,
+          chartView,
+          openPriceChart,
+          closePriceChart,
+          setChartView
         };
       },
       
@@ -598,6 +957,7 @@
 
                   <div class="market-stats">
                     <span>Volume: {{ formatTokens(market.total_volume) }}</span>
+                    <button class="chart-btn" @click="openPriceChart(market)">📈 Price History</button>
                   </div>
                 </div>
               </div>
@@ -716,6 +1076,14 @@
                         <span class="label">Potential Payout:</span>
                         <span class="value">{{ formatTokens(position.potential_payout) }}</span>
                       </div>
+                      <div class="sell-actions">
+                        <button v-if="position.home_shares > 0" class="sell-btn" @click="openSellModal(position, 'home')">
+                          Sell Home ({{ position.home_shares.toFixed(2) }})
+                        </button>
+                        <button v-if="position.away_shares > 0" class="sell-btn" @click="openSellModal(position, 'away')">
+                          Sell Away ({{ position.away_shares.toFixed(2) }})
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -823,6 +1191,83 @@
                     <span v-if="tradeProcessing">Processing...</span>
                     <span v-else>Confirm Prediction</span>
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sell Modal -->
+          <div v-if="showSellModal" class="modal-overlay" @click="closeSellModal">
+            <div class="modal" @click.stop>
+              <div class="modal-header">
+                <h2>Sell Shares</h2>
+                <button class="close-btn" @click="closeSellModal">×</button>
+              </div>
+              <div class="modal-body" v-if="sellPosition && sellMarket">
+                <div class="market-summary">
+                  <h3>{{ sellMarket.home_team }} vs {{ sellMarket.away_team }}</h3>
+                  <p class="game-time">Selling: <strong>{{ sellOutcome === 'home' ? sellMarket.home_team : sellMarket.away_team }}</strong> shares</p>
+                </div>
+                <div class="trade-form">
+                  <div class="form-group">
+                    <label>Shares to Sell</label>
+                    <input
+                      type="number"
+                      v-model.number="sellShares"
+                      min="0.0001"
+                      :max="sellOutcome === 'home' ? sellPosition.home_shares : sellPosition.away_shares"
+                      step="0.01"
+                      class="amount-input"
+                      @input="updateSellPreview"
+                    >
+                    <div class="quick-amounts">
+                      <button @click="sellShares = parseFloat(((sellOutcome === 'home' ? sellPosition.home_shares : sellPosition.away_shares) * 0.25).toFixed(4)); updateSellPreview()" class="quick-btn">25%</button>
+                      <button @click="sellShares = parseFloat(((sellOutcome === 'home' ? sellPosition.home_shares : sellPosition.away_shares) * 0.5).toFixed(4)); updateSellPreview()" class="quick-btn">50%</button>
+                      <button @click="sellShares = parseFloat(((sellOutcome === 'home' ? sellPosition.home_shares : sellPosition.away_shares) * 0.75).toFixed(4)); updateSellPreview()" class="quick-btn">75%</button>
+                      <button @click="sellShares = parseFloat((sellOutcome === 'home' ? sellPosition.home_shares : sellPosition.away_shares).toFixed(4)); updateSellPreview()" class="quick-btn">All</button>
+                    </div>
+                  </div>
+                  <div class="trade-summary" v-if="sellPreview !== null">
+                    <p>You will receive approximately <strong>{{ sellPreview.toFixed(2) }} 🪙</strong></p>
+                    <p class="potential" style="color:#e55; font-size:0.85rem;">LMSR sell-back — no arbitrage. Actual payout may vary slightly.</p>
+                  </div>
+                  <div v-if="sellResult" :class="['trade-result', sellResult.success ? 'success' : 'error']">
+                    {{ sellResult.message }}
+                  </div>
+                  <button
+                    class="submit-btn"
+                    @click="executeSell"
+                    :disabled="sellProcessing || sellShares <= 0"
+                  >
+                    <span v-if="sellProcessing">Processing...</span>
+                    <span v-else>Confirm Sell</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price Chart Modal -->
+          <div v-if="showPriceChart" class="modal-overlay" @click="closePriceChart">
+            <div class="modal chart-modal" @click.stop>
+              <div class="modal-header">
+                <h2>📈 Price History</h2>
+                <button class="close-btn" @click="closePriceChart">×</button>
+              </div>
+              <div class="modal-body">
+                <div class="market-summary" v-if="selectedMarket">
+                  <h3>{{ selectedMarket.home_team }} vs {{ selectedMarket.away_team }}</h3>
+                  <p class="game-time">{{ selectedMarket.game_date }} at {{ selectedMarket.game_time }}</p>
+                </div>
+                <div class="chart-view-btns">
+                  <button :class="['chart-view-btn', { active: chartView === '1h' }]" @click="setChartView('1h')">1H</button>
+                  <button :class="['chart-view-btn', { active: chartView === '1d' }]" @click="setChartView('1d')">1D</button>
+                  <button :class="['chart-view-btn', { active: chartView === '1w' }]" @click="setChartView('1w')">1W</button>
+                </div>
+                <div v-show="priceChartData === null" class="chart-loading">Loading history...</div>
+                <div v-show="priceChartData !== null && priceChartData.length === 0" class="chart-loading">Could not load price history.</div>
+                <div v-show="priceChartData !== null && priceChartData.length > 0" class="chart-container">
+                  <canvas ref="priceChartCanvasRef"></canvas>
                 </div>
               </div>
             </div>
@@ -1336,9 +1781,13 @@
     .market-stats {
       font-size: 0.875rem;
       color: #666;
-      text-align: center;
       padding-top: 12px;
       border-top: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .settlement-info {
@@ -1449,6 +1898,94 @@
       font-weight: 700;
       font-size: 1.05rem;
       color: #667eea;
+    }
+
+    .sell-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .sell-btn {
+      flex: 1;
+      padding: 8px 14px;
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 120px;
+    }
+
+    .sell-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(234,88,12,0.35);
+    }
+
+    .chart-btn {
+      background: none;
+      border: 1px solid #667eea;
+      color: #667eea;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chart-btn:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .chart-modal {
+      max-width: 700px !important;
+    }
+
+    .chart-container {
+      height: 320px;
+      position: relative;
+    }
+
+    .chart-loading {
+      text-align: center;
+      color: #888;
+      padding: 40px 0;
+      font-size: 1rem;
+    }
+
+    .chart-view-btns {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .chart-view-btn {
+      padding: 4px 14px;
+      border: 1px solid #d0d0d0;
+      border-radius: 6px;
+      background: white;
+      color: #555;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .chart-view-btn:hover {
+      border-color: #667eea;
+      color: #667eea;
+    }
+
+    .chart-view-btn.active {
+      background: #667eea;
+      border-color: #667eea;
+      color: white;
     }
 
     /* Modal */

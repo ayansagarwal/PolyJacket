@@ -75,14 +75,30 @@ def init_database():
         )
     """)
     
+    # Price history table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS price_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            market_id TEXT NOT NULL,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            home_price REAL NOT NULL,
+            away_price REAL NOT NULL,
+            home_shares REAL NOT NULL,
+            away_shares REAL NOT NULL,
+            total_volume REAL NOT NULL,
+            FOREIGN KEY (market_id) REFERENCES markets(market_id)
+        )
+    """)
+
     # Create indexes
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_markets_status ON markets(status)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_positions_user ON positions(user_id)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_positions_market ON positions(market_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_price_history_market ON price_history(market_id, timestamp)")
     
     conn.commit()
     conn.close()
-    print(f"✓ Database initialized at {DATABASE_FILE}")
+    print(f"[OK] Database initialized at {DATABASE_FILE}")
 
 
 def get_connection():
@@ -311,3 +327,33 @@ def get_market_count() -> int:
     result = cursor.fetchone()
     conn.close()
     return result['count'] if result else 0
+
+
+# ============== PRICE HISTORY ==============
+
+def record_price_snapshot(market_id: str, home_price: float, away_price: float,
+                          home_shares: float, away_shares: float, total_volume: float):
+    """Record a price snapshot after a trade"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO price_history (market_id, home_price, away_price, home_shares, away_shares, total_volume)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (market_id, home_price, away_price, home_shares, away_shares, total_volume))
+    conn.commit()
+    conn.close()
+
+
+def get_price_history(market_id: str) -> List[Dict]:
+    """Get price history for a market, ordered chronologically"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, market_id, timestamp, home_price, away_price, home_shares, away_shares, total_volume
+        FROM price_history
+        WHERE market_id = ?
+        ORDER BY timestamp ASC
+    """, (market_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
