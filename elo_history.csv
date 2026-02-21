@@ -1,0 +1,413 @@
+date,sport,home_team,away_team,home_pts,away_pts,home_elo_pre,away_elo_pre,home_elo_post,away_elo_post,home_exp,away_exp
+01/27/2026,4v4 Flag Football,Pike C,SigEp A,32,42,1000,1000,933.1,1066.9,0.5,0.5
+01/27/2026,5v5 Basketball,BCM,Qiths,73,47,1000,1000,1077.1,922.9,0.5,0.5
+01/27/2026,5v5 Basketball,Bounce Academy,LeSTSL,49,31,1000,1000,1078.1,921.9,0.5,0.5
+01/27/2026,4v4 Flag Football,SAE A,Theta Chi,35,34,1000,1000,1051.8,948.2,0.5,0.5
+01/27/2026,4v4 Flag Football,Kappa Sigma B,Delta Upsilon,20,13,1000,1000,1076.5,923.5,0.5,0.5
+01/27/2026,5v5 Basketball,Sigma Chi X ADPi,Rakija Aguardiente,50,48,1000,1000,1052.6,947.4,0.5,0.5
+01/27/2026,5v5 Basketball,rz,:),21,39,1000,1000,912.5,1087.5,0.5,0.5
+01/27/2026,4v4 Flag Football,TKE C,Sigma Chi A,23,45,1000,1000,909.6,1090.4,0.5,0.5
+01/27/2026,4v4 Flag Football,Sigma Nu,Theta XI B,21,43,1000,1000,907.0,1093.0,0.5,0.5
+01/27/2026,5v5 Basketball,Old Foresters,Ballright,44,20,1000,1000,1096.9,903.1,0.5,0.5
+01/27/2026,5v5 Basketball,kls,Pike Corec,32,71,1000,1000,902.7,1097.3,0.5,0.5
+01/27/2026,4v4 Flag Football,GTSC,awesome sauce,20,32,1000,1000,921.2,1078.8,0.5,0.5
+01/27/2026,4v4 Flag Football,AGDU,GTNROTC,7,12,1000,1000,917.1,1082.9,0.5,0.5
+01/27/2026,4v4 Flag Football,Ice Trae,Dippin Dots,25,33,1000,1000,932.8,1067.2,0.5,0.5
+01/27/2026,5v5 Basketball,Phi Mu,AXiD,29,21,1000,1000,1070.0,930.0,0.5,0.5
+01/27/2026,5v5 Basketball,Alpha Phi,ADPi,10,44,1000,1000,875.0,1125.0,0.5,0.5
+01/27/2026,4v4 Flag Football,Flustered Falcons,Beef Bulgogi,8,34,1000,1000,875.0,1125.0,0.5,0.5
+01/27/2026,4v4 Flag Football,Westhaven,Catholic Center,0,48,1000,1000,875.0,1125.0,0.5,0.5
+01/27/2026,5v5 Basketball,Pooslingerz,SAE Kappa,13,40,1000,1000,886.3,1113.7,0.5,0.5
+01/27/2026,5v5 Basketball,Alpha Gamma Delta,Kappa Alpha Theta,44,18,1000,1000,1102.4,897.6,0.5,0.5
+01/27/2026,4v4 Flag Football,Punjabi Sungiants,fours,14,34,1000,1000,897.9,1102.1,0.5,0.5
+01/27/2026,4v4 Flag Football,Legion of Boom,E1,13,18,1000,1000,929.8,1070.2,0.5,0.5
+01/27/2026,5v5 Basketball,The Mighty Ducks,Nuggets,19,46,1000,1000,898.1,1101.9,0.5,0.5
+01/27/2026,5v5 Basketball,Javale McBuckets,Kinetic + Nav,57,25,1000,1000,1098.8,901.2,0.5,0.5
+01/27/2026,4v4 Flag Football,esmadine,grimreapers,18,13,1000,1000,1070.2,929.8,0.5,0.5
+01/27/2026,4v4 Flag Football,goyal squad,Separation,35,27,1000,1000,1066.1,933.9,0.5,0.5
+01/28/2026,5v5 Basketball,Lebum,Poka,61,17,1000,1000,1120.5,879.5,0.5,0.5
+01/28/2026,4v4 Flag Football,Connector C’s,FYSA Flyers,31,0,1000,1000,1125.0,875.0,0.5,0.5
+01/28/2026,4v4 Flag Football,1738,Team 1,12,43,1000,1000,879.5,1120.5,0.5,0.5
+01/28/2026,5v5 Basketball,Big G n 'Em,messiah's disciples,38,44,1000,1000,940.9,1059.1,0.5,0.5
+01/28/2026,5v5 Basketball,Team belt,Om Patel’s honourable team,73,32,1000,1000,1098.8,901.2,0.5,0.5
+01/28/2026,4v4 Flag Football,Pike A,GBC,27,26,1000,1000,1052.4,947.6,0.5,0.5
+01/28/2026,4v4 Flag Football,AEPi,Pike D,14,13,1000,1000,1054.6,945.4,0.5,0.5
+01/28/2026,5v5 Basketball,Sportsball,Amaputi,24,46,1000,1000,910.7,1089.3,0.5,0.5
+01/28/2026,5v5 Basketball,Dream Team,Fried chicken,52,52,1000,1000,1000.0,1000.0,0.5,0.5
+01/28/2026,4v4 Flag Football,Phi delt A,TKE F,26,6,1000,1000,1125.0,875.0,0.5,0.5
+01/28/2026,4v4 Flag Football,ATO,Pi kapp,38,0,1000,1000,1125.0,875.0,0.5,0.5
+01/28/2026,5v5 Basketball,GTSC,sportsball,21,32,1000,1000,924.1,1075.9,0.5,0.5
+01/28/2026,5v5 Basketball,Delhi Dragons,Dawgs,33,76,1000,1000,900.7,1099.3,0.5,0.5
+01/28/2026,4v4 Flag Football,Western,Bandits,12,47,1000,1000,875.8,1124.2,0.5,0.5
+01/28/2026,4v4 Flag Football,Fore,TFSJHFFT️️️,39,6,1000,1000,1125.0,875.0,0.5,0.5
+01/28/2026,5v5 Basketball,ADPi X SAE,Cru hoops,49,44,1000,1000,1056.7,943.3,0.5,0.5
+01/28/2026,4v4 Flag Football,Bullet Bogs,The Induraj Files,20,13,1000,1000,1076.5,923.5,0.5,0.5
+01/28/2026,4v4 Flag Football,Sack Attack,Kush the Grand Gargantuan,42,20,1000,1000,1094.4,905.6,0.5,0.5
+01/29/2026,4v4 Flag Football,Theta Xi,ΛΧΑ A,42,14,1000,1000,1112.5,887.5,0.5,0.5
+01/29/2026,5v5 Basketball,D1 Poosapati,Catholic Center,39,62,1000,1000,921.5,1078.5,0.5,0.5
+01/29/2026,5v5 Basketball,BasketBile,LEBRONNNNN,26,69,1000,1000,893.4,1106.6,0.5,0.5
+01/29/2026,4v4 Flag Football,Beta A,Delta Chi,27,0,1000,1000,1125.0,875.0,0.5,0.5
+01/29/2026,5v5 Basketball,Feminists Elites,ASCE,50,43,1000,1000,1059.4,940.6,0.5,0.5
+01/29/2026,5v5 Basketball,Pike B,Phi delt A,41,71,1000,1000,916.5,1083.5,0.5,0.5
+01/29/2026,4v4 Flag Football,NFZ,Fearsome Foursome,19,39,1000,1000,906.9,1093.1,0.5,0.5
+01/29/2026,4v4 Flag Football,I am Football,Helen Keller Deniers,15,36,1000,1000,898.5,1101.5,0.5,0.5
+01/29/2026,5v5 Basketball,SigEp A,Phi Sig,55,19,1000,1000,1110.8,889.2,0.5,0.5
+01/29/2026,5v5 Basketball,FIJI A,Beta B,70,47,1000,1000,1074.6,925.4,0.5,0.5
+01/29/2026,4v4 Flag Football,Western,Circle Squad,25,13,875.8,1000,996.0,879.8,0.3286,0.6714
+01/29/2026,4v4 Flag Football,Canadian Bald Eagles,Gentry’s Generous Team,40,49,1000,1000,937.4,1062.6,0.5,0.5
+01/29/2026,5v5 Basketball,Theta XI,TKE A,71,33,1000,1000,1095.7,904.3,0.5,0.5
+01/29/2026,5v5 Basketball,Delta Chi,Pi kapp,45,49,1000,1000,944.7,1055.3,0.5,0.5
+01/29/2026,4v4 Flag Football,Moe's Monday,Club Tennis,28,14,1000,1000,1091.7,908.3,0.5,0.5
+01/29/2026,4v4 Flag Football,The Mighty Geese,AAA,27,6,1000,1000,1125.0,875.0,0.5,0.5
+01/29/2026,5v5 Basketball,ATO A,TKE B,58,18,1000,1000,1115.8,884.2,0.5,0.5
+01/29/2026,5v5 Basketball,Mouse in the Palace,Wet banana,54,50,1000,1000,1054.8,945.2,0.5,0.5
+01/29/2026,4v4 Flag Football,Alpha Sig,The Mighty Ducks,14,33,1000,1000,899.5,1100.5,0.5,0.5
+01/29/2026,4v4 Flag Football,KYM,Palantir Interns,20,13,1000,1000,1076.5,923.5,0.5,0.5
+01/29/2026,5v5 Basketball,Theta Buckets B,Bench Warmers,21,57,1000,1000,892.3,1107.7,0.5,0.5
+01/29/2026,5v5 Basketball,WAHO,AFC,28,33,1000,1000,939.8,1060.2,0.5,0.5
+01/29/2026,4v4 Flag Football,Mighty Mallards,falcons regen,21,14,1000,1000,1075.0,925.0,0.5,0.5
+01/29/2026,4v4 Flag Football,Milk Squad 6,Suhas Kumar,31,26,1000,1000,1061.0,939.0,0.5,0.5
+01/30/2026,Cornhole,SAE A,Bandits,0,2,1000,1000,950.0,1050.0,0.5,0.5
+01/30/2026,Cornhole,TKE A,Cornballs,2,1,1000,1000,1043.3,956.7,0.5,0.5
+01/30/2026,Cornhole,Dubois,Corn Jawn,0,2,1000,1000,950.0,1050.0,0.5,0.5
+01/30/2026,Cornhole,TKE F,Cornelius Hole-ington,2,0,1000,1000,1050.0,950.0,0.5,0.5
+01/30/2026,Cornhole,Theta Chi A,Shuck Norris,1,2,1000,1000,956.7,1043.3,0.5,0.5
+01/30/2026,Cornhole,Green Giant,Eternal Sunshine,0,2,1000,1000,950.0,1050.0,0.5,0.5
+01/30/2026,Cornhole,pnWs,The Best,1,2,1000,1000,956.7,1043.3,0.5,0.5
+01/30/2026,Cornhole,Cornballers,KornS,1,0,1000,1000,1050.0,950.0,0.5,0.5
+01/30/2026,Cornhole,SPAM MUSUBI,In Corn We Trust,0,1,1000,1000,950.0,1050.0,0.5,0.5
+01/30/2026,Cornhole,vatic pros,SigEp A Team,0,2,1000,1000,950.0,1050.0,0.5,0.5
+01/30/2026,Cornhole,Chi Psi,Cornpan,2,1,1000,1000,1043.3,956.7,0.5,0.5
+02/01/2026,5v5 Basketball,Kappa Sigma A,Beta A,42,56,1000,1000,932.1,1067.9,0.5,0.5
+02/01/2026,5v5 Basketball,Pike A,AEPi,67,37,1000,1000,1086.1,913.9,0.5,0.5
+02/01/2026,5v5 Basketball,Run It Back,The Milkmen,44,42,1000,1000,1052.9,947.1,0.5,0.5
+02/01/2026,5v5 Basketball,SAE Mu,Theta Thunder,50,29,1000,1000,1083.2,916.8,0.5,0.5
+02/01/2026,5v5 Basketball,North Avenue Trade School,Ocee Gang,96,38,1000,1000,1104.1,895.9,0.5,0.5
+02/01/2026,5v5 Basketball,LinkedIn,Run It Back,28,49,1000,1052.9,928.6,1124.3,0.4244,0.5756
+02/01/2026,5v5 Basketball,Tune Squad,We are good at this!,38,37,1000,1000,1051.7,948.3,0.5,0.5
+02/01/2026,5v5 Basketball,BALLZY Raptors,Theta Buckets C,82,31,1000,1000,1106.4,893.6,0.5,0.5
+02/01/2026,5v5 Basketball,SAE Xi,Theta Buckets A,44,51,1000,1000,940.8,1059.2,0.5,0.5
+02/01/2026,5v5 Basketball,Blacklung,Beta P,42,32,1000,1000,1066.9,933.1,0.5,0.5
+02/02/2026,4v4 Flag Football,TKE,Punt Intended,13,21,1000,1000,920.6,1079.4,0.5,0.5
+02/02/2026,5v5 Basketball,Kappa Sigma B,Phi Tau,32,41,1000,1000,934.6,1065.4,0.5,0.5
+02/02/2026,5v5 Basketball,SigEp B,Sigma Nu B,57,39,1000,1000,1073.4,926.6,0.5,0.5
+02/02/2026,5v5 Basketball,Delta Upsilon,Phi Kappa Theta,27,29,1000,1000,945.5,1054.5,0.5,0.5
+02/02/2026,5v5 Basketball,Ballers,Beef Bulgogi,50,46,1000,1000,1055.2,944.8,0.5,0.5
+02/02/2026,4v4 Flag Football,ruf gals,bcm girliessss,0,48,1000,1000,875.0,1125.0,0.5,0.5
+02/02/2026,4v4 Flag Football,Kappa Alpha Theta,no fly zone,6,6,1000,1000,1000.0,1000.0,0.5,0.5
+02/02/2026,5v5 Basketball,The Water Boys,Golden Tribe Warriors,48,45,1000,1000,1054.0,946.0,0.5,0.5
+02/02/2026,5v5 Basketball,C Men,All day all night,50,46,1000,1000,1055.2,944.8,0.5,0.5
+02/02/2026,4v4 Flag Football,Qiths,KP and them,22,44,1000,1000,908.3,1091.7,0.5,0.5
+02/02/2026,4v4 Flag Football,Bojangles,Sigep PC,18,38,1000,1000,905.4,1094.6,0.5,0.5
+02/02/2026,4v4 Flag Football,The Big Gs,1st Round Hopefuls,26,14,1000,1000,1087.5,912.5,0.5,0.5
+02/02/2026,4v4 Flag Football,Willage Warriors,Tuna Sub,31,34,1000,1000,944.2,1055.8,0.5,0.5
+02/02/2026,5v5 Basketball,Seirin,Mekhi Carter Elite,62,59,1000,1000,1053.1,946.9,0.5,0.5
+02/02/2026,5v5 Basketball,Magic City Ballers,Old Foresters,31,35,1000,1096.9,958.1,1138.8,0.3641,0.6359
+02/02/2026,4v4 Flag Football,Haynes “Haynes King” King,GripFource,14,21,1000,1000,925.0,1075.0,0.5,0.5
+02/02/2026,5v5 Basketball,Alpha Sig,SAE A,31,63,1000,1000,907.4,1092.6,0.5,0.5
+02/02/2026,5v5 Basketball,Fiji B,2026 Montverde,33,25,1000,1000,1067.2,932.8,0.5,0.5
+02/02/2026,4v4 Flag Football,GTSC,Theta thunder,19,36,921.2,1000,852.3,1068.9,0.3884,0.6116
+02/02/2026,4v4 Flag Football,Team McGee,Legion of Goon,18,20,1000,1000,943.4,1056.6,0.5,0.5
+02/02/2026,5v5 Basketball,Theta Chi,Lambda Chi,25,65,1000,1000,894.4,1105.6,0.5,0.5
+02/02/2026,5v5 Basketball,KA B,Snu 1,25,42,1000,1000,918.3,1081.7,0.5,0.5
+02/02/2026,4v4 Flag Football,FOG,Kinetic + Nav,46,6,1000,1000,1125.0,875.0,0.5,0.5
+02/02/2026,4v4 Flag Football,Phi Tau,BB,33,18,1000,1000,1086.8,913.2,0.5,0.5
+02/03/2026,4v4 Flag Football,Kappa Sigma B,SigEp A,13,65,1076.5,1066.9,948.1,1195.4,0.5138,0.4862
+02/03/2026,5v5 Basketball,BCM,Bounce Academy,37,27,1077.1,1078.1,1146.8,1008.4,0.4985,0.5015
+02/03/2026,5v5 Basketball,rz,Qiths,43,47,912.5,922.9,858.6,976.8,0.485,0.515
+02/03/2026,4v4 Flag Football,SAE A,TKE C,34,28,1051.8,909.6,1089.8,871.6,0.694,0.306
+02/03/2026,4v4 Flag Football,Delta Upsilon,Chi Psi,31,6,923.5,1000,1075.6,847.9,0.3916,0.6084
+02/03/2026,5v5 Basketball,Rakija Aguardiente,Ballright,53,28,947.4,903.1,1024.8,825.8,0.5634,0.4366
+02/03/2026,5v5 Basketball,:),LeSTSL,29,40,1087.5,921.9,986.6,1022.8,0.7218,0.2782
+02/03/2026,4v4 Flag Football,Sigma Nu,Theta Chi,42,14,907.0,948.2,1032.8,822.4,0.441,0.559
+02/03/2026,4v4 Flag Football,Theta XI B,Sigma Chi A,36,29,1093.0,1090.4,1156.0,1027.4,0.5036,0.4964
+02/03/2026,5v5 Basketball,Sigma Chi X ADPi,Pike Corec,34,57,1052.6,1097.3,981.4,1168.5,0.4359,0.5641
+02/03/2026,5v5 Basketball,kls,Old Foresters,69,61,902.7,1138.8,994.5,1047.0,0.2044,0.7956
+02/03/2026,4v4 Flag Football,GTSC,Survivor Georgia Tech,25,6,852.3,1000,1027.4,824.8,0.2994,0.7006
+02/03/2026,4v4 Flag Football,AGDU,awesome sauce,6,33,917.1,1078.8,846.4,1149.5,0.2827,0.7173
+02/03/2026,4v4 Flag Football,Vincent Douglas,GTNROTC,19,12,1000,1082.9,1096.5,986.4,0.3829,0.6171
+02/03/2026,5v5 Basketball,Phi Mu,Alpha Phi,48,21,1070.0,875.0,1118.6,826.4,0.7545,0.2455
+02/03/2026,5v5 Basketball,Alpha Gamma Delta,AXiD,50,24,1102.4,930.0,1153.2,879.2,0.7296,0.2704
+02/03/2026,4v4 Flag Football,Westhaven,Dippin Dots,14,38,875.0,1067.2,821.5,1120.8,0.2485,0.7515
+02/03/2026,4v4 Flag Football,Catholic Center,Beef Bulgogi,27,21,1125.0,1125.0,1190.6,1059.4,0.5,0.5
+02/03/2026,5v5 Basketball,Pooslingerz,The Mighty Ducks,45,35,886.3,898.1,954.2,830.2,0.4831,0.5169
+02/03/2026,5v5 Basketball,Kappa Alpha Theta,ADPi,10,37,897.6,1125.0,845.8,1176.8,0.2126,0.7874
+02/03/2026,4v4 Flag Football,Punjabi Sungiants,Legion of Boom,20,19,897.9,929.8,956.0,871.8,0.4542,0.5458
+02/03/2026,4v4 Flag Football,esmadine,fours,13,14,1070.2,1102.1,1020.5,1151.7,0.4542,0.5458
+02/03/2026,5v5 Basketball,Javale McBuckets,SAE Kappa,47,43,1098.8,1113.7,1156.7,1055.7,0.4786,0.5214
+02/03/2026,5v5 Basketball,Kinetic + Nav,Nuggets,19,50,901.2,1101.9,850.4,1152.8,0.2395,0.7605
+02/03/2026,4v4 Flag Football,goyal squad,E1,27,25,1066.1,1070.2,1121.6,1014.7,0.4942,0.5058
+02/03/2026,4v4 Flag Football,Separation,grimreapers,26,27,933.9,929.8,880.9,982.8,0.5058,0.4942
+02/04/2026,5v5 Basketball,Wreck,Las Nenas,60,15,1000,1000,1125.0,875.0,0.5,0.5
+02/04/2026,5v5 Basketball,Lebum,Big G n 'Em,33,35,1120.5,940.9,1041.3,1020.1,0.7377,0.2623
+02/04/2026,4v4 Flag Football,Team 1,FYSA Flyers,46,6,1120.5,875.0,1169.4,826.1,0.8042,0.1958
+02/04/2026,5v5 Basketball,Team belt,Poka,79,34,1098.8,879.5,1142.8,835.5,0.7795,0.2205
+02/04/2026,5v5 Basketball,Om Patel’s honourable team,messiah's disciples,26,17,901.2,1059.1,1009.8,950.6,0.2871,0.7129
+02/04/2026,4v4 Flag Football,AEPi,Phi delt A,18,42,1054.6,1125.0,974.6,1205.0,0.4001,0.5999
+02/04/2026,5v5 Basketball,Sportsball,Dream Team,52,67,910.7,1000.0,861.5,1049.2,0.3743,0.6257
+02/04/2026,5v5 Basketball,Delhi Dragons,Amaputi,22,37,900.7,1089.3,859.4,1130.6,0.2524,0.7476
+02/04/2026,4v4 Flag Football,ATO,Pike D,6,32,1125.0,945.4,940.6,1129.8,0.7377,0.2623
+02/04/2026,4v4 Flag Football,Pi kapp,TKE F,35,42,875.0,875.0,813.6,936.4,0.5,0.5
+02/04/2026,5v5 Basketball,GTSC,TKE,37,74,924.1,1000,852.1,1071.9,0.3924,0.6076
+02/04/2026,5v5 Basketball,Dawgs,Fried chicken,60,49,1099.3,1000.0,1144.5,954.8,0.6392,0.3608
+02/04/2026,4v4 Flag Football,Western,Fore,22,26,996.0,1125.0,957.0,1164.0,0.3224,0.6776
+02/04/2026,4v4 Flag Football,Bullet Bogs,Bandits,26,34,1076.5,1124.2,1018.9,1181.7,0.4319,0.5681
+02/04/2026,5v5 Basketball,ADPi X SAE,sportsball,54,22,1056.7,1075.9,1165.0,967.6,0.4724,0.5276
+02/04/2026,5v5 Basketball,Cru hoops,Ramblin' Reck Club,70,28,943.3,1000,1063.6,879.7,0.4191,0.5809
+02/04/2026,4v4 Flag Football,Sack Attack,TFSJHFFT️️️,42,0,1094.4,875.0,1149.5,819.9,0.7795,0.2205
+02/04/2026,4v4 Flag Football,Kush the Grand Gargantuan,The Induraj Files,0,39,905.6,923.5,787.1,1042.1,0.4743,0.5257
+02/05/2026,4v4 Flag Football,Theta Xi,Kappa Sigma A,34,35,1112.5,1000,1044.5,1068.0,0.6565,0.3435
+02/05/2026,4v4 Flag Football,Beta A,ΛΧΑ A,26,0,1125.0,887.5,1175.8,836.7,0.7969,0.2031
+02/05/2026,5v5 Basketball,D1 Poosapati,BasketBile,46,16,921.5,893.4,1023.1,791.9,0.5404,0.4596
+02/05/2026,5v5 Basketball,Feminists Elites,Catholic Center,45,27,1059.4,1078.5,1145.1,992.8,0.4726,0.5274
+02/05/2026,4v4 Flag Football,Delta Chi,Phi Kap,34,6,875.0,1000,1043.1,831.9,0.3275,0.6725
+02/05/2026,4v4 Flag Football,I am Football,Real Eating Club,14,33,898.5,1000,826.6,1072.0,0.358,0.642
+02/05/2026,5v5 Basketball,ASCE,LEBRONNNNN,40,40,940.6,1106.6,962.8,1084.4,0.2778,0.7222
+02/05/2026,4v4 Flag Football,Sportsball,NFZ,34,18,1000,906.9,1065.3,841.6,0.6309,0.3691
+02/05/2026,4v4 Flag Football,Helen Keller Deniers,Fearsome Foursome,40,33,1101.5,1093.1,1162.0,1032.6,0.512,0.488
+02/05/2026,5v5 Basketball,Beta B,Phi Sig,36,27,925.4,889.2,986.2,828.4,0.552,0.448
+02/05/2026,5v5 Basketball,FIJI A,Phi delt A,48,49,1074.6,1083.5,1024.6,1133.5,0.4872,0.5128
+02/05/2026,4v4 Flag Football,7/11 Squad,Circle Squad,13,19,1000,879.8,902.1,977.7,0.6663,0.3337
+02/05/2026,4v4 Flag Football,D1 Poosapati,netagive aura,12,13,1000,1000,945.0,1055.0,0.5,0.5
+02/05/2026,4v4 Flag Football,Canadian Bald Eagles,Moe's Monday,6,37,937.4,1091.7,864.5,1164.5,0.2915,0.7085
+02/05/2026,5v5 Basketball,Theta XI,Delta Chi,65,35,1095.7,944.7,1147.4,893.0,0.7046,0.2954
+02/05/2026,5v5 Basketball,ATO A,TKE A,56,61,1115.8,904.3,1030.4,989.7,0.7716,0.2284
+02/05/2026,4v4 Flag Football,The Mighty Geese,Gentry’s Generous Team,19,28,1125.0,1062.6,1037.9,1149.7,0.5888,0.4112
+02/05/2026,4v4 Flag Football,AAA,Club Tennis,31,33,875.0,908.3,826.2,957.1,0.4522,0.5478
+02/05/2026,5v5 Basketball,TKE B,Pi kapp,29,66,884.2,1055.3,830.5,1109.0,0.2719,0.7281
+02/05/2026,5v5 Basketball,Mouse in the Palace,Theta Buckets B,59,39,1054.8,892.3,1097.4,849.7,0.7182,0.2818
+02/05/2026,4v4 Flag Football,Alpha Sig,KYM,40,6,899.5,1076.5,1083.2,892.8,0.2652,0.7348
+02/05/2026,4v4 Flag Football,Mighty Mallards,The Mighty Ducks,7,40,1075.0,1100.5,959.2,1216.4,0.4633,0.5367
+02/05/2026,5v5 Basketball,WAHO,Wet banana,25,36,939.8,945.2,868.3,1016.6,0.4922,0.5078
+02/05/2026,5v5 Basketball,AFC,Bench Warmers,27,89,1060.2,1107.7,959.3,1208.6,0.4321,0.5679
+02/05/2026,4v4 Flag Football,Suhas Kumar,falcons regen,20,13,939.0,925.0,1012.5,851.6,0.5202,0.4798
+02/06/2026,Cornhole,SAE A,TKE A,0,2,950.0,1043.3,913.1,1080.2,0.3688,0.6312
+02/06/2026,Cornhole,Pookie and Snookems,Bandits,0,2,1000,1050.0,957.1,1092.9,0.4285,0.5715
+02/06/2026,Cornhole,sheriffs,Cornballs,0,2,1000,956.7,943.8,1012.9,0.562,0.438
+02/06/2026,6v6 Dodgeball,Delta Chi,Pi Kapp,1,3,1000,1000,952.0,1048.0,0.5,0.5
+02/06/2026,6v6 Dodgeball,Phi Tau,Phi Sig,0,3,1000,1000,944.0,1056.0,0.5,0.5
+02/06/2026,Cornhole,TKE F,Beta,2,1,1050.0,1000,1087.1,962.9,0.5715,0.4285
+02/06/2026,6v6 Dodgeball,Qiths,Pooslingerz,1,3,1000,1000,952.0,1048.0,0.5,0.5
+02/06/2026,Cornhole,Shuck Norris,KA A aka KA,0,2,1043.3,1000,987.1,1056.2,0.562,0.438
+02/06/2026,Cornhole,Green Giant,pnWs,2,0,950.0,956.7,1001.0,905.7,0.4904,0.5096
+02/06/2026,Cornhole,Cornballers,Eternal Sunshine,0,2,1050.0,1050.0,1000.0,1100.0,0.5,0.5
+02/06/2026,Cornhole,SPAM MUSUBI,The Best,0,2,950.0,1043.3,913.1,1080.2,0.3688,0.6312
+02/06/2026,Cornhole,In Corn We Trust,KornS,2,1,1050.0,950.0,1081.2,918.8,0.6401,0.3599
+02/06/2026,6v6 Dodgeball,Back in Blood,Separation,1,3,1000,1000,952.0,1048.0,0.5,0.5
+02/06/2026,Cornhole,duh bobbb,vatic pros,0,2,1000,950.0,942.9,1007.1,0.5715,0.4285
+02/06/2026,6v6 Dodgeball,goblin gang,Western,3,1,1000,1000,1048.0,952.0,0.5,0.5
+02/09/2026,4v4 Flag Football,TKE,ASCE,67,12,920.6,1000,1073.7,846.9,0.3877,0.6123
+02/09/2026,4v4 Flag Football,PG3 Warriors,Punt Intended,24,14,1000,1079.4,1101.5,977.9,0.3877,0.6123
+02/09/2026,5v5 Basketball,Kappa Sigma B,SigEp B,30,74,934.6,1073.4,870.8,1137.3,0.3102,0.6898
+02/09/2026,5v5 Basketball,Delta Upsilon,Phi Tau,35,26,945.5,1065.4,1036.7,974.2,0.334,0.666
+02/09/2026,5v5 Basketball,Phi Kappa Theta,Sigma Nu B,39,50,1054.5,926.6,966.0,1015.1,0.6762,0.3238
+02/09/2026,5v5 Basketball,Ballers,The Water Boys,59,66,1055.2,1054.0,998.0,1111.2,0.5017,0.4983
+02/09/2026,4v4 Flag Football,Kappa Alpha Theta,Phi Mu,0,42,1000.0,1000,875.0,1125.0,0.5,0.5
+02/09/2026,4v4 Flag Football,no fly zone,bcm girliessss,7,32,1000.0,1125.0,918.1,1206.9,0.3275,0.6725
+02/09/2026,5v5 Basketball,C Men,Beef Bulgogi,35,37,1055.2,944.8,985.3,1014.7,0.6538,0.3462
+02/09/2026,5v5 Basketball,All day all night,Golden Tribe Warriors,26,41,944.8,946.0,867.1,1023.7,0.4983,0.5017
+02/09/2026,4v4 Flag Football,Qiths,Bojangles,12,36,908.3,905.4,794.9,1018.8,0.5043,0.4957
+02/09/2026,4v4 Flag Football,The Big Gs,KP and them,14,51,1087.5,1091.7,967.8,1211.4,0.494,0.506
+02/09/2026,4v4 Flag Football,1st Round Hopefuls,Sigep PC,6,64,912.5,1094.6,847.6,1159.5,0.2595,0.7405
+02/09/2026,4v4 Flag Football,Willage Warriors,SAE Mukund,29,14,944.2,1000,1052.7,891.5,0.4204,0.5796
+02/09/2026,5v5 Basketball,Seirin,Magic City Ballers,70,28,1053.1,958.1,1129.0,882.1,0.6334,0.3666
+02/09/2026,5v5 Basketball,Fiji B,Mekhi Carter Elite,47,86,1067.2,946.9,951.7,1062.4,0.6666,0.3334
+02/09/2026,4v4 Flag Football,Haynes “Haynes King” King,Tuna Sub,37,53,925.0,1055.8,878.7,1102.0,0.3202,0.6798
+02/09/2026,5v5 Basketball,Alpha Sig,Theta Chi,40,41,907.4,894.4,854.0,947.9,0.5187,0.4813
+02/09/2026,5v5 Basketball,2026 Montverde,Old Foresters,41,52,932.8,1047.0,888.5,1091.2,0.3413,0.6587
+02/09/2026,4v4 Flag Football,GTSC,Team McGee,39,20,1027.4,943.4,1096.3,874.6,0.6186,0.3814
+02/09/2026,4v4 Flag Football,FOG,Theta thunder,18,45,1125.0,1068.9,1004.8,1189.0,0.5801,0.4199
+02/09/2026,5v5 Basketball,KA B,SAE A,50,58,918.3,1092.6,886.5,1124.4,0.2683,0.7317
+02/09/2026,5v5 Basketball,Snu 1,Lambda Chi,38,38,1081.7,1105.6,1085.1,1102.1,0.4657,0.5343
+02/09/2026,4v4 Flag Football,Phi Tau,Legion of Goon,12,36,1086.8,1056.6,964.5,1178.8,0.5433,0.4567
+02/09/2026,4v4 Flag Football,BB,Kinetic + Nav,28,38,913.2,875.0,836.7,951.5,0.5548,0.4452
+02/10/2026,4v4 Flag Football,Pike C,Kappa Sigma B,41,21,933.1,948.1,1027.3,853.8,0.4785,0.5215
+02/10/2026,5v5 Basketball,BCM,rz,64,33,1146.8,858.6,1175.6,829.8,0.8401,0.1599
+02/10/2026,5v5 Basketball,:),Bounce Academy,31,51,986.6,1008.4,911.1,1083.8,0.4686,0.5314
+02/10/2026,4v4 Flag Football,SAE A,Sigma Nu,35,28,1089.8,1032.8,1143.3,979.3,0.5813,0.4187
+02/10/2026,4v4 Flag Football,Chi Psi,SigEp A,18,40,847.9,1195.4,824.7,1218.6,0.1192,0.8808
+02/10/2026,5v5 Basketball,kls,Sigma Chi X ADPi,46,48,994.5,981.4,939.8,1036.1,0.5188,0.4812
+02/10/2026,5v5 Basketball,LeSTSL,Qiths,37,50,1022.8,976.8,945.1,1054.5,0.5658,0.4342
+02/10/2026,4v4 Flag Football,Theta XI B,TKE C,50,29,1156.0,871.6,1183.1,844.4,0.8372,0.1628
+02/10/2026,4v4 Flag Football,Sigma Chi A,Theta Chi,52,21,1027.4,822.4,1075.9,774.0,0.765,0.235
+02/10/2026,5v5 Basketball,Rakija Aguardiente,Old Foresters,51,50,1024.8,1091.2,1085.7,1030.3,0.4056,0.5944
+02/10/2026,5v5 Basketball,Ballright,Pike Corec,18,62,825.8,1168.5,796.8,1197.5,0.1221,0.8779
+02/10/2026,4v4 Flag Football,GTSC,AGDU,31,7,1096.3,846.4,1144.2,798.5,0.8082,0.1918
+02/10/2026,4v4 Flag Football,awesome sauce,Vincent Douglas,36,28,1149.5,1096.5,1205.2,1040.8,0.5757,0.4243
+02/10/2026,4v4 Flag Football,Ice Trae,Westhaven,35,13,932.8,821.5,1006.8,747.4,0.6549,0.3451
+02/10/2026,5v5 Basketball,Phi Mu,Alpha Gamma Delta,47,37,1118.6,1153.2,1189.9,1081.9,0.4503,0.5497
+02/10/2026,4v4 Flag Football,Catholic Center,Flustered Falcons,16,15,1190.6,875.0,1205.7,859.9,0.8602,0.1398
+02/10/2026,4v4 Flag Football,Beef Bulgogi,Dippin Dots,33,12,1059.4,1120.8,1186.7,993.5,0.4126,0.5874
+02/10/2026,5v5 Basketball,Pooslingerz,Javale McBuckets,45,66,954.2,1156.7,919.2,1191.7,0.2376,0.7624
+02/10/2026,5v5 Basketball,ADPi,AXiD,31,36,1176.8,879.2,1076.3,979.7,0.8472,0.1528
+02/10/2026,4v4 Flag Football,Punjabi Sungiants,esmadine,33,6,956.0,1020.5,1104.0,872.6,0.4082,0.5918
+02/10/2026,4v4 Flag Football,goyal squad,Legion of Boom,20,28,1121.6,871.8,1007.1,986.2,0.8082,0.1918
+02/10/2026,5v5 Basketball,Nuggets,SAE Kappa,34,65,1152.8,1055.7,1039.4,1169.2,0.6361,0.3639
+02/10/2026,5v5 Basketball,Kinetic + Nav,The Mighty Ducks,39,52,850.4,830.2,778.6,902.0,0.5289,0.4711
+02/10/2026,4v4 Flag Football,Separation,fours,39,40,880.9,1151.7,863.0,1169.6,0.1738,0.8262
+02/10/2026,4v4 Flag Football,grimreapers,E1,32,26,982.8,1014.7,1051.5,946.0,0.4542,0.5458
+02/11/2026,5v5 Basketball,Lebum,Team belt,48,66,1041.3,1142.8,991.4,1192.7,0.3579,0.6421
+02/11/2026,4v4 Flag Football,Team 1,Connector C’s,28,35,1169.4,1125.0,1097.4,1197.0,0.5635,0.4365
+02/11/2026,5v5 Basketball,Om Patel’s honourable team,Big G n 'Em,41,34,1009.8,1020.1,1073.3,956.6,0.4852,0.5148
+02/11/2026,5v5 Basketball,messiah's disciples,Poka,39,41,950.6,835.5,880.5,905.6,0.6598,0.3402
+02/11/2026,4v4 Flag Football,GBC,Phi Sig,42,20,947.6,1000,1056.1,891.5,0.4252,0.5748
+02/11/2026,5v5 Basketball,Sportsball,Delhi Dragons,41,24,861.5,859.4,943.7,777.2,0.503,0.497
+02/11/2026,5v5 Basketball,Dawgs,Dream Team,82,55,1144.5,1049.2,1199.2,994.6,0.6338,0.3662
+02/11/2026,4v4 Flag Football,Pi kapp,Phi delt A,20,55,813.6,1205.0,793.0,1225.6,0.0951,0.9049
+02/11/2026,4v4 Flag Football,TKE F,Pike D,13,35,936.4,1129.8,883.3,1182.8,0.2472,0.7528
+02/11/2026,5v5 Basketball,GTSC,ADPi X SAE,52,70,852.1,1165.0,832.7,1184.4,0.1417,0.8583
+02/11/2026,5v5 Basketball,Fried chicken,Amaputi,45,46,954.8,1130.6,927.4,1158.0,0.2666,0.7334
+02/11/2026,4v4 Flag Football,Western,Bullet Bogs,42,8,957.0,1018.9,1104.1,871.9,0.4119,0.5881
+02/11/2026,4v4 Flag Football,Sack Attack,Fore,27,43,1149.5,1164.0,1074.2,1239.3,0.4792,0.5208
+02/11/2026,5v5 Basketball,Cru hoops,TKE,60,51,1063.6,1071.9,1125.2,1010.4,0.488,0.512
+02/11/2026,5v5 Basketball,Ramblin' Reck Club,sportsball,40,42,879.7,967.6,839.8,1007.5,0.376,0.624
+02/11/2026,4v4 Flag Football,Kush the Grand Gargantuan,Bandits,8,62,787.1,1181.7,763.7,1205.1,0.0935,0.9065
+02/11/2026,4v4 Flag Football,The Induraj Files,TFSJHFFT️️️,35,20,1042.1,819.9,1078.7,783.3,0.7823,0.2177
+02/12/2026,4v4 Flag Football,Theta Xi,Beta A,27,7,1044.5,1175.8,1212.6,1007.7,0.3196,0.6804
+02/12/2026,5v5 Basketball,ASCE,BasketBile,53,26,962.8,791.9,1013.3,741.4,0.7279,0.2721
+02/12/2026,4v4 Flag Football,Phi Kap,ΛΧΑ A,6,56,831.9,836.7,708.6,960.0,0.493,0.507
+02/12/2026,4v4 Flag Football,Sportsball,I am Football,27,8,1065.3,826.6,1112.9,779.0,0.7981,0.2019
+02/12/2026,4v4 Flag Football,Helen Keller Deniers,NFZ,34,36,1162.0,841.6,1069.5,934.1,0.8634,0.1366
+02/12/2026,4v4 Flag Football,Fearsome Foursome,Real Eating Club,19,13,1032.6,1072.0,1114.3,990.3,0.4436,0.5564
+02/12/2026,5v5 Basketball,Phi Sig,Phi delt A,57,47,828.4,1133.5,934.2,1027.7,0.1473,0.8527
+02/12/2026,4v4 Flag Football,Western,7/11 Squad,12,20,1104.1,902.1,980.3,1025.9,0.7618,0.2382
+02/12/2026,4v4 Flag Football,netagive aura,Circle Squad,27,40,1055.0,977.7,964.5,1068.2,0.6094,0.3906
+02/12/2026,4v4 Flag Football,Canadian Bald Eagles,The Mighty Geese,26,19,864.5,1037.9,966.0,936.4,0.2693,0.7307
+02/12/2026,5v5 Basketball,Theta XI,ATO A,61,37,1147.4,1030.4,1201.8,975.9,0.6623,0.3377
+02/12/2026,5v5 Basketball,TKE B,Delta Chi,42,49,830.5,893.0,781.5,942.0,0.4111,0.5889
+02/12/2026,4v4 Flag Football,AAA,Moe's Monday,6,34,826.2,1164.5,795.0,1195.7,0.1248,0.8752
+02/12/2026,4v4 Flag Football,Club Tennis,Gentry’s Generous Team,27,33,957.1,1149.7,926.1,1180.7,0.2481,0.7519
+02/12/2026,5v5 Basketball,Mouse in the Palace,WAHO,34,37,1097.4,868.3,1010.1,955.6,0.7889,0.2111
+02/12/2026,4v4 Flag Football,Alpha Sig,Mighty Mallards,52,12,1083.2,959.2,1165.4,877.0,0.6712,0.3288
+02/12/2026,4v4 Flag Football,Milk Squad 6,KYM,28,25,1061.0,892.8,1092.4,861.4,0.7247,0.2753
+02/12/2026,5v5 Basketball,AFC,Theta Buckets B,33,30,959.3,849.7,998.2,810.9,0.6526,0.3474
+02/12/2026,5v5 Basketball,Bench Warmers,Wet banana,64,33,1208.6,1016.6,1253.4,971.9,0.7513,0.2487
+02/12/2026,4v4 Flag Football,Suhas Kumar,The Mighty Ducks,19,52,1012.5,1216.4,961.4,1267.4,0.2362,0.7638
+02/12/2026,4v4 Flag Football,falcons regen,Palantir Interns,35,25,851.6,923.5,936.9,838.2,0.398,0.602
+02/13/2026,Cornhole,sheriffs,TKE A,0,2,943.8,1080.2,912.5,1111.5,0.3132,0.6868
+02/13/2026,Cornhole,ATO A,Cornballs,0,2,1000,1012.9,951.9,1061.0,0.4815,0.5185
+02/13/2026,Cornhole,Cornelius Hole-ington,Dubois,2,0,950.0,950.0,1000.0,900.0,0.5,0.5
+02/13/2026,Cornhole,Corn Jawn,Beta,1,2,1050.0,962.9,996.0,1016.8,0.6228,0.3772
+02/13/2026,Cornhole,Green Giant,Cornballers,1,2,1001.0,1000.0,957.5,1043.5,0.5014,0.4986
+02/13/2026,Cornhole,SPAM MUSUBI,pnWs,1,2,913.1,905.7,868.9,950.0,0.5107,0.4893
+02/13/2026,Cornhole,In Corn We Trust,Eternal Sunshine,0,2,1081.2,1100.0,1033.9,1147.3,0.473,0.527
+02/13/2026,6v6 Dodgeball,Dodgers,Back in Blood,2,3,1000,952.0,950.9,1001.1,0.5686,0.4314
+02/13/2026,6v6 Dodgeball,Sporting Chamblee,Y*sha,3,1,1000,1000,1048.0,952.0,0.5,0.5
+02/13/2026,6v6 Dodgeball,goblin gang,Separation,0,3,1048.0,1048.0,992.0,1104.0,0.5,0.5
+02/15/2026,5v5 Basketball,Kappa Sigma A,Sigma Chi A,44,58,932.1,1000,877.9,1054.2,0.4036,0.5964
+02/15/2026,5v5 Basketball,Sigma Chi 25,Pike A,31,101,1000,1086.1,911.9,1174.1,0.3786,0.6214
+02/15/2026,5v5 Basketball,AEPi,Beta A,56,87,913.9,1067.9,868.9,1112.9,0.2919,0.7081
+02/15/2026,5v5 Basketball,Run It Back,North Avenue Trade School,53,43,1124.3,1104.1,1183.7,1044.7,0.529,0.471
+02/15/2026,5v5 Basketball,Ocee Gang,SAE Mu,36,68,895.9,1083.2,851.0,1128.1,0.2538,0.7462
+02/15/2026,5v5 Basketball,Theta Thunder,The Milkmen,38,65,916.8,947.1,841.2,1022.7,0.4565,0.5435
+02/15/2026,5v5 Basketball,-10000 Moneyline,Tune Squad,58,55,1000,1051.7,1061.2,990.5,0.4262,0.5738
+02/15/2026,5v5 Basketball,Run It Back,Tribeck,57,30,1183.7,1000,1229.4,954.2,0.7422,0.2578
+02/15/2026,5v5 Basketball,BALLZY Raptors,Blacklung,56,34,1106.4,1066.9,1177.8,995.5,0.5566,0.4434
+02/15/2026,5v5 Basketball,Beta P,SAE Xi,26,31,933.1,940.8,873.5,1000.4,0.4889,0.5111
+02/15/2026,5v5 Basketball,Theta Buckets A,Theta Buckets C,28,25,1059.2,893.6,1091.0,861.8,0.7218,0.2782
+02/16/2026,5v5 Basketball,Phi Kappa Theta,SigEp B,12,51,966.0,1137.3,898.0,1205.2,0.2717,0.7283
+02/16/2026,5v5 Basketball,Sigma Nu B,Phi Tau,49,39,1015.1,974.2,1071.8,917.6,0.5585,0.4415
+02/16/2026,5v5 Basketball,Ballers,C Men,47,35,998.0,985.3,1063.8,919.5,0.5183,0.4817
+02/16/2026,5v5 Basketball,All day all night,The Water Boys,47,75,867.1,1111.2,836.1,1142.2,0.197,0.803
+02/16/2026,5v5 Basketball,Seirin,Fiji B,80,48,1129.0,951.7,1172.1,908.7,0.7351,0.2649
+02/16/2026,5v5 Basketball,2026 Montverde,Magic City Ballers,37,54,888.5,882.1,813.8,956.8,0.5092,0.4908
+02/16/2026,5v5 Basketball,Alpha Sig,KA B,14,47,854.0,886.5,747.3,993.1,0.4534,0.5466
+02/16/2026,5v5 Basketball,Old Foresters,Mekhi Carter Elite,76,85,1030.3,1062.4,978.6,1114.2,0.4539,0.5461
+02/16/2026,5v5 Basketball,Snu 1,Theta Chi,38,22,1085.1,947.9,1137.2,895.9,0.6878,0.3122
+02/16/2026,5v5 Basketball,Lambda Chi,SAE A,54,77,1102.1,1124.4,1034.8,1191.7,0.4681,0.5319
+02/16/2026,4v4 Flag Football,Punt Intended,Circle Squad,28,20,977.9,1068.2,1066.7,979.4,0.3729,0.6271
+02/16/2026,4v4 Flag Football,awesome sauce,Vincent Douglas,41,13,1205.2,1040.8,1269.4,976.6,0.7203,0.2797
+02/16/2026,4v4 Flag Football,AGDU,ASCE,28,6,798.5,846.9,940.8,704.6,0.4307,0.5693
+02/16/2026,4v4 Flag Football,Kappa Sigma B,Chi Psi,33,18,853.8,824.7,933.3,745.2,0.5419,0.4581
+02/16/2026,4v4 Flag Football,Phi Kap,Sigma Nu,12,32,708.6,979.3,671.5,1016.5,0.1739,0.8261
+02/16/2026,4v4 Flag Football,Sack Attack,Beef Bulgogi,19,40,1074.2,1186.7,1009.3,1251.6,0.3436,0.6564
+02/16/2026,4v4 Flag Football,Willage Warriors,SAE Mukund,41,39,1052.7,891.5,1082.8,861.4,0.7167,0.2833
+02/16/2026,4v4 Flag Football,Team 1,Catholic Center,30,34,1097.4,1205.7,1057.0,1246.1,0.3489,0.6511
+02/16/2026,4v4 Flag Football,Bojangles,Bandits,6,38,1018.8,1205.1,955.1,1268.8,0.255,0.745
+02/16/2026,4v4 Flag Football,FOG,Tuna Sub,40,42,1004.8,1102.0,966.3,1140.6,0.3637,0.6363
+02/16/2026,4v4 Flag Football,FYSA Flyers,falcons regen,21,32,826.1,936.9,773.5,989.4,0.3457,0.6543
+02/16/2026,4v4 Flag Football,esmadine,Suhas Kumar,6,26,872.6,961.4,778.9,1055.1,0.3749,0.6251
+02/16/2026,4v4 Flag Football,Phi Tau,NFZ,20,28,964.5,934.1,887.5,1011.1,0.5437,0.4563
+02/16/2026,4v4 Flag Football,Mighty Mallards,Milk Squad 6,41,54,877.0,1092.4,846.9,1122.5,0.2244,0.7756
+02/16/2026,4v4 Flag Football,Moe's Monday,Club Tennis,34,28,1195.7,926.1,1217.4,904.4,0.8253,0.1747
+02/17/2026,5v5 Basketball,BCM,:),49,36,1175.6,911.1,1200.3,886.4,0.8209,0.1791
+02/17/2026,5v5 Basketball,LeSTSL,rz,45,62,945.1,829.8,852.9,922.1,0.66,0.34
+02/17/2026,5v5 Basketball,kls,Rakija Aguardiente,36,53,939.8,1085.7,895.3,1130.3,0.3016,0.6984
+02/17/2026,5v5 Basketball,Qiths,Bounce Academy,42,47,1054.5,1083.8,1002.3,1136.0,0.4579,0.5421
+02/17/2026,5v5 Basketball,Ballright,Sigma Chi X ADPi,34,50,796.8,1036.1,767.0,1065.8,0.2014,0.7986
+02/17/2026,5v5 Basketball,Pike Corec,Old Foresters,64,34,1197.5,978.6,1236.5,939.6,0.779,0.221
+02/17/2026,5v5 Basketball,ADPi,Alpha Gamma Delta,29,39,1076.3,1081.9,1009.0,1149.2,0.4919,0.5081
+02/17/2026,5v5 Basketball,Pooslingerz,Kinetic + Nav,85,55,919.2,778.6,966.5,731.3,0.692,0.308
+02/17/2026,5v5 Basketball,AXiD,Alpha Phi,40,12,979.7,826.4,1048.4,757.8,0.7073,0.2927
+02/17/2026,5v5 Basketball,Nuggets,Javale McBuckets,51,46,1039.4,1191.7,1119.1,1112.0,0.2938,0.7062
+02/17/2026,5v5 Basketball,SAE Kappa,The Mighty Ducks,51,20,1169.2,902.0,1206.1,865.0,0.8231,0.1769
+02/17/2026,4v4 Flag Football,SigEp A,TKE F,46,26,1218.6,883.3,1240.1,861.8,0.8732,0.1268
+02/17/2026,4v4 Flag Football,ΛΧΑ A,Delta Chi,32,27,960.0,1043.1,1034.8,968.3,0.3826,0.6174
+02/17/2026,4v4 Flag Football,Theta XI B,Phi Sig,47,29,1183.1,891.5,1208.1,866.5,0.8427,0.1573
+02/17/2026,4v4 Flag Football,SAE A,Kappa Sigma B,34,32,1143.3,933.3,1168.0,908.6,0.7701,0.2299
+02/17/2026,4v4 Flag Football,Sigma Chi A,Pike C,47,27,1075.9,1027.3,1148.0,955.2,0.5695,0.4305
+02/17/2026,4v4 Flag Football,Phi delt A,Sigma Nu,34,13,1225.6,1016.5,1274.5,967.6,0.7692,0.2308
+02/17/2026,4v4 Flag Football,Delta Upsilon,AEPi,6,25,1075.6,974.6,915.2,1134.9,0.6413,0.3587
+02/17/2026,4v4 Flag Football,7/11 Squad,Punt Intended,19,13,1025.9,1066.7,1107.9,984.7,0.4415,0.5585
+02/17/2026,4v4 Flag Football,Survivor Georgia Tech,TKE,0,21,824.8,1073.7,776.7,1121.9,0.1927,0.8073
+02/17/2026,4v4 Flag Football,GTSC,Kinetic + Nav,41,20,1144.2,951.5,1190.4,905.4,0.752,0.248
+02/17/2026,4v4 Flag Football,Western,KYM,28,30,980.3,861.4,908.1,933.6,0.6647,0.3353
+02/17/2026,4v4 Flag Football,Sportsball,E1,41,24,1112.9,946.0,1158.7,900.3,0.7232,0.2768
+02/17/2026,4v4 Flag Football,grimreapers,The Mighty Geese,36,26,1051.5,936.4,1099.2,888.7,0.6598,0.3402
+02/17/2026,4v4 Flag Football,Legion of Boom,Canadian Bald Eagles,39,30,986.2,966.0,1048.7,903.5,0.5291,0.4709
+02/18/2026,5v5 Basketball,Lebum,Om Patel’s honourable team,59,42,991.4,1073.3,1078.9,985.8,0.3843,0.6157
+02/18/2026,5v5 Basketball,messiah's disciples,Team belt,29,70,880.5,1192.7,851.5,1221.7,0.1421,0.8579
+02/18/2026,5v5 Basketball,Poka,Big G n 'Em,41,37,905.6,956.6,970.2,891.9,0.4272,0.5728
+02/18/2026,5v5 Basketball,Sportsball,Dawgs,32,68,943.7,1199.2,908.2,1234.7,0.1868,0.8132
+02/18/2026,5v5 Basketball,Fried chicken,Delhi Dragons,50,24,927.4,777.2,983.1,721.5,0.7036,0.2964
+02/18/2026,5v5 Basketball,GTSC,Ramblin' Reck Club,52,42,832.7,839.8,897.3,775.2,0.4898,0.5102
+02/18/2026,5v5 Basketball,Amaputi,Dream Team,58,50,1158.0,994.6,1191.2,961.3,0.7192,0.2808
+02/18/2026,5v5 Basketball,TKE,ADPi X SAE,47,77,1010.4,1184.4,967.3,1227.5,0.2686,0.7314
+02/18/2026,5v5 Basketball,sportsball,Cru hoops,51,60,1007.5,1125.2,967.0,1165.7,0.3369,0.6631
+02/18/2026,4v4 Flag Football,goyal squad,Bullet Bogs,35,34,1007.1,871.9,1039.7,839.3,0.6853,0.3147
+02/18/2026,4v4 Flag Football,Gentry’s Generous Team,The Big Gs,40,6,1180.7,967.8,1237.5,911.1,0.7731,0.2269
+02/18/2026,4v4 Flag Football,Dippin Dots,Fearsome Foursome,20,19,993.5,1114.3,1064.5,1043.3,0.3328,0.6672
+02/18/2026,4v4 Flag Football,Connector C’s,Willage Warriors,44,22,1197.0,1082.8,1259.6,1020.3,0.6586,0.3414
+02/18/2026,4v4 Flag Football,Theta XI B,ΛΧΑ A,35,34,1208.1,1034.8,1236.0,1006.9,0.7306,0.2694
+02/18/2026,4v4 Flag Football,SAE A,SigEp A,44,25,1168.0,1240.1,1269.7,1138.4,0.3978,0.6022
+02/18/2026,4v4 Flag Football,GBC,AEPi,53,26,1056.1,1134.9,1169.5,1021.5,0.3885,0.6115
+02/18/2026,4v4 Flag Football,Theta Xi,Pike D,15,34,1212.6,1182.8,1105.7,1289.7,0.5427,0.4573
+02/18/2026,4v4 Flag Football,Legion of Goon,Catholic Center,28,42,1178.8,1246.1,1118.2,1306.7,0.4044,0.5956
+02/18/2026,4v4 Flag Football,Ice Trae,Bandits,0,36,1006.8,1268.8,961.5,1314.1,0.1812,0.8188
+02/18/2026,4v4 Flag Football,Punjabi Sungiants,Tuna Sub,22,49,1104.0,1140.6,1016.7,1227.9,0.4474,0.5526
+02/18/2026,4v4 Flag Football,KP and them,falcons regen,50,24,1211.4,989.4,1252.3,948.4,0.7821,0.2179
+02/18/2026,4v4 Flag Football,Fore,Suhas Kumar,19,21,1239.3,1055.1,1155.7,1138.7,0.7427,0.2573
+02/18/2026,4v4 Flag Football,The Induraj Files,NFZ,32,15,1078.7,1011.1,1155.6,934.2,0.596,0.404
+02/18/2026,4v4 Flag Football,The Mighty Ducks,Milk Squad 6,50,35,1267.4,1122.5,1311.1,1078.9,0.6972,0.3028
+02/18/2026,4v4 Flag Football,Alpha Sig,Moe's Monday,19,14,1165.4,1217.4,1244.6,1138.2,0.4256,0.5744
+02/19/2026,5v5 Basketball,D1 Poosapati,ASCE,52,44,1023.1,1013.3,1081.8,954.6,0.5141,0.4859
+02/19/2026,5v5 Basketball,LEBRONNNNN,Feminists Elites,36,36,1084.4,1145.1,1093.0,1136.5,0.4134,0.5866
+02/19/2026,5v5 Basketball,Pike B,Beta B,30,38,916.5,986.2,864.6,1038.1,0.401,0.599
+02/19/2026,5v5 Basketball,Phi Sig,FIJI A,24,69,934.2,1024.6,851.8,1107.0,0.3727,0.6273
+02/19/2026,5v5 Basketball,Phi delt A,SigEp A,62,81,1027.7,1110.8,976.7,1161.8,0.3826,0.6174
+02/19/2026,5v5 Basketball,Pi kapp,ATO A,38,34,1109.0,975.9,1145.1,939.8,0.6826,0.3174
+02/19/2026,5v5 Basketball,TKE A,Delta Chi,44,51,989.7,942.0,922.4,1009.3,0.5683,0.4317
+02/19/2026,5v5 Basketball,Mouse in the Palace,AFC,57,40,1010.1,998.2,1079.6,928.7,0.5172,0.4828
+02/19/2026,5v5 Basketball,Wet banana,Theta Buckets B,50,39,971.9,810.9,1009.0,773.8,0.7164,0.2836
+02/19/2026,5v5 Basketball,Bench Warmers,WAHO,43,35,1253.4,955.6,1272.6,936.4,0.8474,0.1526
+02/19/2026,4v4 Flag Football,Theta thunder,Sportsball,27,28,1189.0,1158.7,1132.2,1215.5,0.5436,0.4564
+02/19/2026,4v4 Flag Football,Sigep PC,KYM,60,0,1159.5,933.6,1213.0,880.1,0.7859,0.2141
+02/19/2026,4v4 Flag Football,PG3 Warriors,awesome sauce,18,39,1101.5,1269.4,1048.6,1322.4,0.2756,0.7244
+02/19/2026,4v4 Flag Football,GTSC,AGDU,27,21,1190.4,940.8,1215.6,915.6,0.8079,0.1921
+02/19/2026,4v4 Flag Football,fours,grimreapers,41,26,1169.6,1099.2,1232.0,1036.8,0.5999,0.4001
+02/19/2026,4v4 Flag Football,Helen Keller Deniers,Legion of Boom,18,35,1069.5,1048.7,974.0,1144.2,0.5298,0.4702
+02/19/2026,4v4 Flag Football,Gentry’s Generous Team,Dippin Dots,47,27,1237.5,1064.5,1282.7,1019.3,0.7302,0.2698
+02/19/2026,4v4 Flag Football,GTSC,Beef Bulgogi,6,26,1215.6,1251.6,1103.5,1363.7,0.4484,0.5516
+02/19/2026,4v4 Flag Football,GripFource,goyal squad,19,33,1075.0,1039.7,982.9,1131.8,0.5506,0.4494
+02/19/2026,4v4 Flag Football,Beef Bulgogi,Gentry’s Generous Team,34,25,1363.7,1282.7,1416.9,1229.4,0.6145,0.3855
+02/19/2026,4v4 Flag Football,Connector C’s,Catholic Center,28,29,1259.6,1306.7,1214.4,1351.9,0.4326,0.5674
+02/19/2026,4v4 Flag Football,Bandits,Tuna Sub,32,27,1314.1,1227.9,1360.0,1182.0,0.6216,0.3784
+02/19/2026,4v4 Flag Football,Sigep PC,fours,33,26,1213.0,1232.0,1281.4,1163.7,0.4727,0.5273
+02/19/2026,4v4 Flag Football,The Induraj Files,The Mighty Ducks,21,49,1155.6,1311.1,1097.6,1369.1,0.2901,0.7099
+02/19/2026,4v4 Flag Football,Legion of Boom,goyal squad,14,27,1144.2,1131.8,1051.3,1224.6,0.5178,0.4822
+02/19/2026,4v4 Flag Football,KP and them,Suhas Kumar,32,19,1252.3,1138.7,1308.3,1082.7,0.6579,0.3421
+02/20/2026,Cornhole,Cornballs,Bandits,0,2,1061.0,1092.9,1015.6,1138.3,0.4543,0.5457
+02/20/2026,Cornhole,Corn Jawn,TKE F,1,2,996.0,1087.1,963.8,1119.4,0.3718,0.6282
+02/20/2026,6v6 Dodgeball,Qiths,GTSC,2,3,952.0,1000,914.7,1037.3,0.4314,0.5686
+02/20/2026,Cornhole,Green Giant,SPAM MUSUBI,2,0,957.5,868.9,995.0,831.3,0.6249,0.3751
+02/20/2026,6v6 Dodgeball,goblin gang,Back in Blood,3,2,992.0,1001.1,1036.3,956.8,0.4869,0.5131

@@ -1,0 +1,4741 @@
+[
+  {
+    "date": "1/23/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Away",
+    "home_team": "Home",
+    "score": "02:30 PM"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "AEPi",
+    "home_team": "Kappa Sigma A",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Chi 25",
+    "home_team": "Beta A",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Chi A",
+    "home_team": "Pike A",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Thunder",
+    "home_team": "Run It Back",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Ocee Gang",
+    "home_team": "The Milkmen",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "North Avenue Trade School",
+    "home_team": "SAE Mu",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Run It Back",
+    "home_team": "-10000 Moneyline",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "We are good at this!",
+    "home_team": "Tribeck",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ATO",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Omegamind",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigma Nu",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Gooners",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigma Chi",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "The Mighty Ducks",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Tune Squad",
+    "home_team": "LinkedIn",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Buckets A",
+    "home_team": "BALLZY Raptors",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "BCM",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Internationals United FC",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Noble's Cake FC",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beta P",
+    "home_team": "Theta Buckets C",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Blacklung",
+    "home_team": "SAE Xi",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Freaks",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Niru D-Omega",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/25/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "SAE Omega",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Catholic Center",
+    "home_team": "TKE",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "PG3 Warriors",
+    "home_team": "ASCE",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Nu B",
+    "home_team": "Kappa Sigma B",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi Kappa Theta",
+    "home_team": "Phi Tau",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "bcm girliessss",
+    "home_team": "GTSC",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Delta Upsilon",
+    "home_team": "SigEp B",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Golden Tribe Warriors",
+    "home_team": "Ballers",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "no fly zone",
+    "home_team": "Phi Mu",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kappa Alpha Theta",
+    "home_team": "ruf gals",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "All day all night",
+    "home_team": "Beef Bulgogi",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "C Men",
+    "home_team": "The Water Boys",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sigep PC",
+    "home_team": "Qiths",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "1st Round Hopefuls",
+    "home_team": "KP and them",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Big Gs",
+    "home_team": "Bojangles",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "BCM",
+    "home_team": "Willage Warriors",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Old Foresters",
+    "home_team": "Seirin",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "2026 Montverde",
+    "home_team": "Mekhi Carter Elite",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "GripFource",
+    "home_team": "Tuna Sub",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Haynes “Haynes King” King",
+    "home_team": "SAE Mukund",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Lambda Chi",
+    "home_team": "Alpha Sig",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Fiji B",
+    "home_team": "Magic City Ballers",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Legion of Goon",
+    "home_team": "GTSC",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kinetic + Nav",
+    "home_team": "Theta thunder",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Snu 1",
+    "home_team": "SAE A",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "KA B",
+    "home_team": "Theta Chi",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "BB",
+    "home_team": "Team McGee",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/26/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi Tau",
+    "home_team": "FOG",
+    "score": "Cancelled"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "SigEp A",
+    "home_team": "Pike C",
+    "score": "32 - 42"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Chi Psi",
+    "home_team": "FIJI A",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Qiths",
+    "home_team": "BCM",
+    "score": "73 - 47"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "LeSTSL",
+    "home_team": "Bounce Academy",
+    "score": "49 - 31"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Theta Chi",
+    "home_team": "SAE A",
+    "score": "35 - 34"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Delta Upsilon",
+    "home_team": "Kappa Sigma B",
+    "score": "20 - 13"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Rakija Aguardiente",
+    "home_team": "Sigma Chi X ADPi",
+    "score": "50 - 48"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": ":)",
+    "home_team": "rz",
+    "score": "21 - 39"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sigma Chi A",
+    "home_team": "TKE C",
+    "score": "23 - 45"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Theta XI B",
+    "home_team": "Sigma Nu",
+    "score": "21 - 43"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Ballright",
+    "home_team": "Old Foresters",
+    "score": "44 - 20"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Pike Corec",
+    "home_team": "kls",
+    "score": "32 - 71"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "awesome sauce",
+    "home_team": "GTSC",
+    "score": "20 - 32"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "GTNROTC",
+    "home_team": "AGDU",
+    "score": "7 - 12"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Dippin Dots",
+    "home_team": "Ice Trae",
+    "score": "25 - 33"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "AXiD",
+    "home_team": "Phi Mu",
+    "score": "29 - 21"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "ADPi",
+    "home_team": "Alpha Phi",
+    "score": "10 - 44"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Beef Bulgogi",
+    "home_team": "Flustered Falcons",
+    "score": "8 - 34"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Catholic Center",
+    "home_team": "Westhaven",
+    "score": "0 - 48"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE Kappa",
+    "home_team": "Pooslingerz",
+    "score": "13 - 40"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Kappa Alpha Theta",
+    "home_team": "Alpha Gamma Delta",
+    "score": "44 - 18"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "fours",
+    "home_team": "Punjabi Sungiants",
+    "score": "14 - 34"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "E1",
+    "home_team": "Legion of Boom",
+    "score": "13 - 18"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Nuggets",
+    "home_team": "The Mighty Ducks",
+    "score": "19 - 46"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Kinetic + Nav",
+    "home_team": "Javale McBuckets",
+    "score": "57 - 25"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "grimreapers",
+    "home_team": "esmadine",
+    "score": "18 - 13"
+  },
+  {
+    "date": "1/27/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Separation",
+    "home_team": "goyal squad",
+    "score": "35 - 27"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Zeta Tau Alpha",
+    "home_team": "Wreck",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "veli",
+    "home_team": "bhiwa",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Poka",
+    "home_team": "Lebum",
+    "score": "61 - 17"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Alpha Chi Omega",
+    "home_team": "Las Nenas",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "FYSA Flyers",
+    "home_team": "Connector C’s",
+    "score": "31 - 0"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Team 1",
+    "home_team": "1738",
+    "score": "12 - 43"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "messiah's disciples",
+    "home_team": "Big G n 'Em",
+    "score": "38 - 44"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Om Patel’s honourable team",
+    "home_team": "Team belt",
+    "score": "73 - 32"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "GBC",
+    "home_team": "Pike A",
+    "score": "27 - 26"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "MIS Club",
+    "home_team": "Phi Sig",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Pike D",
+    "home_team": "AEPi",
+    "score": "14 - 13"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Amaputi",
+    "home_team": "Sportsball",
+    "score": "24 - 46"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Fried chicken",
+    "home_team": "Dream Team",
+    "score": "52 - 52"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TKE F",
+    "home_team": "Phi delt A",
+    "score": "26 - 6"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Pi kapp",
+    "home_team": "ATO",
+    "score": "38 - 0"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "sportsball",
+    "home_team": "GTSC",
+    "score": "21 - 32"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Dawgs",
+    "home_team": "Delhi Dragons",
+    "score": "33 - 76"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Bandits",
+    "home_team": "Western",
+    "score": "12 - 47"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TFSJHFFT️️️",
+    "home_team": "Fore",
+    "score": "39 - 6"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Ramblin' Reck Club",
+    "home_team": "TKE",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Cru hoops",
+    "home_team": "ADPi X SAE",
+    "score": "49 - 44"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Induraj Files",
+    "home_team": "Bullet Bogs",
+    "score": "20 - 13"
+  },
+  {
+    "date": "1/28/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kush the Grand Gargantuan",
+    "home_team": "Sack Attack",
+    "score": "42 - 20"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "ΛΧΑ A",
+    "home_team": "Theta Xi",
+    "score": "42 - 14"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi Kap",
+    "home_team": "Kappa Sigma A",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Catholic Center",
+    "home_team": "D1 Poosapati",
+    "score": "39 - 62"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "LEBRONNNNN",
+    "home_team": "BasketBile",
+    "score": "26 - 69"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Delta Chi",
+    "home_team": "Beta A",
+    "score": "27 - 0"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Real Eating Club",
+    "home_team": "Sportsball",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "ASCE",
+    "home_team": "Feminists Elites",
+    "score": "50 - 43"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi delt A",
+    "home_team": "Pike B",
+    "score": "41 - 71"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Fearsome Foursome",
+    "home_team": "NFZ",
+    "score": "19 - 39"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Helen Keller Deniers",
+    "home_team": "I am Football",
+    "score": "15 - 36"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi Sig",
+    "home_team": "SigEp A",
+    "score": "55 - 19"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beta B",
+    "home_team": "FIJI A",
+    "score": "70 - 47"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Circle Squad",
+    "home_team": "Western",
+    "score": "25 - 13"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "netagive aura",
+    "home_team": "Ramblin' Reck Club",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "D1 Poosapati",
+    "home_team": "7/11 Squad",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Gentry’s Generous Team",
+    "home_team": "Canadian Bald Eagles",
+    "score": "40 - 49"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "TKE A",
+    "home_team": "Theta XI",
+    "score": "71 - 33"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Pi kapp",
+    "home_team": "Delta Chi",
+    "score": "45 - 49"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Club Tennis",
+    "home_team": "Moe's Monday",
+    "score": "28 - 14"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "AAA",
+    "home_team": "The Mighty Geese",
+    "score": "27 - 6"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "TKE B",
+    "home_team": "ATO A",
+    "score": "58 - 18"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Wet banana",
+    "home_team": "Mouse in the Palace",
+    "score": "54 - 50"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Mighty Ducks",
+    "home_team": "Alpha Sig",
+    "score": "14 - 33"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Palantir Interns",
+    "home_team": "KYM",
+    "score": "20 - 13"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Bench Warmers",
+    "home_team": "Theta Buckets B",
+    "score": "21 - 57"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "AFC",
+    "home_team": "WAHO",
+    "score": "28 - 33"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "falcons regen",
+    "home_team": "Mighty Mallards",
+    "score": "21 - 14"
+  },
+  {
+    "date": "1/29/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Suhas Kumar",
+    "home_team": "Milk Squad 6",
+    "score": "31 - 26"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Bandits",
+    "home_team": "SAE A",
+    "score": "0 - 2"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Cornballs",
+    "home_team": "TKE A",
+    "score": "2 - 1"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "ATO A",
+    "home_team": "Pookie and Snookems",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Kappa Sigma",
+    "home_team": "sheriffs",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ASCE",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ORGT",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigep A",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Beta",
+    "home_team": "LXA",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Corn Jawn",
+    "home_team": "Dubois",
+    "score": "0 - 2"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Cornelius Hole-ington",
+    "home_team": "TKE F",
+    "score": "2 - 0"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Shiraz",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Spanish Mafia",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Sigma Nu A",
+    "home_team": "Ethel St.",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "KA A aka KA",
+    "home_team": "yo",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Shuck Norris",
+    "home_team": "Theta Chi A",
+    "score": "1 - 2"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Eternal Sunshine",
+    "home_team": "Green Giant",
+    "score": "0 - 2"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "The Best",
+    "home_team": "pnWs",
+    "score": "1 - 2"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "KornS",
+    "home_team": "Cornballers",
+    "score": "1 - 0"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "In Corn We Trust",
+    "home_team": "SPAM MUSUBI",
+    "score": "0 - 1"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ABCDE FC",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "AGD and friends",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Jammy",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Phi Mu #1",
+    "home_team": "duh bobbb",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "SigEp A Team",
+    "home_team": "vatic pros",
+    "score": "0 - 2"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "Cornpan",
+    "home_team": "Chi Psi",
+    "score": "2 - 1"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Cornhole",
+    "away_team": "vk",
+    "home_team": "Donovan Daniels",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "AEPi",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Big Ballers",
+    "score": "FINAL"
+  },
+  {
+    "date": "1/30/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Western",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beta A",
+    "home_team": "Kappa Sigma A",
+    "score": "42 - 56"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "AEPi",
+    "home_team": "Pike A",
+    "score": "67 - 37"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Chi 25",
+    "home_team": "Sigma Chi A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "The Milkmen",
+    "home_team": "Run It Back",
+    "score": "44 - 42"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Thunder",
+    "home_team": "SAE Mu",
+    "score": "50 - 29"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Ocee Gang",
+    "home_team": "North Avenue Trade School",
+    "score": "96 - 38"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Tribeck",
+    "home_team": "-10000 Moneyline",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Run It Back",
+    "home_team": "LinkedIn",
+    "score": "28 - 49"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ATO",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Gooners",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Omegamind",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigma Chi",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigma Nu",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "The Mighty Ducks",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "We are good at this!",
+    "home_team": "Tune Squad",
+    "score": "38 - 37"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Buckets C",
+    "home_team": "BALLZY Raptors",
+    "score": "82 - 31"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "BCM",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Freaks",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Internationals United FC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Buckets A",
+    "home_team": "SAE Xi",
+    "score": "44 - 51"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beta P",
+    "home_team": "Blacklung",
+    "score": "42 - 32"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Niru D-Omega",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Noble's Cake FC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "SAE Omega",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Punt Intended",
+    "home_team": "TKE",
+    "score": "13 - 21"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Catholic Center",
+    "home_team": "ASCE",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi Tau",
+    "home_team": "Kappa Sigma B",
+    "score": "32 - 41"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Nu B",
+    "home_team": "SigEp B",
+    "score": "57 - 39"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi Mu",
+    "home_team": "GTSC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi Kappa Theta",
+    "home_team": "Delta Upsilon",
+    "score": "27 - 29"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beef Bulgogi",
+    "home_team": "Ballers",
+    "score": "50 - 46"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "bcm girliessss",
+    "home_team": "ruf gals",
+    "score": "0 - 48"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "no fly zone",
+    "home_team": "Kappa Alpha Theta",
+    "score": "6 - 6"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Golden Tribe Warriors",
+    "home_team": "The Water Boys",
+    "score": "48 - 45"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "All day all night",
+    "home_team": "C Men",
+    "score": "50 - 46"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "KP and them",
+    "home_team": "Qiths",
+    "score": "22 - 44"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sigep PC",
+    "home_team": "Bojangles",
+    "score": "18 - 38"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "1st Round Hopefuls",
+    "home_team": "The Big Gs",
+    "score": "26 - 14"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Tuna Sub",
+    "home_team": "Willage Warriors",
+    "score": "31 - 34"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Mekhi Carter Elite",
+    "home_team": "Seirin",
+    "score": "62 - 59"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Old Foresters",
+    "home_team": "Magic City Ballers",
+    "score": "31 - 35"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "BCM",
+    "home_team": "SAE Mukund",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "GripFource",
+    "home_team": "Haynes “Haynes King” King",
+    "score": "14 - 21"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE A",
+    "home_team": "Alpha Sig",
+    "score": "31 - 63"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "2026 Montverde",
+    "home_team": "Fiji B",
+    "score": "33 - 25"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Theta thunder",
+    "home_team": "GTSC",
+    "score": "19 - 36"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Legion of Goon",
+    "home_team": "Team McGee",
+    "score": "18 - 20"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Lambda Chi",
+    "home_team": "Theta Chi",
+    "score": "25 - 65"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Snu 1",
+    "home_team": "KA B",
+    "score": "25 - 42"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kinetic + Nav",
+    "home_team": "FOG",
+    "score": "46 - 6"
+  },
+  {
+    "date": "2/2/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "BB",
+    "home_team": "Phi Tau",
+    "score": "33 - 18"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "FIJI A",
+    "home_team": "Pike C",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "SigEp A",
+    "home_team": "Kappa Sigma B",
+    "score": "13 - 65"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Bounce Academy",
+    "home_team": "BCM",
+    "score": "37 - 27"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Qiths",
+    "home_team": "rz",
+    "score": "43 - 47"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TKE C",
+    "home_team": "SAE A",
+    "score": "34 - 28"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Chi Psi",
+    "home_team": "Delta Upsilon",
+    "score": "31 - 6"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Ballright",
+    "home_team": "Rakija Aguardiente",
+    "score": "53 - 28"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "LeSTSL",
+    "home_team": ":)",
+    "score": "29 - 40"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Theta Chi",
+    "home_team": "Sigma Nu",
+    "score": "42 - 14"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sigma Chi A",
+    "home_team": "Theta XI B",
+    "score": "36 - 29"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Pike Corec",
+    "home_team": "Sigma Chi X ADPi",
+    "score": "34 - 57"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Old Foresters",
+    "home_team": "kls",
+    "score": "69 - 61"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Survivor Georgia Tech",
+    "home_team": "GTSC",
+    "score": "25 - 6"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "awesome sauce",
+    "home_team": "AGDU",
+    "score": "6 - 33"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "GTNROTC",
+    "home_team": "Vincent Douglas",
+    "score": "19 - 12"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Flustered Falcons",
+    "home_team": "Ice Trae",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Alpha Phi",
+    "home_team": "Phi Mu",
+    "score": "48 - 21"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "AXiD",
+    "home_team": "Alpha Gamma Delta",
+    "score": "50 - 24"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Dippin Dots",
+    "home_team": "Westhaven",
+    "score": "14 - 38"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Beef Bulgogi",
+    "home_team": "Catholic Center",
+    "score": "27 - 21"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "The Mighty Ducks",
+    "home_team": "Pooslingerz",
+    "score": "45 - 35"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "ADPi",
+    "home_team": "Kappa Alpha Theta",
+    "score": "10 - 37"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Legion of Boom",
+    "home_team": "Punjabi Sungiants",
+    "score": "20 - 19"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "fours",
+    "home_team": "esmadine",
+    "score": "13 - 14"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE Kappa",
+    "home_team": "Javale McBuckets",
+    "score": "47 - 43"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Nuggets",
+    "home_team": "Kinetic + Nav",
+    "score": "19 - 50"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "E1",
+    "home_team": "goyal squad",
+    "score": "27 - 25"
+  },
+  {
+    "date": "2/3/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "grimreapers",
+    "home_team": "Separation",
+    "score": "26 - 27"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Las Nenas",
+    "home_team": "Wreck",
+    "score": "60 - 15"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Connector C’s",
+    "home_team": "bhiwa",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Big G n 'Em",
+    "home_team": "Lebum",
+    "score": "33 - 35"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Zeta Tau Alpha",
+    "home_team": "Alpha Chi Omega",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "veli",
+    "home_team": "1738",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "FYSA Flyers",
+    "home_team": "Team 1",
+    "score": "46 - 6"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Poka",
+    "home_team": "Team belt",
+    "score": "79 - 34"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "messiah's disciples",
+    "home_team": "Om Patel’s honourable team",
+    "score": "26 - 17"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi Sig",
+    "home_team": "Pike A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "GBC",
+    "home_team": "MIS Club",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi delt A",
+    "home_team": "AEPi",
+    "score": "18 - 42"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Dream Team",
+    "home_team": "Sportsball",
+    "score": "52 - 67"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Amaputi",
+    "home_team": "Delhi Dragons",
+    "score": "22 - 37"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Pike D",
+    "home_team": "ATO",
+    "score": "6 - 32"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TKE F",
+    "home_team": "Pi kapp",
+    "score": "35 - 42"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "TKE",
+    "home_team": "GTSC",
+    "score": "37 - 74"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Fried chicken",
+    "home_team": "Dawgs",
+    "score": "60 - 49"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Fore",
+    "home_team": "Western",
+    "score": "22 - 26"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Bandits",
+    "home_team": "Bullet Bogs",
+    "score": "26 - 34"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "sportsball",
+    "home_team": "ADPi X SAE",
+    "score": "54 - 22"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Ramblin' Reck Club",
+    "home_team": "Cru hoops",
+    "score": "70 - 28"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TFSJHFFT️️️",
+    "home_team": "Sack Attack",
+    "score": "42 - 0"
+  },
+  {
+    "date": "2/4/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Induraj Files",
+    "home_team": "Kush the Grand Gargantuan",
+    "score": "0 - 39"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kappa Sigma A",
+    "home_team": "Theta Xi",
+    "score": "34 - 35"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "ΛΧΑ A",
+    "home_team": "Beta A",
+    "score": "26 - 0"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "BasketBile",
+    "home_team": "D1 Poosapati",
+    "score": "46 - 16"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Catholic Center",
+    "home_team": "Feminists Elites",
+    "score": "45 - 27"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi Kap",
+    "home_team": "Delta Chi",
+    "score": "34 - 6"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Real Eating Club",
+    "home_team": "I am Football",
+    "score": "14 - 33"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "LEBRONNNNN",
+    "home_team": "ASCE",
+    "score": "40 - 40"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SigEp A",
+    "home_team": "Pike B",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "NFZ",
+    "home_team": "Sportsball",
+    "score": "34 - 18"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Fearsome Foursome",
+    "home_team": "Helen Keller Deniers",
+    "score": "40 - 33"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi Sig",
+    "home_team": "Beta B",
+    "score": "36 - 27"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi delt A",
+    "home_team": "FIJI A",
+    "score": "48 - 49"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Ramblin' Reck Club",
+    "home_team": "Western",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Circle Squad",
+    "home_team": "7/11 Squad",
+    "score": "13 - 19"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "netagive aura",
+    "home_team": "D1 Poosapati",
+    "score": "12 - 13"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Moe's Monday",
+    "home_team": "Canadian Bald Eagles",
+    "score": "6 - 37"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Delta Chi",
+    "home_team": "Theta XI",
+    "score": "65 - 35"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "TKE A",
+    "home_team": "ATO A",
+    "score": "56 - 61"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Gentry’s Generous Team",
+    "home_team": "The Mighty Geese",
+    "score": "19 - 28"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Club Tennis",
+    "home_team": "AAA",
+    "score": "31 - 33"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Pi kapp",
+    "home_team": "TKE B",
+    "score": "29 - 66"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Buckets B",
+    "home_team": "Mouse in the Palace",
+    "score": "59 - 39"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "KYM",
+    "home_team": "Alpha Sig",
+    "score": "40 - 6"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Mighty Ducks",
+    "home_team": "Mighty Mallards",
+    "score": "7 - 40"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Wet banana",
+    "home_team": "WAHO",
+    "score": "25 - 36"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Bench Warmers",
+    "home_team": "AFC",
+    "score": "27 - 89"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Palantir Interns",
+    "home_team": "Milk Squad 6",
+    "score": "10:15 PM"
+  },
+  {
+    "date": "2/5/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "falcons regen",
+    "home_team": "Suhas Kumar",
+    "score": "20 - 13"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Alpha Sig",
+    "home_team": "Theta Chi A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Beta",
+    "home_team": "FIJI",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "TKE A",
+    "home_team": "SAE A",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "Bandits",
+    "home_team": "Pookie and Snookems",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "Cornballs",
+    "home_team": "sheriffs",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "ATO A",
+    "home_team": "Kappa Sigma",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ORGT",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ASCE",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Pi Kapp",
+    "home_team": "Delta Chi",
+    "score": "1 - 3"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Phi Sig",
+    "home_team": "Phi Tau",
+    "score": "0 - 3"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "Dubois",
+    "home_team": "LXA",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "Beta",
+    "home_team": "TKE F",
+    "score": "2 - 1"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "Corn Jawn",
+    "home_team": "Cornelius Hole-ington",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Shiraz",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigep A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Spanish Mafia",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Pooslingerz",
+    "home_team": "Qiths",
+    "score": "1 - 3"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Half and Half",
+    "home_team": "Catholic Center",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "yo",
+    "home_team": "Ethel St.",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "Sigma Nu A",
+    "home_team": "Theta Chi A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "KA A aka KA",
+    "home_team": "Shuck Norris",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "bhiwa",
+    "home_team": "GTSC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "The Mighty Ducks",
+    "home_team": "Ball Catchers",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "pnWs",
+    "home_team": "Green Giant",
+    "score": "2 - 0"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "Eternal Sunshine",
+    "home_team": "Cornballers",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "The Best",
+    "home_team": "SPAM MUSUBI",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "KornS",
+    "home_team": "In Corn We Trust",
+    "score": "2 - 1"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ABCDE FC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "AEPi",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "AGD and friends",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Y*sha",
+    "home_team": "Dodgers",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Separation",
+    "home_team": "Back in Blood",
+    "score": "1 - 3"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "vatic pros",
+    "home_team": "duh bobbb",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "Phi Mu #1",
+    "home_team": "Chi Psi",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "SigEp A Team",
+    "home_team": "Donovan Daniels",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Cornhole",
+    "away_team": "Cornpan",
+    "home_team": "vk",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Big Ballers",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Jammy",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Western",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Sportsball",
+    "home_team": "Sporting Chamblee",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/6/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Western",
+    "home_team": "goblin gang",
+    "score": "3 - 1"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "ASCE",
+    "home_team": "TKE",
+    "score": "67 - 12"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Punt Intended",
+    "home_team": "PG3 Warriors",
+    "score": "24 - 14"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SigEp B",
+    "home_team": "Kappa Sigma B",
+    "score": "30 - 74"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi Tau",
+    "home_team": "Delta Upsilon",
+    "score": "35 - 26"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "ruf gals",
+    "home_team": "GTSC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Nu B",
+    "home_team": "Phi Kappa Theta",
+    "score": "39 - 50"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "The Water Boys",
+    "home_team": "Ballers",
+    "score": "59 - 66"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi Mu",
+    "home_team": "Kappa Alpha Theta",
+    "score": "0 - 42"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "bcm girliessss",
+    "home_team": "no fly zone",
+    "score": "7 - 32"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beef Bulgogi",
+    "home_team": "C Men",
+    "score": "35 - 37"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Golden Tribe Warriors",
+    "home_team": "All day all night",
+    "score": "26 - 41"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Bojangles",
+    "home_team": "Qiths",
+    "score": "12 - 36"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "KP and them",
+    "home_team": "The Big Gs",
+    "score": "14 - 51"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sigep PC",
+    "home_team": "1st Round Hopefuls",
+    "score": "6 - 64"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "SAE Mukund",
+    "home_team": "Willage Warriors",
+    "score": "29 - 14"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Magic City Ballers",
+    "home_team": "Seirin",
+    "score": "70 - 28"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Mekhi Carter Elite",
+    "home_team": "Fiji B",
+    "score": "47 - 86"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Tuna Sub",
+    "home_team": "Haynes “Haynes King” King",
+    "score": "37 - 53"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "BCM",
+    "home_team": "GripFource",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Chi",
+    "home_team": "Alpha Sig",
+    "score": "40 - 41"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Old Foresters",
+    "home_team": "2026 Montverde",
+    "score": "41 - 52"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Team McGee",
+    "home_team": "GTSC",
+    "score": "39 - 20"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Theta thunder",
+    "home_team": "FOG",
+    "score": "18 - 45"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE A",
+    "home_team": "KA B",
+    "score": "50 - 58"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Lambda Chi",
+    "home_team": "Snu 1",
+    "score": "38 - 38"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Legion of Goon",
+    "home_team": "Phi Tau",
+    "score": "12 - 36"
+  },
+  {
+    "date": "2/9/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kinetic + Nav",
+    "home_team": "BB",
+    "score": "28 - 38"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kappa Sigma B",
+    "home_team": "Pike C",
+    "score": "41 - 21"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "FIJI A",
+    "home_team": "Delta Upsilon",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "rz",
+    "home_team": "BCM",
+    "score": "64 - 33"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Bounce Academy",
+    "home_team": ":)",
+    "score": "31 - 51"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sigma Nu",
+    "home_team": "SAE A",
+    "score": "35 - 28"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "SigEp A",
+    "home_team": "Chi Psi",
+    "score": "18 - 40"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Chi X ADPi",
+    "home_team": "kls",
+    "score": "46 - 48"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Qiths",
+    "home_team": "LeSTSL",
+    "score": "37 - 50"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TKE C",
+    "home_team": "Theta XI B",
+    "score": "50 - 29"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Theta Chi",
+    "home_team": "Sigma Chi A",
+    "score": "52 - 21"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Old Foresters",
+    "home_team": "Rakija Aguardiente",
+    "score": "51 - 50"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Pike Corec",
+    "home_team": "Ballright",
+    "score": "18 - 62"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "AGDU",
+    "home_team": "GTSC",
+    "score": "31 - 7"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Survivor Georgia Tech",
+    "home_team": "GTNROTC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Vincent Douglas",
+    "home_team": "awesome sauce",
+    "score": "36 - 28"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Westhaven",
+    "home_team": "Ice Trae",
+    "score": "35 - 13"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Alpha Gamma Delta",
+    "home_team": "Phi Mu",
+    "score": "47 - 37"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Alpha Phi",
+    "home_team": "Kappa Alpha Theta",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Flustered Falcons",
+    "home_team": "Catholic Center",
+    "score": "16 - 15"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Dippin Dots",
+    "home_team": "Beef Bulgogi",
+    "score": "33 - 12"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Javale McBuckets",
+    "home_team": "Pooslingerz",
+    "score": "45 - 66"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "AXiD",
+    "home_team": "ADPi",
+    "score": "31 - 36"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "esmadine",
+    "home_team": "Punjabi Sungiants",
+    "score": "33 - 6"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Legion of Boom",
+    "home_team": "goyal squad",
+    "score": "20 - 28"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE Kappa",
+    "home_team": "Nuggets",
+    "score": "34 - 65"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "The Mighty Ducks",
+    "home_team": "Kinetic + Nav",
+    "score": "39 - 52"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "fours",
+    "home_team": "Separation",
+    "score": "39 - 40"
+  },
+  {
+    "date": "2/10/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "E1",
+    "home_team": "grimreapers",
+    "score": "32 - 26"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Las Nenas",
+    "home_team": "Wreck",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "1738",
+    "home_team": "bhiwa",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Team belt",
+    "home_team": "Lebum",
+    "score": "48 - 66"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Connector C’s",
+    "home_team": "Team 1",
+    "score": "28 - 35"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "veli",
+    "home_team": "FYSA Flyers",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Big G n 'Em",
+    "home_team": "Om Patel’s honourable team",
+    "score": "41 - 34"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Poka",
+    "home_team": "messiah's disciples",
+    "score": "39 - 41"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "MIS Club",
+    "home_team": "Pike A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi Sig",
+    "home_team": "GBC",
+    "score": "42 - 20"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "ATO",
+    "home_team": "AEPi",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Delhi Dragons",
+    "home_team": "Sportsball",
+    "score": "41 - 24"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Dream Team",
+    "home_team": "Dawgs",
+    "score": "82 - 55"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi delt A",
+    "home_team": "Pi kapp",
+    "score": "20 - 55"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Pike D",
+    "home_team": "TKE F",
+    "score": "13 - 35"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "ADPi X SAE",
+    "home_team": "GTSC",
+    "score": "52 - 70"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Amaputi",
+    "home_team": "Fried chicken",
+    "score": "45 - 46"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Bullet Bogs",
+    "home_team": "Western",
+    "score": "42 - 8"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Fore",
+    "home_team": "Sack Attack",
+    "score": "27 - 43"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "TKE",
+    "home_team": "Cru hoops",
+    "score": "60 - 51"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "sportsball",
+    "home_team": "Ramblin' Reck Club",
+    "score": "40 - 42"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Bandits",
+    "home_team": "Kush the Grand Gargantuan",
+    "score": "8 - 62"
+  },
+  {
+    "date": "2/11/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TFSJHFFT️️️",
+    "home_team": "The Induraj Files",
+    "score": "35 - 20"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Beta A",
+    "home_team": "Theta Xi",
+    "score": "27 - 7"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kappa Sigma A",
+    "home_team": "Delta Chi",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Feminists Elites",
+    "home_team": "D1 Poosapati",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "BasketBile",
+    "home_team": "ASCE",
+    "score": "53 - 26"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "ΛΧΑ A",
+    "home_team": "Phi Kap",
+    "score": "6 - 56"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "I am Football",
+    "home_team": "Sportsball",
+    "score": "27 - 8"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Catholic Center",
+    "home_team": "LEBRONNNNN",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "FIJI A",
+    "home_team": "Pike B",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "NFZ",
+    "home_team": "Helen Keller Deniers",
+    "score": "34 - 36"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Real Eating Club",
+    "home_team": "Fearsome Foursome",
+    "score": "19 - 13"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SigEp A",
+    "home_team": "Beta B",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi delt A",
+    "home_team": "Phi Sig",
+    "score": "57 - 47"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "7/11 Squad",
+    "home_team": "Western",
+    "score": "12 - 20"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Ramblin' Reck Club",
+    "home_team": "D1 Poosapati",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Circle Squad",
+    "home_team": "netagive aura",
+    "score": "27 - 40"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Mighty Geese",
+    "home_team": "Canadian Bald Eagles",
+    "score": "26 - 19"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "ATO A",
+    "home_team": "Theta XI",
+    "score": "61 - 37"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Delta Chi",
+    "home_team": "TKE B",
+    "score": "42 - 49"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Moe's Monday",
+    "home_team": "AAA",
+    "score": "6 - 34"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Gentry’s Generous Team",
+    "home_team": "Club Tennis",
+    "score": "27 - 33"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "TKE A",
+    "home_team": "Pi kapp",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "WAHO",
+    "home_team": "Mouse in the Palace",
+    "score": "34 - 37"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Mighty Mallards",
+    "home_team": "Alpha Sig",
+    "score": "52 - 12"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "KYM",
+    "home_team": "Milk Squad 6",
+    "score": "28 - 25"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Buckets B",
+    "home_team": "AFC",
+    "score": "33 - 30"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Wet banana",
+    "home_team": "Bench Warmers",
+    "score": "64 - 33"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Mighty Ducks",
+    "home_team": "Suhas Kumar",
+    "score": "19 - 52"
+  },
+  {
+    "date": "2/12/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Palantir Interns",
+    "home_team": "falcons regen",
+    "score": "35 - 25"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "FIJI",
+    "home_team": "Theta Chi A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Alpha Sig",
+    "home_team": "Delta Chi",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Pookie and Snookems",
+    "home_team": "SAE A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "TKE A",
+    "home_team": "sheriffs",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Bandits",
+    "home_team": "Kappa Sigma",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Cornballs",
+    "home_team": "ATO A",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ASCE",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigep A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Spanish Mafia",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Beta",
+    "home_team": "Phi Tau",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Pi Kapp",
+    "home_team": "Phi Sig",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "TKE F",
+    "home_team": "LXA",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Dubois",
+    "home_team": "Cornelius Hole-ington",
+    "score": "2 - 0"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Beta",
+    "home_team": "Corn Jawn",
+    "score": "1 - 2"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ORGT",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Shiraz",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Catholic Center",
+    "home_team": "Qiths",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Pooslingerz",
+    "home_team": "GTSC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Theta Chi A",
+    "home_team": "Ethel St.",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "yo",
+    "home_team": "Shuck Norris",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Sigma Nu A",
+    "home_team": "KA A aka KA",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Half and Half",
+    "home_team": "Ball Catchers",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "bhiwa",
+    "home_team": "The Mighty Ducks",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Cornballers",
+    "home_team": "Green Giant",
+    "score": "1 - 2"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "pnWs",
+    "home_team": "SPAM MUSUBI",
+    "score": "1 - 2"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Eternal Sunshine",
+    "home_team": "In Corn We Trust",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "The Best",
+    "home_team": "KornS",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ABCDE FC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Jammy",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Western",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Back in Blood",
+    "home_team": "Dodgers",
+    "score": "2 - 3"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Y*sha",
+    "home_team": "Sporting Chamblee",
+    "score": "3 - 1"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Chi Psi",
+    "home_team": "duh bobbb",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "vatic pros",
+    "home_team": "Donovan Daniels",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "Phi Mu #1",
+    "home_team": "vk",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Cornhole",
+    "away_team": "SigEp A Team",
+    "home_team": "Cornpan",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "AEPi",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "AGD and friends",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Big Ballers",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Separation",
+    "home_team": "goblin gang",
+    "score": "0 - 3"
+  },
+  {
+    "date": "2/13/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Sportsball",
+    "home_team": "Western",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Chi A",
+    "home_team": "Kappa Sigma A",
+    "score": "44 - 58"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Pike A",
+    "home_team": "Sigma Chi 25",
+    "score": "31 - 101"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beta A",
+    "home_team": "AEPi",
+    "score": "56 - 87"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "North Avenue Trade School",
+    "home_team": "Run It Back",
+    "score": "53 - 43"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE Mu",
+    "home_team": "Ocee Gang",
+    "score": "36 - 68"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "The Milkmen",
+    "home_team": "Theta Thunder",
+    "score": "38 - 65"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Tune Squad",
+    "home_team": "-10000 Moneyline",
+    "score": "58 - 55"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "LinkedIn",
+    "home_team": "We are good at this!",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Gooners",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigma Nu",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "The Mighty Ducks",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ATO",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Omegamind",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigma Chi",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Tribeck",
+    "home_team": "Run It Back",
+    "score": "57 - 30"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Blacklung",
+    "home_team": "BALLZY Raptors",
+    "score": "56 - 34"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "BCM",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Noble's Cake FC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "SAE Omega",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE Xi",
+    "home_team": "Beta P",
+    "score": "26 - 31"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Buckets C",
+    "home_team": "Theta Buckets A",
+    "score": "28 - 25"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Freaks",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Internationals United FC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/15/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Niru D-Omega",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Delta Upsilon",
+    "home_team": "Kappa Sigma B",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SigEp B",
+    "home_team": "Phi Kappa Theta",
+    "score": "12 - 51"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Phi Tau",
+    "home_team": "Sigma Nu B",
+    "score": "49 - 39"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "C Men",
+    "home_team": "Ballers",
+    "score": "47 - 35"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "The Water Boys",
+    "home_team": "All day all night",
+    "score": "47 - 75"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beef Bulgogi",
+    "home_team": "Golden Tribe Warriors",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Fiji B",
+    "home_team": "Seirin",
+    "score": "80 - 48"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Magic City Ballers",
+    "home_team": "2026 Montverde",
+    "score": "37 - 54"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "KA B",
+    "home_team": "Alpha Sig",
+    "score": "14 - 47"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Mekhi Carter Elite",
+    "home_team": "Old Foresters",
+    "score": "76 - 85"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Chi",
+    "home_team": "Snu 1",
+    "score": "38 - 22"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE A",
+    "home_team": "Lambda Chi",
+    "score": "54 - 77"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Circle Squad",
+    "home_team": "Punt Intended",
+    "score": "28 - 20"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Vincent Douglas",
+    "home_team": "awesome sauce",
+    "score": "41 - 13"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "ASCE",
+    "home_team": "AGDU",
+    "score": "28 - 6"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Chi Psi",
+    "home_team": "Kappa Sigma B",
+    "score": "33 - 18"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Beta A",
+    "home_team": "Phi Sig",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sigma Nu",
+    "home_team": "Phi Kap",
+    "score": "12 - 32"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Beef Bulgogi",
+    "home_team": "Sack Attack",
+    "score": "19 - 40"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "SAE Mukund",
+    "home_team": "Willage Warriors",
+    "score": "41 - 39"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Catholic Center",
+    "home_team": "Team 1",
+    "score": "30 - 34"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Bandits",
+    "home_team": "Bojangles",
+    "score": "6 - 38"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Tuna Sub",
+    "home_team": "FOG",
+    "score": "40 - 42"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "falcons regen",
+    "home_team": "FYSA Flyers",
+    "score": "21 - 32"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Suhas Kumar",
+    "home_team": "esmadine",
+    "score": "6 - 26"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "NFZ",
+    "home_team": "Phi Tau",
+    "score": "20 - 28"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Milk Squad 6",
+    "home_team": "Mighty Mallards",
+    "score": "41 - 54"
+  },
+  {
+    "date": "2/16/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Club Tennis",
+    "home_team": "Moe's Monday",
+    "score": "34 - 28"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": ":)",
+    "home_team": "BCM",
+    "score": "49 - 36"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "rz",
+    "home_team": "LeSTSL",
+    "score": "45 - 62"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Rakija Aguardiente",
+    "home_team": "kls",
+    "score": "36 - 53"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Bounce Academy",
+    "home_team": "Qiths",
+    "score": "42 - 47"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Chi X ADPi",
+    "home_team": "Ballright",
+    "score": "34 - 50"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Old Foresters",
+    "home_team": "Pike Corec",
+    "score": "64 - 34"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Kappa Alpha Theta",
+    "home_team": "Phi Mu",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Alpha Gamma Delta",
+    "home_team": "ADPi",
+    "score": "29 - 39"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Kinetic + Nav",
+    "home_team": "Pooslingerz",
+    "score": "85 - 55"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Alpha Phi",
+    "home_team": "AXiD",
+    "score": "40 - 12"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Javale McBuckets",
+    "home_team": "Nuggets",
+    "score": "51 - 46"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "The Mighty Ducks",
+    "home_team": "SAE Kappa",
+    "score": "51 - 20"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TKE F",
+    "home_team": "SigEp A",
+    "score": "46 - 26"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Delta Chi",
+    "home_team": "ΛΧΑ A",
+    "score": "32 - 27"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi Sig",
+    "home_team": "Theta XI B",
+    "score": "47 - 29"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kappa Sigma B",
+    "home_team": "SAE A",
+    "score": "34 - 32"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Pike C",
+    "home_team": "Sigma Chi A",
+    "score": "47 - 27"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sigma Nu",
+    "home_team": "Phi delt A",
+    "score": "34 - 13"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "AEPi",
+    "home_team": "Delta Upsilon",
+    "score": "6 - 25"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Punt Intended",
+    "home_team": "7/11 Squad",
+    "score": "19 - 13"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TKE",
+    "home_team": "Survivor Georgia Tech",
+    "score": "0 - 21"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Kinetic + Nav",
+    "home_team": "GTSC",
+    "score": "41 - 20"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "KYM",
+    "home_team": "Western",
+    "score": "28 - 30"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "E1",
+    "home_team": "Sportsball",
+    "score": "41 - 24"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Mighty Geese",
+    "home_team": "grimreapers",
+    "score": "36 - 26"
+  },
+  {
+    "date": "2/17/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Canadian Bald Eagles",
+    "home_team": "Legion of Boom",
+    "score": "39 - 30"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Wreck",
+    "home_team": "Las Nenas",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Om Patel’s honourable team",
+    "home_team": "Lebum",
+    "score": "59 - 42"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Team belt",
+    "home_team": "messiah's disciples",
+    "score": "29 - 70"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Big G n 'Em",
+    "home_team": "Poka",
+    "score": "41 - 37"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Dawgs",
+    "home_team": "Sportsball",
+    "score": "32 - 68"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Delhi Dragons",
+    "home_team": "Fried chicken",
+    "score": "50 - 24"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Ramblin' Reck Club",
+    "home_team": "GTSC",
+    "score": "52 - 42"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Dream Team",
+    "home_team": "Amaputi",
+    "score": "58 - 50"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "ADPi X SAE",
+    "home_team": "TKE",
+    "score": "47 - 77"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Cru hoops",
+    "home_team": "sportsball",
+    "score": "51 - 60"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Bullet Bogs",
+    "home_team": "goyal squad",
+    "score": "35 - 34"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Big Gs",
+    "home_team": "Gentry’s Generous Team",
+    "score": "40 - 6"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Fearsome Foursome",
+    "home_team": "Dippin Dots",
+    "score": "20 - 19"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Willage Warriors",
+    "home_team": "Connector C’s",
+    "score": "44 - 22"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "ΛΧΑ A",
+    "home_team": "Theta XI B",
+    "score": "35 - 34"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "SigEp A",
+    "home_team": "SAE A",
+    "score": "44 - 25"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "AEPi",
+    "home_team": "GBC",
+    "score": "53 - 26"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Pike D",
+    "home_team": "Theta Xi",
+    "score": "15 - 34"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Catholic Center",
+    "home_team": "Legion of Goon",
+    "score": "28 - 42"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Bandits",
+    "home_team": "Ice Trae",
+    "score": "0 - 36"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Tuna Sub",
+    "home_team": "Punjabi Sungiants",
+    "score": "22 - 49"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "falcons regen",
+    "home_team": "KP and them",
+    "score": "50 - 24"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Suhas Kumar",
+    "home_team": "Fore",
+    "score": "19 - 21"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "NFZ",
+    "home_team": "The Induraj Files",
+    "score": "32 - 15"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Milk Squad 6",
+    "home_team": "The Mighty Ducks",
+    "score": "50 - 35"
+  },
+  {
+    "date": "2/18/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Moe's Monday",
+    "home_team": "Alpha Sig",
+    "score": "19 - 14"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "ASCE",
+    "home_team": "D1 Poosapati",
+    "score": "52 - 44"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Feminists Elites",
+    "home_team": "LEBRONNNNN",
+    "score": "36 - 36"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "BasketBile",
+    "home_team": "Catholic Center",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beta B",
+    "home_team": "Pike B",
+    "score": "30 - 38"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "FIJI A",
+    "home_team": "Phi Sig",
+    "score": "24 - 69"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SigEp A",
+    "home_team": "Phi delt A",
+    "score": "62 - 81"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "TKE B",
+    "home_team": "Theta XI",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "ATO A",
+    "home_team": "Pi kapp",
+    "score": "38 - 34"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Delta Chi",
+    "home_team": "TKE A",
+    "score": "44 - 51"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "AFC",
+    "home_team": "Mouse in the Palace",
+    "score": "57 - 40"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Theta Buckets B",
+    "home_team": "Wet banana",
+    "score": "50 - 39"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "WAHO",
+    "home_team": "Bench Warmers",
+    "score": "43 - 35"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sportsball",
+    "home_team": "Theta thunder",
+    "score": "27 - 28"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "KYM",
+    "home_team": "Sigep PC",
+    "score": "60 - 0"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "awesome sauce",
+    "home_team": "PG3 Warriors",
+    "score": "18 - 39"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "AGDU",
+    "home_team": "GTSC",
+    "score": "27 - 21"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "grimreapers",
+    "home_team": "fours",
+    "score": "41 - 26"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Legion of Boom",
+    "home_team": "Helen Keller Deniers",
+    "score": "18 - 35"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Dippin Dots",
+    "home_team": "Gentry’s Generous Team",
+    "score": "47 - 27"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Beef Bulgogi",
+    "home_team": "GTSC",
+    "score": "6 - 26"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "goyal squad",
+    "home_team": "GripFource",
+    "score": "19 - 33"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Gentry’s Generous Team",
+    "home_team": "Beef Bulgogi",
+    "score": "34 - 25"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Catholic Center",
+    "home_team": "Connector C’s",
+    "score": "28 - 29"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Tuna Sub",
+    "home_team": "Bandits",
+    "score": "32 - 27"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "fours",
+    "home_team": "Sigep PC",
+    "score": "33 - 26"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "The Mighty Ducks",
+    "home_team": "The Induraj Files",
+    "score": "21 - 49"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "goyal squad",
+    "home_team": "Legion of Boom",
+    "score": "14 - 27"
+  },
+  {
+    "date": "2/19/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Suhas Kumar",
+    "home_team": "KP and them",
+    "score": "32 - 19"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Delta Chi",
+    "home_team": "Theta Chi A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "FIJI",
+    "home_team": "Phi Tau",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "sheriffs",
+    "home_team": "SAE A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Pookie and Snookems",
+    "home_team": "Kappa Sigma",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "TKE A",
+    "home_team": "ATO A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Bandits",
+    "home_team": "Cornballs",
+    "score": "0 - 2"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ORGT",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "AEPi",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Noble's Cake FC",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Alpha Sig",
+    "home_team": "Phi Sig",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Beta",
+    "home_team": "Pi Kapp",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Cornelius Hole-ington",
+    "home_team": "LXA",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "TKE F",
+    "home_team": "Corn Jawn",
+    "score": "1 - 2"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Dubois",
+    "home_team": "Beta",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Freaks",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "SAE Omega",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "AGD and friends",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "GTSC",
+    "home_team": "Qiths",
+    "score": "2 - 3"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Catholic Center",
+    "home_team": "Ball Catchers",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Shuck Norris",
+    "home_team": "Ethel St.",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Theta Chi A",
+    "home_team": "KA A aka KA",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "yo",
+    "home_team": "Sigma Nu A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Pooslingerz",
+    "home_team": "The Mighty Ducks",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Half and Half",
+    "home_team": "bhiwa",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "SPAM MUSUBI",
+    "home_team": "Green Giant",
+    "score": "2 - 0"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Cornballers",
+    "home_team": "In Corn We Trust",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "pnWs",
+    "home_team": "KornS",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Eternal Sunshine",
+    "home_team": "The Best",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Sigep A",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ATO",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Omegamind",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Sporting Chamblee",
+    "home_team": "Dodgers",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Back in Blood",
+    "home_team": "goblin gang",
+    "score": "3 - 2"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Donovan Daniels",
+    "home_team": "duh bobbb",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Chi Psi",
+    "home_team": "vk",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "vatic pros",
+    "home_team": "Cornpan",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "Cornhole",
+    "away_team": "Phi Mu #1",
+    "home_team": "SigEp A Team",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Y*sha",
+    "home_team": "Western",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/20/2026",
+    "sport": "6v6 Dodgeball",
+    "away_team": "Separation",
+    "home_team": "Sportsball",
+    "score": "FINAL"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Chi 25",
+    "home_team": "Kappa Sigma A",
+    "score": "04:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Sigma Chi A",
+    "home_team": "AEPi",
+    "score": "04:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Pike A",
+    "home_team": "Beta A",
+    "score": "05:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Ocee Gang",
+    "home_team": "Run It Back",
+    "score": "05:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "North Avenue Trade School",
+    "home_team": "Theta Thunder",
+    "score": "06:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE Mu",
+    "home_team": "The Milkmen",
+    "score": "06:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "We are good at this!",
+    "home_team": "-10000 Moneyline",
+    "score": "07:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Tune Squad",
+    "home_team": "Run It Back",
+    "score": "07:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "ABCDE FC",
+    "score": "07:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Gooners",
+    "score": "07:45 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "LinkedIn",
+    "home_team": "Tribeck",
+    "score": "08:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Beta P",
+    "home_team": "BALLZY Raptors",
+    "score": "08:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "Blacklung",
+    "home_team": "Theta Buckets A",
+    "score": "09:00 PM"
+  },
+  {
+    "date": "2/22/2026",
+    "sport": "5v5 Basketball",
+    "away_team": "SAE Xi",
+    "home_team": "Theta Buckets C",
+    "score": "09:00 PM"
+  },
+  {
+    "date": "2/23/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sigma Chi A",
+    "home_team": "Phi delt A",
+    "score": "05:45 PM"
+  },
+  {
+    "date": "2/23/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Pike D",
+    "home_team": "GBC",
+    "score": "05:45 PM"
+  },
+  {
+    "date": "2/23/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Sportsball",
+    "home_team": "Alpha Sig",
+    "score": "06:30 PM"
+  },
+  {
+    "date": "2/23/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Catholic Center",
+    "home_team": "Beef Bulgogi",
+    "score": "06:30 PM"
+  },
+  {
+    "date": "2/23/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "KP and them",
+    "home_team": "Bandits",
+    "score": "07:15 PM"
+  },
+  {
+    "date": "2/23/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "goyal squad",
+    "home_team": "Sigep PC",
+    "score": "08:00 PM"
+  },
+  {
+    "date": "2/24/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "SAE A",
+    "home_team": "Theta XI B",
+    "score": "05:45 PM"
+  },
+  {
+    "date": "2/24/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "Phi Mu",
+    "home_team": "bcm girliessss",
+    "score": "06:30 PM"
+  },
+  {
+    "date": "2/24/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "ruf gals",
+    "home_team": "GTSC",
+    "score": "06:30 PM"
+  },
+  {
+    "date": "2/24/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "TKE",
+    "home_team": "7/11 Squad",
+    "score": "07:15 PM"
+  },
+  {
+    "date": "2/24/2026",
+    "sport": "4v4 Flag Football",
+    "away_team": "GTSC",
+    "home_team": "awesome sauce",
+    "score": "07:15 PM"
+  },
+  {
+    "date": "2/27/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Shootout For 3rd Team in Champ Game",
+    "score": "05:15 PM"
+  },
+  {
+    "date": "2/27/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "Shootout For 3rd Team in Champ Game",
+    "score": "05:15 PM"
+  },
+  {
+    "date": "3/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "TBA",
+    "score": "07:00 PM"
+  },
+  {
+    "date": "3/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "TBA",
+    "score": "07:00 PM"
+  },
+  {
+    "date": "3/1/2026",
+    "sport": "Omegaball",
+    "away_team": "Generic Team",
+    "home_team": "TBA",
+    "score": "07:00 PM"
+  }
+]

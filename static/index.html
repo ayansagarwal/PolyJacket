@@ -404,6 +404,7 @@
                   <div class="odds-section">
                     <div class="outcome-card home">
                       <div class="team-name">{{ market.home_team }}</div>
+                      <div class="elo-badge" v-if="market.home_elo != null">Elo {{ market.home_elo }}</div>
                       <div class="price">{{ market.home_price.toFixed(1) }}¢</div>
                       <button 
                         class="buy-btn"
@@ -415,6 +416,7 @@
                     
                     <div class="outcome-card away">
                       <div class="team-name">{{ market.away_team }}</div>
+                      <div class="elo-badge" v-if="market.away_elo != null">Elo {{ market.away_elo }}</div>
                       <div class="price">{{ market.away_price.toFixed(1) }}¢</div>
                       <button 
                         class="buy-btn"
@@ -457,11 +459,13 @@
                   <div class="odds-section disabled">
                     <div class="outcome-card home">
                       <div class="team-name">{{ market.home_team }}</div>
+                      <div class="elo-badge" v-if="market.home_elo != null">Elo {{ market.home_elo }}</div>
                       <div class="price">{{ market.home_price.toFixed(1) }}¢</div>
                     </div>
                     
                     <div class="outcome-card away">
                       <div class="team-name">{{ market.away_team }}</div>
+                      <div class="elo-badge" v-if="market.away_elo != null">Elo {{ market.away_elo }}</div>
                       <div class="price">{{ market.away_price.toFixed(1) }}¢</div>
                     </div>
                   </div>
@@ -605,6 +609,7 @@
                         @click="tradeOutcome = 'home'"
                       >
                         <div class="team">{{ selectedMarket.home_team }}</div>
+                        <div class="elo-badge" v-if="selectedMarket.home_elo != null">Elo {{ selectedMarket.home_elo }}</div>
                         <div class="price">{{ selectedMarket.home_price.toFixed(1) }}¢</div>
                       </button>
                       <button 
@@ -612,6 +617,7 @@
                         @click="tradeOutcome = 'away'"
                       >
                         <div class="team">{{ selectedMarket.away_team }}</div>
+                        <div class="elo-badge" v-if="selectedMarket.away_elo != null">Elo {{ selectedMarket.away_elo }}</div>
                         <div class="price">{{ selectedMarket.away_price.toFixed(1) }}¢</div>
                       </button>
                     </div>
@@ -995,8 +1001,19 @@
     .team-name {
       font-weight: 600;
       font-size: 0.95rem;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       color: #333;
+    }
+
+    .elo-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #764ba2;
+      background: rgba(118, 75, 162, 0.1);
+      border-radius: 4px;
+      padding: 2px 6px;
+      margin-bottom: 8px;
+      display: inline-block;
     }
 
     .price {

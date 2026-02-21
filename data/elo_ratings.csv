@@ -1,0 +1,266 @@
+sport,team,elo,games,wins,losses,ties,win_pct
+4v4 Flag Football,Beef Bulgogi,1416.9,6,5,1,0,0.833
+4v4 Flag Football,The Mighty Ducks,1369.1,5,5,0,0,1.0
+4v4 Flag Football,Bandits,1360.0,6,6,0,0,1.0
+4v4 Flag Football,Catholic Center,1351.9,6,6,0,0,1.0
+4v4 Flag Football,awesome sauce,1322.4,5,5,0,0,1.0
+4v4 Flag Football,KP and them,1308.3,4,4,0,0,1.0
+4v4 Flag Football,Pike D,1289.7,4,3,1,0,0.75
+4v4 Flag Football,Sigep PC,1281.4,4,4,0,0,1.0
+4v4 Flag Football,Phi delt A,1274.5,4,4,0,0,1.0
+4v4 Flag Football,SAE A,1269.7,5,5,0,0,1.0
+4v4 Flag Football,Alpha Sig,1244.6,4,3,1,0,0.75
+4v4 Flag Football,Theta XI B,1236.0,5,5,0,0,1.0
+4v4 Flag Football,Gentry’s Generous Team,1229.4,6,5,1,0,0.833
+4v4 Flag Football,goyal squad,1224.6,6,5,1,0,0.833
+4v4 Flag Football,Sportsball,1215.5,4,4,0,0,1.0
+4v4 Flag Football,Connector C’s,1214.4,4,3,1,0,0.75
+4v4 Flag Football,bcm girliessss,1206.9,2,2,0,0,1.0
+4v4 Flag Football,Tuna Sub,1182.0,5,4,1,0,0.8
+4v4 Flag Football,GBC,1169.5,3,2,1,0,0.667
+4v4 Flag Football,fours,1163.7,5,4,1,0,0.8
+4v4 Flag Football,Fore,1155.7,4,3,1,0,0.75
+4v4 Flag Football,Sigma Chi A,1148.0,4,3,1,0,0.75
+4v4 Flag Football,SigEp A,1138.4,5,4,1,0,0.8
+4v4 Flag Football,Moe's Monday,1138.2,5,4,1,0,0.8
+4v4 Flag Football,Theta thunder,1132.2,3,2,1,0,0.667
+4v4 Flag Football,Phi Mu,1125.0,1,1,0,0,1.0
+4v4 Flag Football,TKE,1121.9,3,2,1,0,0.667
+4v4 Flag Football,Legion of Goon,1118.2,3,2,1,0,0.667
+4v4 Flag Football,7/11 Squad,1107.9,3,2,1,0,0.667
+4v4 Flag Football,Theta Xi,1105.7,4,2,2,0,0.5
+4v4 Flag Football,GTSC,1103.5,8,5,3,0,0.625
+4v4 Flag Football,The Induraj Files,1097.6,5,3,2,0,0.6
+4v4 Flag Football,Suhas Kumar,1082.7,6,3,3,0,0.5
+4v4 Flag Football,Milk Squad 6,1078.9,4,3,1,0,0.75
+4v4 Flag Football,Kappa Sigma A,1068.0,1,1,0,0,1.0
+4v4 Flag Football,Team 1,1057.0,4,2,2,0,0.5
+4v4 Flag Football,Pike A,1052.4,1,1,0,0,1.0
+4v4 Flag Football,Legion of Boom,1051.3,6,3,3,0,0.5
+4v4 Flag Football,PG3 Warriors,1048.6,2,1,1,0,0.5
+4v4 Flag Football,Fearsome Foursome,1043.3,4,2,2,0,0.5
+4v4 Flag Football,grimreapers,1036.8,5,3,2,0,0.6
+4v4 Flag Football,AEPi,1021.5,4,2,2,0,0.5
+4v4 Flag Football,Willage Warriors,1020.3,4,2,2,0,0.5
+4v4 Flag Football,Dippin Dots,1019.3,5,3,2,0,0.6
+4v4 Flag Football,Punjabi Sungiants,1016.7,4,2,2,0,0.5
+4v4 Flag Football,Sack Attack,1009.3,4,2,2,0,0.5
+4v4 Flag Football,Beta A,1007.7,3,2,1,0,0.667
+4v4 Flag Football,ΛΧΑ A,1006.9,5,2,3,0,0.4
+4v4 Flag Football,Real Eating Club,990.3,2,1,1,0,0.5
+4v4 Flag Football,GTNROTC,986.4,2,1,1,0,0.5
+4v4 Flag Football,Punt Intended,984.7,4,2,2,0,0.5
+4v4 Flag Football,GripFource,982.9,2,1,1,0,0.5
+4v4 Flag Football,Circle Squad,979.4,4,2,2,0,0.5
+4v4 Flag Football,Vincent Douglas,976.6,3,1,2,0,0.333
+4v4 Flag Football,Helen Keller Deniers,974.0,4,2,2,0,0.5
+4v4 Flag Football,Delta Chi,968.3,3,1,2,0,0.333
+4v4 Flag Football,Sigma Nu,967.6,5,2,3,0,0.4
+4v4 Flag Football,FOG,966.3,3,1,2,0,0.333
+4v4 Flag Football,netagive aura,964.5,2,1,1,0,0.5
+4v4 Flag Football,Ice Trae,961.5,3,1,2,0,0.333
+4v4 Flag Football,Pike C,955.2,3,1,2,0,0.333
+4v4 Flag Football,Bojangles,955.1,3,1,2,0,0.333
+4v4 Flag Football,falcons regen,948.4,5,2,3,0,0.4
+4v4 Flag Football,D1 Poosapati,945.0,1,0,1,0,0.0
+4v4 Flag Football,ATO,940.6,2,1,1,0,0.5
+4v4 Flag Football,NFZ,934.2,5,2,3,0,0.4
+4v4 Flag Football,no fly zone,918.1,2,0,1,1,0.25
+4v4 Flag Football,AGDU,915.6,5,1,4,0,0.2
+4v4 Flag Football,Delta Upsilon,915.2,3,1,2,0,0.333
+4v4 Flag Football,The Big Gs,911.1,3,1,2,0,0.333
+4v4 Flag Football,Kappa Sigma B,908.6,5,2,3,0,0.4
+4v4 Flag Football,Western,908.1,6,2,4,0,0.333
+4v4 Flag Football,Kinetic + Nav,905.4,3,1,2,0,0.333
+4v4 Flag Football,Club Tennis,904.4,4,1,3,0,0.25
+4v4 Flag Football,Canadian Bald Eagles,903.5,4,1,3,0,0.25
+4v4 Flag Football,E1,900.3,4,1,3,0,0.25
+4v4 Flag Football,The Mighty Geese,888.7,4,1,3,0,0.25
+4v4 Flag Football,Phi Tau,887.5,3,1,2,0,0.333
+4v4 Flag Football,KYM,880.1,5,2,3,0,0.4
+4v4 Flag Football,1738,879.5,1,0,1,0,0.0
+4v4 Flag Football,Haynes “Haynes King” King,878.7,2,0,2,0,0.0
+4v4 Flag Football,ruf gals,875.0,1,0,1,0,0.0
+4v4 Flag Football,Kappa Alpha Theta,875.0,2,0,1,1,0.25
+4v4 Flag Football,Team McGee,874.6,2,0,2,0,0.0
+4v4 Flag Football,Phi Sig,866.5,2,0,2,0,0.0
+4v4 Flag Football,Separation,863.0,3,0,3,0,0.0
+4v4 Flag Football,TKE F,861.8,4,1,3,0,0.25
+4v4 Flag Football,SAE Mukund,861.4,2,0,2,0,0.0
+4v4 Flag Football,Flustered Falcons,859.9,2,0,2,0,0.0
+4v4 Flag Football,1st Round Hopefuls,847.6,2,0,2,0,0.0
+4v4 Flag Football,Mighty Mallards,846.9,4,1,3,0,0.25
+4v4 Flag Football,TKE C,844.4,3,0,3,0,0.0
+4v4 Flag Football,Bullet Bogs,839.3,4,1,3,0,0.25
+4v4 Flag Football,Palantir Interns,838.2,2,0,2,0,0.0
+4v4 Flag Football,BB,836.7,2,0,2,0,0.0
+4v4 Flag Football,AAA,795.0,3,0,3,0,0.0
+4v4 Flag Football,Qiths,794.9,2,0,2,0,0.0
+4v4 Flag Football,Pi kapp,793.0,3,0,3,0,0.0
+4v4 Flag Football,TFSJHFFT️️️,783.3,3,0,3,0,0.0
+4v4 Flag Football,I am Football,779.0,3,0,3,0,0.0
+4v4 Flag Football,esmadine,778.9,4,1,3,0,0.25
+4v4 Flag Football,Survivor Georgia Tech,776.7,2,0,2,0,0.0
+4v4 Flag Football,Theta Chi,774.0,3,0,3,0,0.0
+4v4 Flag Football,FYSA Flyers,773.5,3,0,3,0,0.0
+4v4 Flag Football,Kush the Grand Gargantuan,763.7,3,0,3,0,0.0
+4v4 Flag Football,Westhaven,747.4,3,0,3,0,0.0
+4v4 Flag Football,Chi Psi,745.2,3,0,3,0,0.0
+4v4 Flag Football,ASCE,704.6,2,0,2,0,0.0
+4v4 Flag Football,Phi Kap,671.5,3,0,3,0,0.0
+5v5 Basketball,Bench Warmers,1272.6,4,4,0,0,1.0
+5v5 Basketball,Pike Corec,1236.5,4,4,0,0,1.0
+5v5 Basketball,Dawgs,1234.7,4,4,0,0,1.0
+5v5 Basketball,Run It Back,1229.4,4,4,0,0,1.0
+5v5 Basketball,ADPi X SAE,1227.5,4,4,0,0,1.0
+5v5 Basketball,Team belt,1221.7,4,4,0,0,1.0
+5v5 Basketball,SAE Kappa,1206.1,4,3,1,0,0.75
+5v5 Basketball,SigEp B,1205.2,3,3,0,0,1.0
+5v5 Basketball,Theta XI,1201.8,3,3,0,0,1.0
+5v5 Basketball,BCM,1200.3,4,4,0,0,1.0
+5v5 Basketball,SAE A,1191.7,3,3,0,0,1.0
+5v5 Basketball,Amaputi,1191.2,4,4,0,0,1.0
+5v5 Basketball,Phi Mu,1189.9,3,3,0,0,1.0
+5v5 Basketball,BALLZY Raptors,1177.8,2,2,0,0,1.0
+5v5 Basketball,Pike A,1174.1,2,2,0,0,1.0
+5v5 Basketball,Seirin,1172.1,3,3,0,0,1.0
+5v5 Basketball,Cru hoops,1165.7,4,3,1,0,0.75
+5v5 Basketball,SigEp A,1161.8,2,2,0,0,1.0
+5v5 Basketball,Alpha Gamma Delta,1149.2,4,3,1,0,0.75
+5v5 Basketball,Pi kapp,1145.1,3,3,0,0,1.0
+5v5 Basketball,The Water Boys,1142.2,3,3,0,0,1.0
+5v5 Basketball,Snu 1,1137.2,3,2,0,1,0.833
+5v5 Basketball,Feminists Elites,1136.5,3,2,0,1,0.833
+5v5 Basketball,Bounce Academy,1136.0,4,3,1,0,0.75
+5v5 Basketball,Rakija Aguardiente,1130.3,4,3,1,0,0.75
+5v5 Basketball,SAE Mu,1128.1,2,2,0,0,1.0
+5v5 Basketball,Wreck,1125.0,1,1,0,0,1.0
+5v5 Basketball,Nuggets,1119.1,4,3,1,0,0.75
+5v5 Basketball,Mekhi Carter Elite,1114.2,3,2,1,0,0.667
+5v5 Basketball,Beta A,1112.9,2,2,0,0,1.0
+5v5 Basketball,Javale McBuckets,1112.0,4,3,1,0,0.75
+5v5 Basketball,FIJI A,1107.0,3,2,1,0,0.667
+5v5 Basketball,LEBRONNNNN,1093.0,3,1,0,2,0.667
+5v5 Basketball,Theta Buckets A,1091.0,2,2,0,0,1.0
+5v5 Basketball,D1 Poosapati,1081.8,3,2,1,0,0.667
+5v5 Basketball,Mouse in the Palace,1079.6,4,3,1,0,0.75
+5v5 Basketball,Lebum,1078.9,4,2,2,0,0.5
+5v5 Basketball,Sigma Nu B,1071.8,3,2,1,0,0.667
+5v5 Basketball,Sigma Chi X ADPi,1065.8,4,3,1,0,0.75
+5v5 Basketball,Ballers,1063.8,3,2,1,0,0.667
+5v5 Basketball,-10000 Moneyline,1061.2,1,1,0,0,1.0
+5v5 Basketball,Sigma Chi A,1054.2,1,1,0,0,1.0
+5v5 Basketball,AXiD,1048.4,4,2,2,0,0.5
+5v5 Basketball,North Avenue Trade School,1044.7,2,1,1,0,0.5
+5v5 Basketball,Beta B,1038.1,3,2,1,0,0.667
+5v5 Basketball,Delta Upsilon,1036.7,2,1,1,0,0.5
+5v5 Basketball,Lambda Chi,1034.8,3,1,1,1,0.5
+5v5 Basketball,Golden Tribe Warriors,1023.7,2,1,1,0,0.5
+5v5 Basketball,The Milkmen,1022.7,2,1,1,0,0.5
+5v5 Basketball,Beef Bulgogi,1014.7,2,1,1,0,0.5
+5v5 Basketball,Delta Chi,1009.3,4,2,2,0,0.5
+5v5 Basketball,ADPi,1009.0,4,2,2,0,0.5
+5v5 Basketball,Wet banana,1009.0,4,2,2,0,0.5
+5v5 Basketball,Qiths,1002.3,4,2,2,0,0.5
+5v5 Basketball,SAE Xi,1000.4,2,1,1,0,0.5
+5v5 Basketball,Blacklung,995.5,2,1,1,0,0.5
+5v5 Basketball,KA B,993.1,3,1,2,0,0.333
+5v5 Basketball,Catholic Center,992.8,2,1,1,0,0.5
+5v5 Basketball,Tune Squad,990.5,2,1,1,0,0.5
+5v5 Basketball,Om Patel’s honourable team,985.8,4,2,2,0,0.5
+5v5 Basketball,Fried chicken,983.1,4,1,2,1,0.375
+5v5 Basketball,Phi delt A,976.7,4,2,2,0,0.5
+5v5 Basketball,Poka,970.2,4,2,2,0,0.5
+5v5 Basketball,TKE,967.3,3,1,2,0,0.333
+5v5 Basketball,sportsball,967.0,4,2,2,0,0.5
+5v5 Basketball,Pooslingerz,966.5,4,2,2,0,0.5
+5v5 Basketball,Dream Team,961.3,4,1,2,1,0.375
+5v5 Basketball,Magic City Ballers,956.8,3,1,2,0,0.333
+5v5 Basketball,ASCE,954.6,4,1,2,1,0.375
+5v5 Basketball,Tribeck,954.2,1,0,1,0,0.0
+5v5 Basketball,We are good at this!,948.3,1,0,1,0,0.0
+5v5 Basketball,ATO A,939.8,4,1,3,0,0.25
+5v5 Basketball,Old Foresters,939.6,7,3,4,0,0.429
+5v5 Basketball,WAHO,936.4,4,1,3,0,0.25
+5v5 Basketball,AFC,928.7,4,2,2,0,0.5
+5v5 Basketball,LinkedIn,928.6,1,0,1,0,0.0
+5v5 Basketball,TKE A,922.4,3,1,2,0,0.333
+5v5 Basketball,rz,922.1,4,1,3,0,0.25
+5v5 Basketball,C Men,919.5,3,1,2,0,0.333
+5v5 Basketball,Phi Tau,917.6,3,1,2,0,0.333
+5v5 Basketball,Sigma Chi 25,911.9,1,0,1,0,0.0
+5v5 Basketball,Fiji B,908.7,3,1,2,0,0.333
+5v5 Basketball,Sportsball,908.2,4,1,3,0,0.25
+5v5 Basketball,Phi Kappa Theta,898.0,3,1,2,0,0.333
+5v5 Basketball,GTSC,897.3,4,1,3,0,0.25
+5v5 Basketball,Theta Chi,895.9,3,1,2,0,0.333
+5v5 Basketball,kls,895.3,4,1,3,0,0.25
+5v5 Basketball,Big G n 'Em,891.9,4,1,3,0,0.25
+5v5 Basketball,:),886.4,4,1,3,0,0.25
+5v5 Basketball,Kappa Sigma A,877.9,2,0,2,0,0.0
+5v5 Basketball,Las Nenas,875.0,1,0,1,0,0.0
+5v5 Basketball,Beta P,873.5,2,0,2,0,0.0
+5v5 Basketball,Kappa Sigma B,870.8,2,0,2,0,0.0
+5v5 Basketball,AEPi,868.9,2,0,2,0,0.0
+5v5 Basketball,The Mighty Ducks,865.0,4,1,3,0,0.25
+5v5 Basketball,Pike B,864.6,2,0,2,0,0.0
+5v5 Basketball,Theta Buckets C,861.8,2,0,2,0,0.0
+5v5 Basketball,LeSTSL,852.9,4,1,3,0,0.25
+5v5 Basketball,Phi Sig,851.8,4,1,3,0,0.25
+5v5 Basketball,messiah's disciples,851.5,4,1,3,0,0.25
+5v5 Basketball,Ocee Gang,851.0,2,0,2,0,0.0
+5v5 Basketball,Kappa Alpha Theta,845.8,2,0,2,0,0.0
+5v5 Basketball,Theta Thunder,841.2,2,0,2,0,0.0
+5v5 Basketball,All day all night,836.1,3,0,3,0,0.0
+5v5 Basketball,2026 Montverde,813.8,3,0,3,0,0.0
+5v5 Basketball,TKE B,781.5,3,0,3,0,0.0
+5v5 Basketball,Ramblin' Reck Club,775.2,3,0,3,0,0.0
+5v5 Basketball,Theta Buckets B,773.8,4,0,4,0,0.0
+5v5 Basketball,Ballright,767.0,4,0,4,0,0.0
+5v5 Basketball,Alpha Phi,757.8,3,0,3,0,0.0
+5v5 Basketball,Alpha Sig,747.3,3,0,3,0,0.0
+5v5 Basketball,BasketBile,741.4,3,0,3,0,0.0
+5v5 Basketball,Kinetic + Nav,731.3,4,0,4,0,0.0
+5v5 Basketball,Delhi Dragons,721.5,4,0,4,0,0.0
+6v6 Dodgeball,Separation,1104.0,2,2,0,0,1.0
+6v6 Dodgeball,Phi Sig,1056.0,1,1,0,0,1.0
+6v6 Dodgeball,Pi Kapp,1048.0,1,1,0,0,1.0
+6v6 Dodgeball,Pooslingerz,1048.0,1,1,0,0,1.0
+6v6 Dodgeball,Sporting Chamblee,1048.0,1,1,0,0,1.0
+6v6 Dodgeball,GTSC,1037.3,1,1,0,0,1.0
+6v6 Dodgeball,goblin gang,1036.3,3,2,1,0,0.667
+6v6 Dodgeball,Back in Blood,956.8,3,1,2,0,0.333
+6v6 Dodgeball,Delta Chi,952.0,1,0,1,0,0.0
+6v6 Dodgeball,Western,952.0,1,0,1,0,0.0
+6v6 Dodgeball,Y*sha,952.0,1,0,1,0,0.0
+6v6 Dodgeball,Dodgers,950.9,1,0,1,0,0.0
+6v6 Dodgeball,Phi Tau,944.0,1,0,1,0,0.0
+6v6 Dodgeball,Qiths,914.7,2,0,2,0,0.0
+Cornhole,Eternal Sunshine,1147.3,3,3,0,0,1.0
+Cornhole,Bandits,1138.3,3,3,0,0,1.0
+Cornhole,TKE F,1119.4,3,3,0,0,1.0
+Cornhole,TKE A,1111.5,3,3,0,0,1.0
+Cornhole,The Best,1080.2,2,2,0,0,1.0
+Cornhole,KA A aka KA,1056.2,1,1,0,0,1.0
+Cornhole,SigEp A Team,1050.0,1,1,0,0,1.0
+Cornhole,Cornballers,1043.5,3,2,1,0,0.667
+Cornhole,Chi Psi,1043.3,1,1,0,0,1.0
+Cornhole,In Corn We Trust,1033.9,3,2,1,0,0.667
+Cornhole,Beta,1016.8,2,1,1,0,0.5
+Cornhole,Cornballs,1015.6,4,2,2,0,0.5
+Cornhole,vatic pros,1007.1,2,1,1,0,0.5
+Cornhole,Cornelius Hole-ington,1000.0,2,1,1,0,0.5
+Cornhole,Green Giant,995.0,4,2,2,0,0.5
+Cornhole,Shuck Norris,987.1,2,1,1,0,0.5
+Cornhole,Corn Jawn,963.8,3,1,2,0,0.333
+Cornhole,Pookie and Snookems,957.1,1,0,1,0,0.0
+Cornhole,Theta Chi A,956.7,1,0,1,0,0.0
+Cornhole,Cornpan,956.7,1,0,1,0,0.0
+Cornhole,ATO A,951.9,1,0,1,0,0.0
+Cornhole,pnWs,950.0,3,1,2,0,0.333
+Cornhole,duh bobbb,942.9,1,0,1,0,0.0
+Cornhole,KornS,918.8,2,0,2,0,0.0
+Cornhole,SAE A,913.1,2,0,2,0,0.0
+Cornhole,sheriffs,912.5,2,0,2,0,0.0
+Cornhole,Dubois,900.0,2,0,2,0,0.0
+Cornhole,SPAM MUSUBI,831.3,4,0,4,0,0.0

@@ -1,6 +1,7 @@
 """
 FastAPI Backend for Georgia Tech IM Prediction Market
 Fetches game data from IMLeagues API endpoint
+.
 """
 
 from fastapi import FastAPI, HTTPException, Cookie
@@ -17,6 +18,8 @@ from pathlib import Path
 from datetime import datetime, timedelta
 import uuid
 import math
+import csv
+import asyncio
 
 app = FastAPI(title="GT IM Prediction Market API")
 
@@ -34,17 +37,24 @@ if os.path.exists("static"):
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Cache file for development
-CACHE_FILE = Path("games_cache.json")
+CACHE_FILE = Path("data/games_cache.json")
+ELO_RATINGS_FILE = Path("data/elo_ratings.csv")
 
 # In-memory storage (use database in production)
 users: Dict[str, dict] = {}
 markets: Dict[str, dict] = {}
 user_positions: Dict[str, dict] = {}  # user_id -> {market_id: {home_shares, away_shares}}
 games_data = []  # Cached games loaded on startup (List[Game])
+elo_data: Dict[str, Dict[str, float]] = {}  # sport -> team -> elo rating
 
 # Constants
 STARTING_BALANCE = 10000  # Starting tokens for new users
 LIQUIDITY_PARAMETER = 100  # For AMM pricing (b parameter in LMSR)
+ELO_BASE = 1000  # Default Elo rating for unknown teams
+REFRESH_INTERVAL_MINUTES = 5  # How often to auto-refresh games from IMLeagues
+
+# Team names that represent placeholder/unscheduled slots — never create markets for these
+GENERIC_TEAMS = {"tbd", "bye", "generic team", "unknown", "home", "away", "team", ""}
 
 
 # ============== MODELS ==============
@@ -92,6 +102,8 @@ class Market(BaseModel):
     winner: Optional[str] = None  # 'home', 'away', or None
     home_score: Optional[str] = None  # Final score for home team
     away_score: Optional[str] = None  # Final score for away team
+    home_elo: Optional[float] = None  # Elo rating for home team
+    away_elo: Optional[float] = None  # Elo rating for away team
 
 
 class Position(BaseModel):
@@ -131,6 +143,8 @@ class TradeResponse(BaseModel):
     new_balance: float
     new_position: Position
     message: str
+    home_elo: Optional[float] = None
+    away_elo: Optional[float] = None
 
 
 class MarketsResponse(BaseModel):
@@ -144,6 +158,71 @@ class MarketsResponse(BaseModel):
 
 
 # ============== UTILITY FUNCTIONS ==============
+
+def elo_win_prob(rating_a: float, rating_b: float) -> float:
+    """Expected probability that team A beats team B (standard Elo formula)."""
+    return 1.0 / (1.0 + 10 ** ((rating_b - rating_a) / 400.0))
+
+
+def load_elo_data():
+    """Load Elo ratings from CSV into the global elo_data dict."""
+    global elo_data
+    elo_data = {}
+    try:
+        with open(ELO_RATINGS_FILE, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                sport = row['sport']
+                team = row['team']
+                elo = float(row['elo'])
+                if sport not in elo_data:
+                    elo_data[sport] = {}
+                elo_data[sport][team] = elo
+        total_teams = sum(len(v) for v in elo_data.values())
+        print(f"Loaded Elo ratings for {total_teams} teams across {len(elo_data)} sports")
+    except FileNotFoundError:
+        print(f"Elo ratings file not found: {ELO_RATINGS_FILE} — using default rating {ELO_BASE} for all teams")
+
+
+def get_elo_seeded_shares(home_team: str, away_team: str, sport: str, b: float = LIQUIDITY_PARAMETER):
+    """
+    Compute initial LMSR share quantities so the opening price equals the
+    Elo-derived win probability.
+
+    Derivation: LMSR price = exp(q_home/b) / (exp(q_home/b) + exp(q_away/b))
+    Setting this equal to p_home and fixing q_away = 0 (or q_home = 0 for the
+    underdog) gives: q_favored = b * ln(p_favored / p_underdog).
+
+    With b=100 this seeding costs the house ≈ b * ln(1/(2*p_underdog)) tokens —
+    roughly 0–100 tokens for matchups up to 80/20, which matches the
+    LIQUIDITY_PARAMETER naturally.
+
+    Returns:
+        (home_shares, away_shares, home_elo, away_elo)
+    """
+    home_elo_val = elo_data.get(sport, {}).get(home_team, ELO_BASE)
+    away_elo_val = elo_data.get(sport, {}).get(away_team, ELO_BASE)
+
+    p_home = elo_win_prob(home_elo_val, away_elo_val)
+    p_away = 1.0 - p_home
+
+    if p_home >= p_away:
+        home_shares = b * math.log(p_home / p_away)
+        away_shares = 0.0
+    else:
+        home_shares = 0.0
+        away_shares = b * math.log(p_away / p_home)
+
+    # LMSR cost of moving from (0,0) to the seeded position — this is the
+    # market-maker's effective investment and should count as initial volume.
+    seeded_q = home_shares if home_shares > 0 else away_shares
+    if seeded_q > 0:
+        initial_volume = b * math.log(math.exp(seeded_q / b) + 1.0) - b * math.log(2.0)
+    else:
+        initial_volume = 0.0
+
+    return home_shares, away_shares, round(home_elo_val, 1), round(away_elo_val, 1), round(initial_volume, 4)
+
 
 def get_or_create_user(user_id: Optional[str] = None) -> str:
     """Get existing user or create new one"""
@@ -185,6 +264,22 @@ def calculate_cost(current_shares: float, new_shares: float, other_shares: float
         return 0
 
 
+def calculate_sell_value(user_shares: float, current_side_shares: float, other_shares: float, b: float = LIQUIDITY_PARAMETER) -> float:
+    """
+    Calculate tokens received for selling user_shares at the current market state.
+    Uses the LMSR sell-back formula: value = C(q−Δq → q).
+    This correctly accounts for market impact and will always be ≤ the original
+    purchase cost (no reverse-arbitrage), rather than the inflated
+    shares × marginal_price formula which overestimates value.
+    """
+    try:
+        before = b * math.log(math.exp(current_side_shares / b) + math.exp(other_shares / b))
+        after  = b * math.log(math.exp((current_side_shares - user_shares) / b) + math.exp(other_shares / b))
+        return max(0.0, before - after)
+    except:
+        return 0.0
+
+
 def is_market_closed(game_time: str, game_date: str) -> bool:
     """Check if market should be closed based on game time"""
     try:
@@ -201,6 +296,8 @@ def is_market_closed(game_time: str, game_date: str) -> bool:
         # If time is TBD, keep market open
         if game_time == "TBD":
             return False
+        elif game_time in ["FINAL", "BYE", "FORFEIT"]:
+            return True
         return False
     except:
         return False
@@ -209,6 +306,11 @@ def is_market_closed(game_time: str, game_date: str) -> bool:
 def create_markets_from_games(games: List[Game]):
     """Create or update markets from game data"""
     for game in games:
+        # Skip placeholder/BYE/TBD matchups
+        if (game.home_team.strip().lower() in GENERIC_TEAMS or
+                game.away_team.strip().lower() in GENERIC_TEAMS):
+            continue
+
         market_id = f"market_{game.game_id}"
         
         # Determine market status
@@ -231,6 +333,10 @@ def create_markets_from_games(games: List[Game]):
         
         # Create or update market
         if market_id not in markets:
+            # Seed initial shares from Elo so opening price == Elo win probability
+            init_home_shares, init_away_shares, home_elo_val, away_elo_val, seed_volume = get_elo_seeded_shares(
+                game.home_team, game.away_team, game.sport
+            )
             markets[market_id] = {
                 "market_id": market_id,
                 "game_id": game.game_id,
@@ -240,15 +346,17 @@ def create_markets_from_games(games: List[Game]):
                 "game_time": game.time,
                 "game_date": game.date or "",
                 "status": status,
-                "home_shares": 0.0,
-                "away_shares": 0.0,
-                "total_volume": 0.0,
+                "home_shares": init_home_shares,
+                "away_shares": init_away_shares,
+                "total_volume": seed_volume,  # market-maker seed cost
                 "winner": winner,
                 "home_score": game.home_score,
-                "away_score": game.away_score
+                "away_score": game.away_score,
+                "home_elo": home_elo_val,
+                "away_elo": away_elo_val,
             }
         else:
-            # Update status, winner, and scores
+            # Update status, winner, and scores (keep existing shares / elo)
             markets[market_id]["status"] = status
             markets[market_id]["winner"] = winner
             markets[market_id]["home_score"] = game.home_score
@@ -301,8 +409,11 @@ def get_user_portfolio(user_id: str) -> Portfolio:
             else:
                 current_value = 0
         else:
-            # Open/Closed: value at current market price (convert cents to tokens)
-            current_value = ((home_shares * market["home_price"]) + (away_shares * market["away_price"])) / 100
+            # Open/Closed: LMSR sell-back value — what you'd receive selling all shares now.
+            # This is always ≤ cost paid (LMSR has no reverse-arbitrage spread).
+            home_val = calculate_sell_value(home_shares, market["home_shares"], market["away_shares"]) if home_shares > 0 else 0.0
+            away_val = calculate_sell_value(away_shares, market["away_shares"], market["home_shares"]) if away_shares > 0 else 0.0
+            current_value = home_val + away_val
         
         # Calculate potential return (best case) - 1 token per winning share
         potential_return = max(home_shares, away_shares)
@@ -497,8 +608,10 @@ async def execute_trade(trade: TradeRequest, user_id: Optional[str] = Cookie(Non
         position["total_away_cost"] += actual_cost
         position["avg_away_price"] = position["total_away_cost"] / position["away_shares"] if position["away_shares"] > 0 else 0
     
-    # Calculate current value (convert cents to tokens)
-    current_value = ((position["home_shares"] * market["home_price"]) + (position["away_shares"] * market["away_price"])) / 100
+    # Calculate current value using LMSR sell-back (always <= what was paid)
+    home_val = calculate_sell_value(position["home_shares"], market["home_shares"], market["away_shares"]) if position["home_shares"] > 0 else 0.0
+    away_val = calculate_sell_value(position["away_shares"], market["away_shares"], market["home_shares"]) if position["away_shares"] > 0 else 0.0
+    current_value = home_val + away_val
     # Calculate potential return - 1 token per winning share
     potential_return = max(position["home_shares"], position["away_shares"])
     
@@ -514,7 +627,7 @@ async def execute_trade(trade: TradeRequest, user_id: Optional[str] = Cookie(Non
     )
     
     price_per_share = actual_cost / shares_to_buy if shares_to_buy > 0 else 0
-    
+
     return TradeResponse(
         success=True,
         shares_purchased=round(shares_to_buy, 2),
@@ -522,7 +635,9 @@ async def execute_trade(trade: TradeRequest, user_id: Optional[str] = Cookie(Non
         total_cost=round(actual_cost, 2),
         new_balance=round(users[user_id]["balance"], 2),
         new_position=new_position,
-        message=f"Successfully purchased {round(shares_to_buy, 2)} shares"
+        message=f"Successfully purchased {round(shares_to_buy, 2)} shares",
+        home_elo=market.get("home_elo"),
+        away_elo=market.get("away_elo"),
     )
 
 
@@ -897,9 +1012,14 @@ def parse_games_html_with_dates(html_content: str) -> List[Game]:
                     home_score = home_score_text
                     away_score = away_score_text
                 
-                # Extract time
-                time_elem = game_elem.select_one('.time')
+                # Extract time — IMLeagues uses span.status for scheduled time
+                # (it shows the kickoff time for future games, e.g. "7:00 PM",
+                #  and "FINAL" for completed ones — we keep whatever string is there)
+                time_elem = game_elem.select_one('span.status, .iml-game-time, .match-time, .time')
                 game_time = time_elem.get_text(strip=True) if time_elem else "TBD"
+                # Normalise: blank or placeholder strings → TBD
+                if not game_time or game_time in ("-", "--"):
+                    game_time = "TBD"
                 
                 # Extract sport (from the sport link)
                 sport_elem = game_elem.select_one('a[href*="/sport/"]')
@@ -1089,19 +1209,50 @@ async def health_check():
 
 @app.on_event("startup")
 async def startup_event():
-    """Load games from cache on startup"""
+    """Load Elo ratings, seed from cache, then start background refresh loop"""
     global games_data
-    
+
+    # Load Elo ratings first so market seeding has data
+    load_elo_data()
+
+    # Seed from cache immediately so the server is ready before the first live fetch
     if CACHE_FILE.exists():
-        print(f"Loading games from cache: {CACHE_FILE}")
+        print(f"Seeding from cache: {CACHE_FILE}")
         with open(CACHE_FILE, 'r') as f:
             data = json.load(f)
             games_data = [Game(**game) for game in data.get('games', [])]
             create_markets_from_games(games_data)
-            print(f"Loaded {len(games_data)} games and created {len(markets)} markets")
+            print(f"Seeded {len(games_data)} games and {len(markets)} markets from cache")
     else:
-        print("No cache file found. Use /api/games/refresh to fetch games.")
-        games_data = []
+        print("No cache file found. Will fetch from API...")
+
+    # Kick off the background refresh loop (first run is immediate)
+    asyncio.create_task(_refresh_loop())
+
+
+async def _refresh_loop():
+    """Background task: fetch fresh games from IMLeagues, then repeat every REFRESH_INTERVAL_MINUTES."""
+    global games_data
+    while True:
+        try:
+            print(f"[refresh] Fetching live games from IMLeagues...")
+            fresh_games = await fetch_all_games()
+            if fresh_games:
+                games_data = fresh_games
+                cache_data = {
+                    'games': [g.dict() for g in fresh_games],
+                    'count': len(fresh_games),
+                    'last_updated': str(datetime.now())
+                }
+                with open(CACHE_FILE, 'w') as f:
+                    json.dump(cache_data, f, indent=2)
+                create_markets_from_games(games_data)
+                print(f"[refresh] Updated {len(fresh_games)} games and {len(markets)} markets")
+            else:
+                print("[refresh] No games returned; keeping existing data")
+        except Exception as e:
+            print(f"[refresh] Error during background refresh: {e}")
+        await asyncio.sleep(REFRESH_INTERVAL_MINUTES * 60)
 
 
 if __name__ == "__main__":
