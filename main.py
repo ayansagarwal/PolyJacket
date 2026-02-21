@@ -58,10 +58,26 @@ markets: Dict[str, dict] = {}
 user_positions: Dict[str, dict] = {}  # user_id -> {market_id: {home_shares, away_shares}}
 games_data = []  # Cached games loaded on startup (List[Game])
 elo_data: Dict[str, Dict[str, float]] = {}  # sport -> team -> elo rating
+chat_messages: Dict[str, List[dict]] = {}  # market_id -> list of messages
+raffle_entries: List[dict] = []  # [{username, user_id, tickets, timestamp}]
+raffle_closed: bool = False  # Set to True by admin to stop ticket purchases
+raffle_winners: List[dict] = []  # All winners drawn so far
+
+# Admin
+ADMIN_USERNAME = "superuser"
+
+# Raffle tiers: list of (tickets, cost_in_raffle_tokens, label)
+RAFFLE_TIERS = [
+    {"id": 1,  "tickets": 1,  "cost": 100,  "label": "Single",     "savings": 0,  "pct_off": 0},
+    {"id": 2,  "tickets": 5,  "cost": 400,  "label": "5-Pack",      "savings": 100, "pct_off": 20},
+    {"id": 3,  "tickets": 10, "cost": 700,  "label": "10-Pack",     "savings": 300, "pct_off": 30},
+    {"id": 4,  "tickets": 20, "cost": 1200, "label": "20-Pack",     "savings": 800, "pct_off": 40},
+]
 
 # Constants
-STARTING_BALANCE = 10000  # Starting tokens for new users
+STARTING_BALANCE = 500  # Starting tokens for new users
 LIQUIDITY_PARAMETER = 100  # For AMM pricing (b parameter in LMSR)
+MIN_INITIAL_SHARES = 500  # Minimum shares per side to ensure meaningful price movement
 ELO_BASE = 1000  # Default Elo rating for unknown teams
 REFRESH_INTERVAL_MINUTES = 5  # How often to auto-refresh games from IMLeagues
 
@@ -199,7 +215,66 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class ChatMessage(BaseModel):
+    """Chat message model"""
+    message_id: str
+    market_id: str
+    username: str
+    message: str
+    timestamp: str
+    message_type: str = "chat"  # "chat" or "score_report"
+    upvotes: int = 0
+    downvotes: int = 0
+    voters: Dict[str, str] = {}  # username -> "up" or "down"
+
+
+class ChatRequest(BaseModel):
+    """Request to post a chat message"""
+    market_id: str
+    message: str
+
+
+class ScoreReportRequest(BaseModel):
+    """Request to report the current score of a game"""
+    home_score: int
+    away_score: int
+
+
+class VoteRequest(BaseModel):
+    """Request to upvote or downvote a score report"""
+    vote: str  # "up" or "down"
+
+
+class RafflePurchaseRequest(BaseModel):
+    """Request to buy raffle ticket tier"""
+    tier_id: int  # matches RAFFLE_TIERS id
+
+
+class AdminSettleRequest(BaseModel):
+    """Admin request to manually settle a market with a final score"""
+    market_id: str
+    home_score: int
+    away_score: int
+
+
+class ChatResponse(BaseModel):
+    """Response with chat messages"""
+    success: bool
+    messages: List[ChatMessage]
+
+
 # ============== AUTHENTICATION ==============
+
+def is_admin(user: Optional[Dict]) -> bool:
+    """Check whether the authenticated user is the admin."""
+    return user is not None and user.get("username") == ADMIN_USERNAME
+
+
+def require_admin(user: Optional[Dict]):
+    """Raise 403 if the user is not the admin."""
+    if not is_admin(user):
+        raise HTTPException(status_code=403, detail="Admin access required")
+
 
 async def get_current_user(authorization: Optional[str] = Header(None)) -> Optional[Dict]:
     """Dependency to get current authenticated user from JWT token"""
@@ -272,13 +347,13 @@ def get_elo_seeded_shares(home_team: str, away_team: str, sport: str, b: float =
         home_shares = 0.0
         away_shares = b * math.log(p_away / p_home)
 
-    # LMSR cost of moving from (0,0) to the seeded position — this is the
-    # market-maker's effective investment and should count as initial volume.
-    seeded_q = home_shares if home_shares > 0 else away_shares
-    if seeded_q > 0:
-        initial_volume = b * math.log(math.exp(seeded_q / b) + 1.0) - b * math.log(2.0)
-    else:
-        initial_volume = 0.0
+    # Add minimum shares floor to both sides to ensure meaningful price swings
+    home_shares += MIN_INITIAL_SHARES
+    away_shares += MIN_INITIAL_SHARES
+
+    # LMSR cost of moving from (0,0) to (home_shares, away_shares):
+    #   C(q1, q2) - C(0, 0) = b*log(exp(q1/b) + exp(q2/b)) - b*log(2)
+    initial_volume = b * math.log(math.exp(home_shares / b) + math.exp(away_shares / b)) - b * math.log(2.0)
 
     return home_shares, away_shares, round(home_elo_val, 1), round(away_elo_val, 1), round(initial_volume, 4)
 
@@ -424,6 +499,9 @@ def create_markets_from_games(games: List[Game]):
             }
         else:
             # Update status, winner, and scores (keep existing shares / elo)
+            # NEVER downgrade a market that has already been settled (real result or push)
+            if existing_market.get('status') == 'settled':
+                continue
             market_data = dict(existing_market)
             market_data["status"] = status
             market_data["winner"] = winner
@@ -504,6 +582,79 @@ def get_user_portfolio(user_id: int) -> Portfolio:
         open_positions=open_positions,
         settled_positions=settled_positions
     )
+
+
+def push_stale_closed_markets():
+    """
+    Any market that has been 'closed' (game time passed) but still has no results
+    is treated as a push if:
+      - its game_time is 'FINAL' (game definitively over, no score posted), OR
+      - today is past the game's date
+    All bettors are refunded their cost basis and the market is settled with winner='push'.
+    """
+    closed_markets = db.get_markets_by_status('closed')
+    today = datetime.now().date()
+    pushed = 0
+
+    for market in closed_markets:
+        try:
+            game_time = (market.get('game_time') or '').strip().upper()
+            game_date_str = market.get('game_date', '').strip()
+
+            # Push immediately if the game is marked FINAL with no score
+            is_final_no_score = game_time == 'FINAL'
+
+            # Push if we're past the game date
+            is_past_date = False
+            if game_date_str:
+                game_date = None
+                for fmt in ('%m/%d/%Y', '%Y-%m-%d', '%m-%d-%Y'):
+                    try:
+                        game_date = datetime.strptime(game_date_str, fmt).date()
+                        break
+                    except ValueError:
+                        continue
+                if game_date and today > game_date:
+                    is_past_date = True
+
+            if not is_final_no_score and not is_past_date:
+                continue  # not stale yet
+
+            market_id = market['market_id']
+            positions = db.get_positions_for_market(market_id)
+            refunded = 0
+
+            for pos in positions:
+                refund = round(
+                    pos.get('home_shares', 0) * pos.get('avg_home_price', 0) +
+                    pos.get('away_shares', 0) * pos.get('avg_away_price', 0),
+                    2
+                )
+                if refund <= 0:
+                    continue
+                user = db.get_user_by_id(pos['user_id'])
+                if user:
+                    db.update_user_balance(pos['user_id'], round(user['balance'] + refund, 2))
+                db.upsert_position(
+                    user_id=pos['user_id'],
+                    market_id=market_id,
+                    home_shares=0,
+                    away_shares=0,
+                    avg_home_price=0,
+                    avg_away_price=0
+                )
+                refunded += 1
+
+            market['status'] = 'settled'
+            market['winner'] = 'push'
+            db.upsert_market(market)
+            pushed += 1
+            print(f"[push] Voided {market_id} ({market['home_team']} vs {market['away_team']}); refunded {refunded} user(s)")
+
+        except Exception as e:
+            print(f"[push] Error processing market {market.get('market_id', '?')}: {e}")
+
+    return pushed
 
 
 # ============== API ENDPOINTS ==============
@@ -588,6 +739,7 @@ async def get_user(user: Optional[Dict] = Depends(get_current_user)):
         "username": user["username"],
         "email": user["email"],
         "balance": round(user["balance"], 2),
+        "raffle_tokens": round(user.get("raffle_tokens") or 0, 2),
         "created_at": user["created_at"]
     }
 
@@ -684,6 +836,9 @@ async def execute_trade(trade: TradeRequest, user: Optional[Dict] = Depends(get_
     # Execute trade
     new_balance = user["balance"] - actual_cost
     db.update_user_balance(user_id, new_balance)
+
+    # Credit raffle tokens equal to tokens wagered (lets users earn raffle entries by betting)
+    db.add_raffle_tokens(user_id, actual_cost)
     
     if trade.outcome == 'home':
         market["home_shares"] += shares_to_buy
@@ -922,6 +1077,200 @@ async def get_market_price_history(market_id: str):
 
     history = db.get_price_history(market_id)
     return {"success": True, "market_id": market_id, "history": [opening_point] + history}
+
+
+@app.get("/api/markets/{market_id}/chat", response_model=ChatResponse)
+async def get_chat_messages(market_id: str):
+    """Get all chat messages for a market"""
+    market = db.get_market(market_id)
+    if not market:
+        raise HTTPException(status_code=404, detail="Market not found")
+    
+    messages = chat_messages.get(market_id, [])
+    return ChatResponse(success=True, messages=messages)
+
+
+@app.post("/api/markets/{market_id}/chat")
+async def post_chat_message(
+    market_id: str, 
+    chat_request: ChatRequest,
+    user: Optional[Dict] = Depends(get_current_user)
+):
+    """Post a chat message to a market"""
+    if not user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    market = db.get_market(market_id)
+    if not market:
+        raise HTTPException(status_code=404, detail="Market not found")
+    
+    # Check if market is still active (chat closes at end of game day)
+    # For now, allow chat until market is settled
+    if market["status"] == "settled":
+        raise HTTPException(status_code=403, detail="Chat is closed for settled markets")
+    
+    if not chat_request.message.strip():
+        raise HTTPException(status_code=400, detail="Message cannot be empty")
+    
+    # Create chat message
+    message = ChatMessage(
+        message_id=str(uuid.uuid4()),
+        market_id=market_id,
+        username=user["username"],
+        message=chat_request.message.strip(),
+        timestamp=datetime.utcnow().isoformat()
+    )
+    
+    # Store message
+    if market_id not in chat_messages:
+        chat_messages[market_id] = []
+    chat_messages[market_id].append(message.dict())
+    
+    return {"success": True, "message": message}
+
+
+@app.post("/api/markets/{market_id}/score-report")
+async def post_score_report(
+    market_id: str,
+    report: ScoreReportRequest,
+    user: Optional[Dict] = Depends(get_current_user)
+):
+    """Report the current score of a game as a special chat message"""
+    if not user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
+    market = db.get_market(market_id)
+    if not market:
+        raise HTTPException(status_code=404, detail="Market not found")
+
+    if market["status"] == "settled":
+        raise HTTPException(status_code=403, detail="Market is already settled")
+
+    formatted = (
+        f"{market['home_team']} {report.home_score} \u2013 {market['away_team']} {report.away_score}"
+    )
+
+    message = ChatMessage(
+        message_id=str(uuid.uuid4()),
+        market_id=market_id,
+        username=user["username"],
+        message=formatted,
+        timestamp=datetime.utcnow().isoformat(),
+        message_type="score_report"
+    )
+
+    if market_id not in chat_messages:
+        chat_messages[market_id] = []
+    chat_messages[market_id].append(message.dict())
+
+    return {"success": True, "message": message}
+
+
+@app.post("/api/markets/{market_id}/score-report/{message_id}/vote")
+async def vote_score_report(
+    market_id: str,
+    message_id: str,
+    vote_req: VoteRequest,
+    user: Optional[Dict] = Depends(get_current_user)
+):
+    """Upvote or downvote a score report. Voting the same way again removes the vote."""
+    if not user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
+    if vote_req.vote not in ("up", "down"):
+        raise HTTPException(status_code=400, detail="Vote must be 'up' or 'down'")
+
+    messages = chat_messages.get(market_id, [])
+    msg = next((m for m in messages if m["message_id"] == message_id), None)
+    if not msg:
+        raise HTTPException(status_code=404, detail="Message not found")
+    if msg.get("message_type") != "score_report":
+        raise HTTPException(status_code=400, detail="Can only vote on score reports")
+
+    username = user["username"]
+    voters = msg.setdefault("voters", {})
+    current_vote = voters.get(username)
+
+    # Toggle: clicking the same direction removes the vote
+    if current_vote == vote_req.vote:
+        del voters[username]
+    else:
+        voters[username] = vote_req.vote
+
+    msg["upvotes"] = sum(1 for v in voters.values() if v == "up")
+    msg["downvotes"] = sum(1 for v in voters.values() if v == "down")
+
+    return {"success": True, "message": msg}
+
+
+@app.get("/api/raffle")
+async def get_raffle(user: Optional[Dict] = Depends(get_current_user)):
+    """Get raffle info: prize, tiers, and user's own entry count + raffle token balance.
+    Total ticket pool is intentionally hidden from regular users."""
+    user_tickets = 0
+    user_rt = 0
+    if user:
+        user_tickets = sum(e["tickets"] for e in raffle_entries if e["user_id"] == user["id"])
+        user_rt = round(user.get("raffle_tokens") or 0, 2)
+    return {
+        "success": True,
+        "prize": {
+            "name": "Actian Mystery Swag",
+            "description": "A mystery swag item from Actian! 2 winners will be drawn at the end of the season.",
+            "image_emoji": "\U0001f381"
+        },
+        "tiers": RAFFLE_TIERS,
+        "total_tickets": None,  # Hidden from users
+        "user_tickets": user_tickets,
+        "user_raffle_tokens": user_rt,
+        "raffle_closed": raffle_closed,
+        "raffle_winners": raffle_winners if is_admin(user) else None
+    }
+
+
+@app.post("/api/raffle/buy")
+async def buy_raffle_tickets(
+    req: RafflePurchaseRequest,
+    user: Optional[Dict] = Depends(get_current_user)
+):
+    """Purchase a raffle ticket tier using raffle tokens"""
+    if not user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    if raffle_closed:
+        raise HTTPException(status_code=400, detail="The raffle is closed — no more tickets can be purchased")
+
+    tier = next((t for t in RAFFLE_TIERS if t["id"] == req.tier_id), None)
+    if not tier:
+        raise HTTPException(status_code=400, detail="Invalid tier")
+
+    current_rt = round(user.get("raffle_tokens") or 0, 2)
+    if current_rt < tier["cost"]:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Insufficient raffle tokens: need {tier['cost']}, have {current_rt:.0f}"
+        )
+
+    db.deduct_raffle_tokens(user["id"], tier["cost"])
+    refreshed = db.get_user_by_id(user["id"])
+
+    raffle_entries.append({
+        "user_id": user["id"],
+        "username": user["username"],
+        "tickets": tier["tickets"],
+        "timestamp": datetime.utcnow().isoformat()
+    })
+
+    total_tickets = sum(e["tickets"] for e in raffle_entries)
+    user_tickets = sum(e["tickets"] for e in raffle_entries if e["user_id"] == user["id"])
+
+    return {
+        "success": True,
+        "tickets_purchased": tier["tickets"],
+        "user_tickets": user_tickets,
+        "total_tickets": total_tickets,
+        "new_raffle_tokens": round((refreshed.get("raffle_tokens") or 0), 2),
+        "message": f"You got {tier['tickets']} ticket(s)! You now have {user_tickets} total."
+    }
 
 
 @app.get("/api/portfolio", response_model=Portfolio)
@@ -1492,6 +1841,165 @@ async def health_check():
     return {"status": "healthy", "service": "GT IM Prediction Market API"}
 
 
+# ============== ADMIN ENDPOINTS ==============
+
+@app.post("/api/admin/raffle/run")
+async def admin_run_raffle(user: Optional[Dict] = Depends(get_current_user)):
+    """Admin: draw one winner from the raffle pool. Can be called multiple times for multiple winners.
+    Does NOT auto-close; use /api/admin/raffle/close to stop ticket sales."""
+    require_admin(user)
+    global raffle_winners
+
+    if raffle_closed:
+        raise HTTPException(status_code=400, detail="Raffle is closed \u2014 reopen it before drawing more winners")
+
+    if not raffle_entries:
+        raise HTTPException(status_code=400, detail="No raffle entries \u2014 no tickets have been purchased yet")
+
+    import random
+    # Build weighted pool: one slot per ticket
+    pool = []
+    for entry in raffle_entries:
+        pool.extend([{"user_id": entry["user_id"], "username": entry["username"]}] * entry["tickets"])
+
+    picked = random.choice(pool)
+    winner_user = db.get_user_by_id(picked["user_id"])
+    winner_email = winner_user["email"] if winner_user else "unknown"
+    winner_username = picked["username"]
+    winner_tickets = sum(e["tickets"] for e in raffle_entries if e["user_id"] == picked["user_id"])
+    total_pool = len(pool)
+    draw_num = len(raffle_winners) + 1
+
+    new_winner = {
+        "draw_number": draw_num,
+        "username": winner_username,
+        "email": winner_email,
+        "tickets": winner_tickets,
+        "total_pool": total_pool,
+        "drawn_at": datetime.utcnow().isoformat()
+    }
+    raffle_winners.append(new_winner)
+
+    print(f"[raffle] Draw #{draw_num}: {winner_username} ({winner_email}) \u2014 {winner_tickets}/{total_pool} tickets")
+
+    return {
+        "success": True,
+        "draw_number": draw_num,
+        "winner": new_winner,
+        "all_winners": raffle_winners,
+        "message": f"Draw #{draw_num} winner: {winner_username} ({winner_email})"
+    }
+
+
+@app.post("/api/admin/raffle/close")
+async def admin_close_raffle(user: Optional[Dict] = Depends(get_current_user)):
+    """Admin: close the raffle \u2014 stops new ticket purchases."""
+    require_admin(user)
+    global raffle_closed
+    raffle_closed = True
+    print("[raffle] Raffle closed by admin")
+    return {"success": True, "raffle_closed": True, "message": "Raffle is now closed. No more tickets can be purchased."}
+
+
+@app.post("/api/admin/raffle/open")
+async def admin_open_raffle(user: Optional[Dict] = Depends(get_current_user)):
+    """Admin: reopen the raffle \u2014 allows ticket purchases again."""
+    require_admin(user)
+    global raffle_closed
+    raffle_closed = False
+    print("[raffle] Raffle reopened by admin")
+    return {"success": True, "raffle_closed": False, "message": "Raffle is now open. Ticket purchases are allowed."}
+
+
+@app.post("/api/admin/settle-game")
+async def admin_settle_game(
+    req: AdminSettleRequest,
+    user: Optional[Dict] = Depends(get_current_user)
+):
+    """Admin: manually settle a market with a final score and pay out winners."""
+    require_admin(user)
+
+    market = db.get_market(req.market_id)
+    if not market:
+        raise HTTPException(status_code=404, detail="Market not found")
+
+    if market.get("status") == "settled":
+        raise HTTPException(status_code=400, detail="Market is already settled")
+
+    # Determine winner
+    if req.home_score > req.away_score:
+        winner = "home"
+    elif req.away_score > req.home_score:
+        winner = "away"
+    else:
+        winner = "push"
+
+    # Pay out / refund all positions
+    positions = db.get_positions_for_market(req.market_id)
+    paid_out = 0
+    for pos in positions:
+        if winner == "home":
+            payout = round(pos.get("home_shares", 0), 2)
+        elif winner == "away":
+            payout = round(pos.get("away_shares", 0), 2)
+        else:  # push — refund cost basis
+            payout = round(
+                pos.get("home_shares", 0) * pos.get("avg_home_price", 0) +
+                pos.get("away_shares", 0) * pos.get("avg_away_price", 0),
+                2
+            )
+        if payout > 0:
+            pos_user = db.get_user_by_id(pos["user_id"])
+            if pos_user:
+                db.update_user_balance(pos["user_id"], round(pos_user["balance"] + payout, 2))
+            paid_out += 1
+        # Zero out position regardless
+        db.upsert_position(
+            user_id=pos["user_id"],
+            market_id=req.market_id,
+            home_shares=0,
+            away_shares=0,
+            avg_home_price=0,
+            avg_away_price=0
+        )
+
+    # Settle market
+    market["status"] = "settled"
+    market["winner"] = winner
+    market["home_score"] = str(req.home_score)
+    market["away_score"] = str(req.away_score)
+    db.upsert_market(market)
+
+    print(f"[admin] Settled {req.market_id}: {req.home_score}-{req.away_score}, winner={winner}, paid {paid_out} position(s)")
+
+    return {
+        "success": True,
+        "market_id": req.market_id,
+        "home_team": market["home_team"],
+        "away_team": market["away_team"],
+        "home_score": req.home_score,
+        "away_score": req.away_score,
+        "winner": winner,
+        "positions_paid": paid_out,
+        "message": f"Settled: {market['home_team']} {req.home_score} – {market['away_team']} {req.away_score}. Winner: {winner}. {paid_out} position(s) paid out."
+    }
+
+
+@app.get("/api/admin/raffle/status")
+async def admin_raffle_status(user: Optional[Dict] = Depends(get_current_user)):
+    """Admin: get full raffle status including total tickets and all winners drawn."""
+    require_admin(user)
+    total_tickets = sum(e["tickets"] for e in raffle_entries)
+    return {
+        "success": True,
+        "raffle_closed": raffle_closed,
+        "total_tickets": total_tickets,
+        "total_entrants": len(raffle_entries),
+        "winners": raffle_winners,
+        "draws_so_far": len(raffle_winners)
+    }
+
+
 @app.on_event("startup")
 async def startup_event():
     """Initialize database, load Elo ratings, seed from cache, then start background refresh loop"""
@@ -1517,6 +2025,22 @@ async def startup_event():
     # Kick off the background refresh loop (first run is immediate)
     asyncio.create_task(_refresh_loop())
 
+    # Push any stale closed markets immediately on startup
+    pushed = push_stale_closed_markets()
+    if pushed:
+        print(f"[startup] Pushed {pushed} stale market(s) on boot")
+
+    # Seed admin user if not already present
+    if not db.get_user_by_username(ADMIN_USERNAME):
+        admin_hashed = auth.get_password_hash("Super123")
+        admin_id = db.create_user(ADMIN_USERNAME, "superuser@gmail.com", admin_hashed, STARTING_BALANCE)
+        if admin_id:
+            print(f"[startup] Admin user '{ADMIN_USERNAME}' created (id={admin_id})")
+        else:
+            print(f"[startup] Admin user '{ADMIN_USERNAME}' already exists (email conflict)")
+    else:
+        print(f"[startup] Admin user '{ADMIN_USERNAME}' already registered")
+
 
 async def _refresh_loop():
     """Background task: fetch fresh games from IMLeagues, then repeat every REFRESH_INTERVAL_MINUTES."""
@@ -1540,6 +2064,15 @@ async def _refresh_loop():
                 print("[refresh] No games returned; keeping existing data")
         except Exception as e:
             print(f"[refresh] Error during background refresh: {e}")
+
+        # Push any closed markets that went unresolved past their game day (outside try so it always runs)
+        try:
+            pushed = push_stale_closed_markets()
+            if pushed:
+                print(f"[refresh] Pushed {pushed} stale market(s)")
+        except Exception as e:
+            print(f"[refresh] Error during push check: {e}")
+
         await asyncio.sleep(REFRESH_INTERVAL_MINUTES * 60)
 
 

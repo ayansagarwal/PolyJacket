@@ -61,7 +61,29 @@
         const userBalance = ref(0);
         const selectedSport = ref('All');
         const selectedDate = ref('All');
-        const activeTab = ref('markets'); // 'markets' or 'portfolio'
+        const activeTab = ref('markets'); // 'markets', 'portfolio', or 'raffle'
+
+        // Raffle state
+        const raffleData = ref(null);
+        const raffleBuying = ref(false);
+        const raffleError = ref(null);
+        const raffleSuccess = ref(null);
+        const userRaffleTokens = ref(0);
+
+        // Admin state
+        const isAdmin = computed(() => isLoggedIn.value && user.value?.username === 'superuser');
+        const adminRaffleWinners = ref([]);
+        const adminRaffleLastWinner = ref(null);
+        const adminRaffleRunning = ref(false);
+        const adminRaffleClosing = ref(false);
+        const adminRaffleError = ref(null);
+        const adminSettleMarketId = ref('');
+        const adminSettleHomeScore = ref('');
+        const adminSettleAwayScore = ref('');
+        const adminSettleResult = ref(null);
+        const adminSettleError = ref(null);
+        const adminSettleProcessing = ref(false);
+        const adminAllMarkets = ref([]);
         const showTradeModal = ref(false);
         const selectedMarket = ref(null);
         const tradeOutcome = ref('home');
@@ -86,6 +108,27 @@
         const priceChartCanvasRef = ref(null); // Vue template ref — always current DOM element
         const chartRawHistory = ref([]);  // full history, unfiltered
         const chartView = ref('1w');      // '1h', '1d', '1w'
+
+        // Expanded game view state
+        const showExpandedView = ref(false);
+        const expandedMarket = ref(null);
+        const expandedChartInstance = ref(null);
+        const expandedChartCanvasRef = ref(null);
+        const expandedChartView = ref('1w');
+        const expandedChartKey = ref(0); // incrementing forces Vue to replace the canvas DOM node entirely
+        const expandedChartHistory = ref([]);
+        let expandedChartRenderSeq = 0; // incremented on every render request; stale renders self-abort
+        
+        // Chat state
+        const chatMessages = ref([]);
+        const chatMessage = ref('');
+        const chatLoading = ref(false);
+        const chatError = ref(null);
+        // Score report state
+        const showScoreReport = ref(false);
+        const scoreReportHome = ref('');
+        const scoreReportAway = ref('');
+        const scoreReportLoading = ref(false);
 
         // Computed
         const uniqueSports = computed(() => {
@@ -155,6 +198,13 @@
         const settledPositions = computed(() => {
           if (!portfolio.value) return [];
           return portfolio.value.settled_positions || [];
+        });
+
+        // Get user's position for the expanded market
+        const expandedMarketPosition = computed(() => {
+          if (!expandedMarket.value || !portfolio.value) return null;
+          const allPositions = [...(portfolio.value.open_positions || []), ...(portfolio.value.settled_positions || [])];
+          return allPositions.find(p => p.market_id === expandedMarket.value.market_id) || null;
         });
 
         // Helper to get today's date in the same format as game dates
@@ -324,6 +374,7 @@
                 email: data.email,
                 balance: data.balance
               };
+              if (data.raffle_tokens != null) userRaffleTokens.value = data.raffle_tokens;
             }
           } catch (err) {
             console.error('Error fetching user:', err);
@@ -696,6 +747,457 @@
           tradeResult.value = null;
         }
 
+        async function openExpandedView(market) {
+          expandedChartRenderSeq = 0;
+          expandedMarket.value = market;
+          showExpandedView.value = true;
+          chatMessages.value = [];
+          chatMessage.value = '';
+          chatError.value = null;
+          
+          // Load chat messages
+          await loadChatMessages(market.market_id);
+          
+          // Load price history for the chart
+          await loadExpandedChart(market);
+        }
+
+        function closeExpandedView() {
+          expandedChartRenderSeq = 0;
+          showExpandedView.value = false;
+          expandedMarket.value = null;
+          if (expandedChartInstance.value) {
+            expandedChartInstance.value.destroy();
+            expandedChartInstance.value = null;
+          }
+        }
+
+        async function fetchRaffleData() {
+          try {
+            const headers = token.value ? { 'Authorization': `Bearer ${token.value}` } : {};
+            const response = await fetch('/api/raffle', { headers });
+            if (response.ok) {
+              const data = await response.json();
+              raffleData.value = data;
+              if (data.user_raffle_tokens != null) userRaffleTokens.value = data.user_raffle_tokens;
+            }
+          } catch (err) {
+            console.error('Error fetching raffle:', err);
+          }
+        }
+
+        async function buyRaffleTickets(tierId) {
+          if (!isLoggedIn.value) {
+            raffleError.value = 'Please log in to buy raffle tickets';
+            return;
+          }
+          raffleBuying.value = tierId;
+          raffleError.value = null;
+          raffleSuccess.value = null;
+          try {
+            const response = await fetch('/api/raffle/buy', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.value}`
+              },
+              body: JSON.stringify({ tier_id: tierId })
+            });
+            const data = await response.json();
+            if (data.success) {
+              raffleSuccess.value = data.message;
+              raffleData.value = { ...raffleData.value, total_tickets: data.total_tickets, user_tickets: data.user_tickets };
+              userRaffleTokens.value = data.new_raffle_tokens;
+            } else {
+              raffleError.value = data.detail || 'Purchase failed';
+            }
+          } catch (err) {
+            raffleError.value = 'Purchase failed';
+          } finally {
+            raffleBuying.value = false;
+          }
+        }
+
+        // ===== ADMIN FUNCTIONS =====
+        async function adminFetchMarkets() {
+          try {
+            const response = await fetch('/api/markets', { headers: { 'Authorization': `Bearer ${token.value}` } });
+            const data = await response.json();
+            adminAllMarkets.value = (data.markets || []).filter(m => m.status !== 'settled');
+          } catch (e) { console.error('admin fetch markets', e); }
+          // Also load raffle winners + closed state
+          try {
+            const r = await fetch('/api/admin/raffle/status', { headers: { 'Authorization': `Bearer ${token.value}` } });
+            if (r.ok) {
+              const d = await r.json();
+              adminRaffleWinners.value = d.winners || [];
+            }
+          } catch (e) { /* ignore */ }
+          fetchRaffleData();
+        }
+
+        async function adminRunRaffle() {
+          adminRaffleRunning.value = true;
+          adminRaffleError.value = null;
+          adminRaffleLastWinner.value = null;
+          try {
+            const response = await fetch('/api/admin/raffle/run', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token.value}` }
+            });
+            const data = await response.json();
+            if (response.ok) {
+              adminRaffleLastWinner.value = data.winner;
+              adminRaffleWinners.value = data.all_winners || [];
+              fetchRaffleData();
+            } else {
+              adminRaffleError.value = data.detail || 'Failed to draw winner';
+            }
+          } catch (e) {
+            adminRaffleError.value = 'Request failed';
+          } finally {
+            adminRaffleRunning.value = false;
+          }
+        }
+
+        async function adminCloseRaffle() {
+          if (!confirm('Close the raffle? Ticket purchases will be disabled.')) return;
+          adminRaffleClosing.value = true;
+          try {
+            const response = await fetch('/api/admin/raffle/close', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token.value}` }
+            });
+            const data = await response.json();
+            if (response.ok) { fetchRaffleData(); }
+            else { adminRaffleError.value = data.detail || 'Failed to close raffle'; }
+          } catch (e) { adminRaffleError.value = 'Request failed'; }
+          finally { adminRaffleClosing.value = false; }
+        }
+
+        async function adminOpenRaffle() {
+          adminRaffleClosing.value = true;
+          try {
+            const response = await fetch('/api/admin/raffle/open', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token.value}` }
+            });
+            const data = await response.json();
+            if (response.ok) { fetchRaffleData(); }
+            else { adminRaffleError.value = data.detail || 'Failed to reopen raffle'; }
+          } catch (e) { adminRaffleError.value = 'Request failed'; }
+          finally { adminRaffleClosing.value = false; }
+        }
+
+        async function adminSettleGame() {
+          adminSettleError.value = null;
+          adminSettleResult.value = null;
+          if (!adminSettleMarketId.value) { adminSettleError.value = 'Select a market'; return; }
+          const h = parseInt(adminSettleHomeScore.value);
+          const a = parseInt(adminSettleAwayScore.value);
+          if (isNaN(h) || isNaN(a)) { adminSettleError.value = 'Enter valid scores'; return; }
+          adminSettleProcessing.value = true;
+          try {
+            const response = await fetch('/api/admin/settle-game', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token.value}` },
+              body: JSON.stringify({ market_id: adminSettleMarketId.value, home_score: h, away_score: a })
+            });
+            const data = await response.json();
+            if (response.ok) {
+              adminSettleResult.value = data.message;
+              adminSettleMarketId.value = '';
+              adminSettleHomeScore.value = '';
+              adminSettleAwayScore.value = '';
+              fetchMarkets();
+              adminFetchMarkets();
+            } else {
+              adminSettleError.value = data.detail || 'Settle failed';
+            }
+          } catch (e) {
+            adminSettleError.value = 'Request failed';
+          } finally {
+            adminSettleProcessing.value = false;
+          }
+        }
+        // ===========================
+
+        async function loadChatMessages(marketId) {
+          try {
+            chatLoading.value = true;
+            const response = await fetch(`/api/markets/${marketId}/chat`);
+            const data = await response.json();
+            if (data.success) {
+              chatMessages.value = data.messages;
+            }
+          } catch (err) {
+            console.error('Error loading chat:', err);
+          } finally {
+            chatLoading.value = false;
+          }
+        }
+
+        async function sendChatMessage() {
+          if (!chatMessage.value.trim()) return;
+          if (!isLoggedIn.value) {
+            chatError.value = 'Please log in to chat';
+            return;
+          }
+
+          try {
+            const response = await fetch(`/api/markets/${expandedMarket.value.market_id}/chat`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.value}`
+              },
+              body: JSON.stringify({
+                market_id: expandedMarket.value.market_id,
+                message: chatMessage.value
+              })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+              chatMessages.value.push(data.message);
+              chatMessage.value = '';
+              chatError.value = null;
+              // Scroll to bottom of chat
+              await nextTick();
+              const chatContainer = document.querySelector('.chat-messages');
+              if (chatContainer) {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+              }
+            } else {
+              chatError.value = data.detail || 'Failed to send message';
+            }
+          } catch (err) {
+            console.error('Error sending message:', err);
+            chatError.value = 'Failed to send message';
+          }
+        }
+
+        async function voteOnScoreReport(messageId, vote) {
+          if (!isLoggedIn.value) return;
+          try {
+            const response = await fetch(`/api/markets/${expandedMarket.value.market_id}/score-report/${messageId}/vote`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.value}`
+              },
+              body: JSON.stringify({ vote })
+            });
+            const data = await response.json();
+            if (data.success) {
+              const idx = chatMessages.value.findIndex(m => m.message_id === messageId);
+              if (idx !== -1) chatMessages.value[idx] = data.message;
+            }
+          } catch (err) {
+            console.error('Error voting:', err);
+          }
+        }
+
+        async function sendScoreReport() {
+          if (!isLoggedIn.value) {
+            chatError.value = 'Please log in to report a score';
+            return;
+          }
+          if (scoreReportHome.value === '' || scoreReportAway.value === '') {
+            chatError.value = 'Enter scores for both teams';
+            return;
+          }
+          scoreReportLoading.value = true;
+          try {
+            const response = await fetch(`/api/markets/${expandedMarket.value.market_id}/score-report`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.value}`
+              },
+              body: JSON.stringify({
+                home_score: parseInt(scoreReportHome.value),
+                away_score: parseInt(scoreReportAway.value)
+              })
+            });
+            const data = await response.json();
+            if (data.success) {
+              chatMessages.value.push(data.message);
+              scoreReportHome.value = '';
+              scoreReportAway.value = '';
+              showScoreReport.value = false;
+              chatError.value = null;
+              await nextTick();
+              const chatContainer = document.querySelector('.chat-messages');
+              if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+            } else {
+              chatError.value = data.detail || 'Failed to report score';
+            }
+          } catch (err) {
+            console.error('Error reporting score:', err);
+            chatError.value = 'Failed to report score';
+          } finally {
+            scoreReportLoading.value = false;
+          }
+        }
+
+        async function loadExpandedChart(market) {
+          try {
+            const response = await fetch(`/api/markets/${market.market_id}/history`);
+            const data = await response.json();
+            if (data.success) {
+              expandedChartHistory.value = data.history;
+              await nextTick();
+              renderExpandedChart(market, data.history);
+            }
+          } catch (err) {
+            console.error('Error loading chart:', err);
+          }
+        }
+
+        function renderExpandedChart(market, history) {
+          const canvas = expandedChartCanvasRef.value;
+          if (!canvas) return;
+
+          // Destroy any existing instance before creating a new one
+          if (expandedChartInstance.value) {
+            expandedChartInstance.value.destroy();
+            expandedChartInstance.value = null;
+          }
+
+          const parseUTC = (isoStr) => new Date(isoStr + 'Z');
+          const points = history.map(h => ({
+            x: parseUTC(h.timestamp),
+            home: h.home_price,
+            away: h.away_price
+          }));
+
+          const now = new Date();
+          let xMin;
+          if (expandedChartView.value === '1h') {
+            xMin = new Date(now.getTime() - 3600 * 1000);
+          } else if (expandedChartView.value === '1d') {
+            xMin = new Date(now.getTime() - 86400 * 1000);
+          } else {
+            xMin = new Date(now.getTime() - 7 * 86400 * 1000);
+          }
+
+          const before = points.filter(p => p.x < xMin);
+          const after = points.filter(p => p.x >= xMin);
+
+          const leftSrc = before.length ? before[before.length - 1] : (points[0] || { home: 50, away: 50 });
+          const leftAnchor = { x: new Date(xMin), home: leftSrc.home, away: leftSrc.away };
+
+          const rightSrc = after.length ? after[after.length - 1] : leftSrc;
+          const rightAnchor = { x: new Date(now), home: rightSrc.home, away: rightSrc.away };
+
+          const visiblePoints = [leftAnchor, ...after, rightAnchor];
+
+          let timeUnit, tooltipFmt;
+          if (expandedChartView.value === '1h') {
+            timeUnit = 'minute';
+            tooltipFmt = 'h:mm a';
+          } else if (expandedChartView.value === '1d') {
+            timeUnit = 'hour';
+            tooltipFmt = 'h:mm a';
+          } else {
+            timeUnit = 'day';
+            tooltipFmt = 'MMM d, h:mm a';
+          }
+
+          expandedChartInstance.value = new Chart(canvas, {
+            type: 'line',
+            data: {
+              datasets: [
+                {
+                  label: `${market.home_team}`,
+                  data: visiblePoints.map(p => ({ x: p.x, y: p.home })),
+                  borderColor: '#667eea',
+                  backgroundColor: 'rgba(102,126,234,0.08)',
+                  stepped: 'before',
+                  tension: 0,
+                  fill: true,
+                  pointRadius: 0,
+                  pointHoverRadius: 4,
+                  pointHoverBackgroundColor: '#667eea',
+                  borderWidth: 2
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: { mode: 'steppedHover', intersect: false, axis: 'x' },
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    title: items => items[0] ? items[0].label : '',
+                    label: ctx => {
+                      const home = ctx.parsed.y;
+                      const away = 100 - home;
+                      return [
+                        `${market.home_team}: ${home.toFixed(1)}¢`,
+                        `${market.away_team}: ${away.toFixed(1)}¢`
+                      ];
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  type: 'time',
+                  time: {
+                    unit: timeUnit,
+                    tooltipFormat: tooltipFmt,
+                    displayFormats: {
+                      minute: 'h:mm a',
+                      hour: 'h a',
+                      day: 'MMM d'
+                    }
+                  },
+                  min: xMin,
+                  max: now,
+                  grid: { color: 'rgba(0,0,0,0.05)' }
+                },
+                y: {
+                  min: 0,
+                  max: 100,
+                  ticks: {
+                    callback: value => `${value}¢`
+                  },
+                  grid: { color: 'rgba(0,0,0,0.05)' }
+                }
+              }
+            }
+          });
+        }
+
+        async function changeExpandedChartView(view) {
+          expandedChartView.value = view;
+          if (!expandedMarket.value || expandedChartHistory.value.length === 0) return;
+
+          // Claim this render slot; stale renders will self-abort
+          const mySeq = ++expandedChartRenderSeq;
+
+          // Destroy Chart.js instance before releasing the canvas
+          if (expandedChartInstance.value) {
+            expandedChartInstance.value.destroy();
+            expandedChartInstance.value = null;
+          }
+
+          // Bump the key so Vue tears down the old <canvas> and mounts a fresh one
+          expandedChartKey.value++;
+
+          // Wait for Vue to finish DOM replacement
+          await nextTick();
+
+          // If another tab was clicked while we awaited, bail — the winner will render
+          if (mySeq !== expandedChartRenderSeq) return;
+
+          renderExpandedChart(expandedMarket.value, expandedChartHistory.value);
+        }
+
         function getStatusColor(status) {
           return {
             'open': 'status-open',
@@ -722,6 +1224,24 @@
 
         function formatTokens(amount) {
           return `${amount.toFixed(0)} 🪙`;
+        }
+
+        // Helper functions to handle trading from expanded view
+        function buyFromExpandedView(outcome) {
+          const market = expandedMarket.value;
+          closeExpandedView();
+          setTimeout(() => {
+            openTradeModal(market);
+            tradeOutcome.value = outcome;
+          }, 100);
+        }
+
+        function sellFromExpandedView(outcome) {
+          const position = expandedMarketPosition.value;
+          closeExpandedView();
+          setTimeout(() => {
+            openSellModal(position, outcome);
+          }, 100);
         }
 
         // Initialize
@@ -802,7 +1322,59 @@
           chartView,
           openPriceChart,
           closePriceChart,
-          setChartView
+          setChartView,
+          // Expanded game view
+          showExpandedView,
+          expandedMarket,
+          expandedChartCanvasRef,
+          expandedChartView,
+          expandedChartKey,
+          expandedMarketPosition,
+          openExpandedView,
+          closeExpandedView,
+          changeExpandedChartView,
+          buyFromExpandedView,
+          sellFromExpandedView,
+          // Chat
+          chatMessages,
+          chatMessage,
+          chatLoading,
+          chatError,
+          sendChatMessage,
+          // Raffle
+          raffleData,
+          raffleBuying,
+          raffleError,
+          raffleSuccess,
+          userRaffleTokens,
+          fetchRaffleData,
+          buyRaffleTickets,
+          // Score report
+          showScoreReport,
+          scoreReportHome,
+          scoreReportAway,
+          scoreReportLoading,
+          sendScoreReport,
+          voteOnScoreReport,
+          // Admin
+          isAdmin,
+          adminRaffleWinners,
+          adminRaffleLastWinner,
+          adminRaffleRunning,
+          adminRaffleClosing,
+          adminRaffleError,
+          adminSettleMarketId,
+          adminSettleHomeScore,
+          adminSettleAwayScore,
+          adminSettleResult,
+          adminSettleError,
+          adminSettleProcessing,
+          adminAllMarkets,
+          adminRunRaffle,
+          adminCloseRaffle,
+          adminOpenRaffle,
+          adminSettleGame,
+          adminFetchMarkets
         };
       },
       
@@ -846,6 +1418,19 @@
               @click="activeTab = 'portfolio'"
             >
               💼 Portfolio ({{ openPositions.length }})
+            </button>
+            <button 
+              :class="['tab', { active: activeTab === 'raffle' }]"
+              @click="activeTab = 'raffle'; fetchRaffleData()"
+            >
+              🎟️ Raffle
+            </button>
+            <button
+              v-if="isAdmin"
+              :class="['tab', 'tab-admin', { active: activeTab === 'admin' }]"
+              @click="activeTab = 'admin'; adminFetchMarkets()"
+            >
+              ⚙️ Admin
             </button>
           </div>
 
@@ -914,7 +1499,8 @@
                 <div 
                   v-for="market in openMarkets" 
                   :key="market.market_id"
-                  class="market-card open"
+                  class="market-card open clickable"
+                  @click="openExpandedView(market)"
                 >
                   <div class="market-header">
                     <span class="sport-badge">{{ market.sport }}</span>
@@ -936,7 +1522,7 @@
                       <div class="price">{{ market.home_price.toFixed(1) }}¢</div>
                       <button 
                         class="buy-btn"
-                        @click="openTradeModal(market); tradeOutcome = 'home'"
+                        @click.stop="openTradeModal(market); tradeOutcome = 'home'"
                       >
                         Buy
                       </button>
@@ -948,7 +1534,7 @@
                       <div class="price">{{ market.away_price.toFixed(1) }}¢</div>
                       <button 
                         class="buy-btn"
-                        @click="openTradeModal(market); tradeOutcome = 'away'"
+                        @click.stop="openTradeModal(market); tradeOutcome = 'away'"
                       >
                         Buy
                       </button>
@@ -957,7 +1543,7 @@
 
                   <div class="market-stats">
                     <span>Volume: {{ formatTokens(market.total_volume) }}</span>
-                    <button class="chart-btn" @click="openPriceChart(market)">📈 Price History</button>
+                    <span class="expand-hint">Click to view details 👆</span>
                   </div>
                 </div>
               </div>
@@ -970,7 +1556,8 @@
                 <div 
                   v-for="market in closedMarkets" 
                   :key="market.market_id"
-                  class="market-card closed"
+                  class="market-card closed clickable"
+                  @click="openExpandedView(market)"
                 >
                   <div class="market-header">
                     <span class="sport-badge">{{ market.sport }}</span>
@@ -1009,7 +1596,8 @@
                 <div 
                   v-for="market in settledMarkets" 
                   :key="market.market_id"
-                  class="market-card settled"
+                  class="market-card settled clickable"
+                  @click="openExpandedView(market)"
                 >
                   <div class="market-header">
                     <span class="sport-badge">{{ market.sport }}</span>
@@ -1026,10 +1614,18 @@
                   </div>
 
                   <div class="settlement-info">
-                    <div :class="['winner-banner', market.winner === 'home' ? 'home' : 'away']">
-                      <span class="trophy">🏆</span>
-                      <span>{{ market.winner === 'home' ? market.home_team : market.away_team }} Won</span>
-                    </div>
+                    <template v-if="market.winner === 'push'">
+                      <div class="winner-banner push">
+                        <span class="trophy">↩️</span>
+                        <span>Game Voided</span>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div :class="['winner-banner', market.winner === 'home' ? 'home' : 'away']">
+                        <span class="trophy">🏆</span>
+                        <span>{{ market.winner === 'home' ? market.home_team : market.away_team }} Won</span>
+                      </div>
+                    </template>
                   </div>
                 </div>
               </div>
@@ -1115,6 +1711,166 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Raffle Tab -->
+          <div v-else-if="activeTab === 'raffle'" class="raffle-container">
+            <!-- Raffle Token Balance -->
+            <div class="raffle-balance-bar">
+              <div class="raffle-balance-main">
+                <div class="raffle-balance-info">
+                  <span class="raffle-balance-label">🎟️ Your Raffle Tokens</span>
+                  <span class="raffle-balance-amount">{{ Math.floor(userRaffleTokens).toLocaleString() }} RT</span>
+                </div>
+                <p class="raffle-balance-hint">Raffle tokens are earned automatically whenever you place a bet. 1 token wagered = 1 RT earned.</p>
+              </div>
+              <img src="/static/actian-logo.png" alt="Actian" class="raffle-sponsor-logo">
+            </div>
+
+            <div v-if="!isLoggedIn" class="raffle-login-prompt">
+              <p>🔐 <a href="#" @click.prevent="openAuthModal('login')">Log in</a> to buy raffle tickets and see your entry count.</p>
+            </div>
+
+            <!-- Prize Card -->
+            <div v-if="raffleData" class="raffle-prize-card">
+              <img src="/static/actian-logo.png" alt="Actian" class="prize-logo">
+              <div class="prize-info">
+                <h2 class="prize-name">{{ raffleData.prize.name }}</h2>
+                <p class="prize-desc">{{ raffleData.prize.description }}</p>
+              </div>
+              <div class="prize-odds">
+                <div class="odds-number">{{ raffleData.user_tickets }}</div>
+                <div class="odds-label">your tickets</div>
+              </div>
+            </div>
+
+            <!-- Feedback -->
+            <div v-if="raffleSuccess" class="raffle-success">✅ {{ raffleSuccess }}</div>
+            <div v-if="raffleError" class="raffle-error-msg">❌ {{ raffleError }}</div>
+
+            <!-- Tiers -->
+            <div v-if="raffleData" class="raffle-tiers">
+              <h3 class="tiers-heading">Buy Tickets</h3>
+              <div class="tiers-grid">
+                <div v-for="tier in raffleData.tiers" :key="tier.id" class="tier-card">
+                  <div v-if="tier.pct_off > 0" class="tier-badge">{{ tier.pct_off }}% OFF</div>
+                  <div class="tier-count">{{ tier.tickets }}<span class="tier-unit"> ticket{{ tier.tickets > 1 ? 's' : '' }}</span></div>
+                  <div class="tier-label">{{ tier.label }}</div>
+                  <div class="tier-cost">{{ tier.cost.toLocaleString() }} RT</div>
+                  <div v-if="tier.savings > 0" class="tier-savings">saves {{ tier.savings }} RT</div>
+                  <div v-else class="tier-savings-placeholder"></div>
+                  <button
+                    @click="buyRaffleTickets(tier.id)"
+                    :disabled="!isLoggedIn || raffleBuying === tier.id || userRaffleTokens < tier.cost"
+                    :class="['tier-buy-btn', { 'cant-afford': isLoggedIn && userRaffleTokens < tier.cost }]"
+                  >
+                    <span v-if="raffleBuying === tier.id">Buying…</span>
+                    <span v-else-if="!isLoggedIn">Log in</span>
+                    <span v-else-if="userRaffleTokens < tier.cost">Need {{ (tier.cost - Math.floor(userRaffleTokens)).toLocaleString() }} more RT</span>
+                    <span v-else>Buy</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="raffle-loading">Loading raffle…</div>
+          </div>
+
+          <!-- Admin Tab -->
+          <div v-else-if="activeTab === 'admin'" class="admin-container">
+            <h2 class="admin-heading">⚙️ Admin Panel</h2>
+
+            <!-- Raffle Section -->
+            <div class="admin-card">
+              <h3 class="admin-card-title">🎟️ Raffle — Actian Mystery Swag</h3>
+              <div class="admin-raffle-status-row">
+                <div v-if="raffleData && raffleData.raffle_closed" class="admin-closed-badge">🔒 Raffle Closed</div>
+                <div v-else class="admin-open-badge">🟢 Raffle Open</div>
+                <span class="admin-draws-count" v-if="adminRaffleWinners.length">{{ adminRaffleWinners.length }} winner(s) drawn</span>
+              </div>
+
+              <!-- All drawn winners -->
+              <div v-if="adminRaffleWinners.length" class="admin-winners-list">
+                <div v-for="w in adminRaffleWinners" :key="w.draw_number" class="admin-winner-box">
+                  <div class="admin-winner-label">🏆 Draw #{{ w.draw_number }}</div>
+                  <div class="admin-winner-name">{{ w.username }}</div>
+                  <div class="admin-winner-email">📧 {{ w.email }}</div>
+                  <div class="admin-winner-meta">{{ w.tickets }} ticket(s) &middot; drawn {{ w.drawn_at ? w.drawn_at.slice(0,19).replace('T',' ') : '' }} UTC</div>
+                </div>
+              </div>
+
+              <div v-if="adminRaffleError" class="admin-error">❌ {{ adminRaffleError }}</div>
+
+              <div class="admin-raffle-btn-row">
+                <button
+                  class="admin-btn admin-btn-primary"
+                  :disabled="adminRaffleRunning || (raffleData && raffleData.raffle_closed)"
+                  @click="adminRunRaffle"
+                >
+                  <span v-if="adminRaffleRunning">Drawing…</span>
+                  <span v-else-if="raffleData && raffleData.raffle_closed">Raffle Closed</span>
+                  <span v-else>🎲 Draw Winner{{ adminRaffleWinners.length ? ' Again' : '' }}</span>
+                </button>
+
+                <button
+                  v-if="!(raffleData && raffleData.raffle_closed)"
+                  class="admin-btn admin-btn-danger"
+                  :disabled="adminRaffleClosing"
+                  @click="adminCloseRaffle"
+                >
+                  <span v-if="adminRaffleClosing">Closing…</span>
+                  <span v-else>🔒 Close Raffle</span>
+                </button>
+
+                <button
+                  v-else
+                  class="admin-btn admin-btn-outline"
+                  :disabled="adminRaffleClosing"
+                  @click="adminOpenRaffle"
+                >
+                  <span v-if="adminRaffleClosing">Opening…</span>
+                  <span v-else>🟢 Reopen Raffle</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Settle Game Section -->
+            <div class="admin-card">
+              <h3 class="admin-card-title">🏁 Settle Game</h3>
+              <p class="admin-card-hint">Enter final scores to settle a market and pay out winners.</p>
+              <div class="admin-settle-form">
+                <div class="admin-form-row">
+                  <label class="admin-label">Market</label>
+                  <select v-model="adminSettleMarketId" class="admin-select">
+                    <option value="">— select a market —</option>
+                    <option v-for="m in adminAllMarkets" :key="m.market_id" :value="m.market_id">
+                      {{ m.home_team }} vs {{ m.away_team }} ({{ m.game_date }}) [{{ m.status }}]
+                    </option>
+                  </select>
+                </div>
+                <div class="admin-form-scores" v-if="adminSettleMarketId">
+                  <div class="admin-score-field">
+                    <label class="admin-label">{{ adminAllMarkets.find(m=>m.market_id===adminSettleMarketId)?.home_team || 'Home' }} Score</label>
+                    <input type="number" v-model.number="adminSettleHomeScore" min="0" class="admin-score-input" placeholder="0">
+                  </div>
+                  <div class="admin-score-sep">–</div>
+                  <div class="admin-score-field">
+                    <label class="admin-label">{{ adminAllMarkets.find(m=>m.market_id===adminSettleMarketId)?.away_team || 'Away' }} Score</label>
+                    <input type="number" v-model.number="adminSettleAwayScore" min="0" class="admin-score-input" placeholder="0">
+                  </div>
+                </div>
+                <div v-if="adminSettleResult" class="admin-success">✅ {{ adminSettleResult }}</div>
+                <div v-if="adminSettleError" class="admin-error">❌ {{ adminSettleError }}</div>
+                <button
+                  class="admin-btn admin-btn-primary"
+                  :disabled="adminSettleProcessing || !adminSettleMarketId"
+                  @click="adminSettleGame"
+                >
+                  <span v-if="adminSettleProcessing">Settling…</span>
+                  <span v-else>🏁 Settle Game</span>
+                </button>
               </div>
             </div>
           </div>
@@ -1268,6 +2024,202 @@
                 <div v-show="priceChartData !== null && priceChartData.length === 0" class="chart-loading">Could not load price history.</div>
                 <div v-show="priceChartData !== null && priceChartData.length > 0" class="chart-container">
                   <canvas ref="priceChartCanvasRef"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expanded Game View Modal -->
+          <div v-if="showExpandedView" class="modal-overlay" @click="closeExpandedView">
+            <div class="expanded-game-modal" @click.stop>
+              <div class="expanded-header">
+                <div class="expanded-title">
+                  <span class="sport-badge">{{ expandedMarket.sport }}</span>
+                  <h2>{{ expandedMarket.home_team }} vs {{ expandedMarket.away_team }}</h2>
+                  <span class="status-badge" :class="getStatusColor(expandedMarket.status)">
+                    {{ getStatusIcon(expandedMarket.status) }} {{ getStatusText(expandedMarket.status) }}
+                  </span>
+                </div>
+                <button class="close-btn" @click="closeExpandedView">×</button>
+              </div>
+
+              <div class="expanded-body">
+                <!-- Top Section: Game Info -->
+                <div class="expanded-info-section">
+                  <div class="game-details">
+                    <div class="info-item">
+                      <span class="info-label">📅 Date:</span>
+                      <span class="info-value">{{ expandedMarket.game_date }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">⏰ Time:</span>
+                      <span class="info-value">{{ expandedMarket.game_time }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">📊 Volume:</span>
+                      <span class="info-value">{{ formatTokens(expandedMarket.total_volume) }}</span>
+                    </div>
+                    <div v-if="expandedMarket.status === 'settled'" class="info-item">
+                      <span class="info-label">🏆 Winner:</span>
+                      <span class="info-value">
+                        {{ expandedMarket.winner === 'home' ? expandedMarket.home_team : expandedMarket.away_team }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="current-odds">
+                    <div class="odds-card">
+                      <div class="team-name">{{ expandedMarket.home_team }}</div>
+                      <div class="elo-badge" v-if="expandedMarket.home_elo != null">Elo {{ expandedMarket.home_elo }}</div>
+                      <div class="price-large">{{ expandedMarket.home_price.toFixed(1) }}¢</div>
+                    </div>
+                    <div class="vs-divider">VS</div>
+                    <div class="odds-card">
+                      <div class="team-name">{{ expandedMarket.away_team }}</div>
+                      <div class="elo-badge" v-if="expandedMarket.away_elo != null">Elo {{ expandedMarket.away_elo }}</div>
+                      <div class="price-large">{{ expandedMarket.away_price.toFixed(1) }}¢</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bottom Section: Chart + Trading (Left) and Chat (Right) -->
+                <div class="expanded-content-grid">
+                  <!-- Left: Chart and Trading -->
+                  <div class="expanded-chart-section">
+                    <div class="section-header">
+                      <h3>📈 Price History</h3>
+                      <div class="chart-view-btns">
+                        <button :class="['chart-view-btn', { active: expandedChartView === '1h' }]" @click="changeExpandedChartView('1h')">1H</button>
+                        <button :class="['chart-view-btn', { active: expandedChartView === '1d' }]" @click="changeExpandedChartView('1d')">1D</button>
+                        <button :class="['chart-view-btn', { active: expandedChartView === '1w' }]" @click="changeExpandedChartView('1w')">1W</button>
+                      </div>
+                    </div>
+                    <div class="chart-container-expanded">
+                      <canvas :key="expandedChartKey" ref="expandedChartCanvasRef"></canvas>
+                    </div>
+
+                    <!-- Trading Options -->
+                    <div v-if="expandedMarket.status === 'open'" class="trading-section">
+                      <h4>Buy Shares</h4>
+                      <div class="trade-buttons">
+                        <button class="trade-btn buy-home" @click="buyFromExpandedView('home')">
+                          Buy {{ expandedMarket.home_team }}
+                        </button>
+                        <button class="trade-btn buy-away" @click="buyFromExpandedView('away')">
+                          Buy {{ expandedMarket.away_team }}
+                        </button>
+                      </div>
+                      
+                      <!-- Sell Options - only show if user has shares -->
+                      <div v-if="isLoggedIn && expandedMarketPosition && (expandedMarketPosition.home_shares > 0 || expandedMarketPosition.away_shares > 0)" class="sell-options">
+                        <h4>Sell Shares</h4>
+                        <div class="trade-buttons">
+                          <button v-if="expandedMarketPosition.home_shares > 0" class="trade-btn sell-home" @click="sellFromExpandedView('home')">
+                            Sell {{ expandedMarket.home_team }} ({{ expandedMarketPosition.home_shares.toFixed(2) }})
+                          </button>
+                          <button v-if="expandedMarketPosition.away_shares > 0" class="trade-btn sell-away" @click="sellFromExpandedView('away')">
+                            Sell {{ expandedMarket.away_team }} ({{ expandedMarketPosition.away_shares.toFixed(2) }})
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div v-else-if="expandedMarket.status === 'closed'" class="trading-section">
+                      <p class="status-message">🔒 Trading is closed for this market</p>
+                    </div>
+                    <div v-else-if="expandedMarket.status === 'settled'" class="trading-section">
+                      <template v-if="expandedMarket.winner === 'push'">
+                        <p class="status-message">↩️ Bet pushed – no result was posted. Your bets have been refunded.</p>
+                      </template>
+                      <template v-else>
+                        <p class="status-message">✅ Market has been settled</p>
+                      </template>
+                    </div>
+                  </div>
+
+                  <!-- Right: Chat -->
+                  <div class="expanded-chat-section">
+                    <div class="section-header">
+                      <h3>💬 Discussion</h3>
+                      <span v-if="expandedMarket.status === 'settled'" class="chat-closed-badge">Closed</span>
+                    </div>
+                    
+                    <div class="chat-messages">
+                      <div v-if="chatLoading" class="chat-loading">Loading messages...</div>
+                      <div v-else-if="chatMessages.length === 0" class="no-messages">
+                        <p>No messages yet. Be the first to comment!</p>
+                      </div>
+                      <div v-else>
+                        <div v-for="msg in chatMessages" :key="msg.message_id"
+                             :class="['chat-message', msg.message_type === 'score_report' ? 'score-report-msg' : '']">
+                          <template v-if="msg.message_type === 'score_report'">
+                            <div class="score-report-label">📊 Score Update</div>
+                            <div class="score-report-score">{{ msg.message }}</div>
+                            <div class="score-report-footer">
+                              <div class="score-report-votes">
+                                <button @click.stop="voteOnScoreReport(msg.message_id, 'up')"
+                                        :class="['vote-btn', 'vote-up', { active: msg.voters && user && msg.voters[user.username] === 'up' }]"
+                                        :disabled="!isLoggedIn"
+                                        :title="isLoggedIn ? 'Upvote' : 'Log in to vote'">
+                                  👍 {{ msg.upvotes || 0 }}
+                                </button>
+                                <button @click.stop="voteOnScoreReport(msg.message_id, 'down')"
+                                        :class="['vote-btn', 'vote-down', { active: msg.voters && user && msg.voters[user.username] === 'down' }]"
+                                        :disabled="!isLoggedIn"
+                                        :title="isLoggedIn ? 'Downvote' : 'Log in to vote'">
+                                  👎 {{ msg.downvotes || 0 }}
+                                </button>
+                              </div>
+                              <span class="score-report-meta">by {{ msg.username }} · {{ new Date(msg.timestamp).toLocaleTimeString() }}</span>
+                            </div>
+                          </template>
+                          <template v-else>
+                            <div class="message-header">
+                              <span class="message-username">{{ msg.username }}</span>
+                              <span class="message-time">{{ new Date(msg.timestamp).toLocaleString() }}</span>
+                            </div>
+                            <div class="message-content">{{ msg.message }}</div>
+                          </template>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div v-if="expandedMarket.status !== 'settled'" class="chat-input-section">
+                      <div v-if="!isLoggedIn" class="chat-login-prompt">
+                        <p>Please <a href="#" @click.prevent="openAuthModal('login')">login</a> to chat</p>
+                      </div>
+                      <div v-else>
+                        <div class="chat-input-container">
+                          <input 
+                            v-model="chatMessage" 
+                            @keyup.enter="sendChatMessage"
+                            type="text" 
+                            placeholder="Type your message..."
+                            class="chat-input"
+                            maxlength="500"
+                          >
+                          <button @click="sendChatMessage" class="send-btn" :disabled="!chatMessage.trim()">Send</button>
+                          <button @click="showScoreReport = !showScoreReport" class="score-report-toggle-btn" title="Report current score">📊</button>
+                        </div>
+                        <div v-if="showScoreReport" class="score-report-form">
+                          <div class="score-report-row">
+                            <span class="score-team-label">{{ expandedMarket.home_team }}</span>
+                            <input v-model="scoreReportHome" type="number" min="0" placeholder="0" class="score-input">
+                            <span class="score-sep">–</span>
+                            <input v-model="scoreReportAway" type="number" min="0" placeholder="0" class="score-input">
+                            <span class="score-team-label">{{ expandedMarket.away_team }}</span>
+                          </div>
+                          <div class="score-report-actions">
+                            <button @click="sendScoreReport" class="submit-score-btn" :disabled="scoreReportLoading || scoreReportHome === '' || scoreReportAway === ''">{{ scoreReportLoading ? 'Posting...' : 'Post Score' }}</button>
+                            <button @click="showScoreReport = false" class="cancel-score-btn">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-if="chatError" class="chat-error">{{ chatError }}</div>
+                    </div>
+                    <div v-else class="chat-closed-message">
+                      <p>Chat is closed for settled markets</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1812,6 +2764,12 @@
       color: #764ba2;
     }
 
+    .winner-banner.push {
+      background: linear-gradient(135deg, #f3f4f620, #e5e7eb40);
+      color: #6b7280;
+      border: 2px dashed #d1d5db;
+    }
+
     .trophy {
       font-size: 1.5rem;
       margin-right: 8px;
@@ -2308,6 +3266,1137 @@
       .tabs {
         flex-direction: column;
       }
+    }
+
+    /* Clickable Market Cards */
+    .market-card.clickable {
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .market-card.clickable:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .expand-hint {
+      font-size: 0.85rem;
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    /* Expanded Game View Modal */
+    .expanded-game-modal {
+      background: white;
+      border-radius: 20px;
+      width: 95%;
+      max-width: 1400px;
+      max-height: 95vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .expanded-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      border-bottom: 2px solid #f0f0f0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .expanded-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .expanded-title h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .expanded-title .sport-badge {
+      background: rgba(255,255,255,0.3);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .expanded-title .status-badge {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    .expanded-body {
+      overflow-y: auto;
+      flex: 1;
+      padding: 16px 24px;
+    }
+
+    .expanded-info-section {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      margin-bottom: 16px;
+      padding: 16px;
+      background: #f9f9f9;
+      border-radius: 12px;
+    }
+
+    .game-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      color: #666;
+      font-weight: 600;
+    }
+
+    .info-value {
+      font-size: 0.95rem;
+      color: #333;
+      font-weight: 700;
+    }
+
+    .current-odds {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .odds-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      min-width: 120px;
+    }
+
+    .odds-card .team-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .price-large {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #667eea;
+    }
+
+    .vs-divider {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #999;
+    }
+
+    .expanded-content-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 16px;
+      height: calc(95vh - 340px);
+    }
+
+    .expanded-chart-section,
+    .expanded-chat-section {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .section-header h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .chart-container-expanded {
+      flex: 1;
+      min-height: 200px;
+      margin-bottom: 12px;
+    }
+
+    .trading-section {
+      padding-top: 12px;
+      border-top: 2px solid #f0f0f0;
+    }
+
+    .trading-section h4 {
+      margin: 0 0 10px 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .trade-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .trade-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .trade-btn.buy-home {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .trade-btn.buy-away {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+    }
+
+    .trade-btn.sell-home,
+    .trade-btn.sell-away {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white;
+    }
+
+    .trade-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .sell-options {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 2px solid #f0f0f0;
+    }
+
+    .sell-options h4 {
+      margin: 0 0 10px 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .status-message {
+      text-align: center;
+      padding: 12px;
+      color: #666;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Chat Section */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 12px;
+      padding: 12px;
+      background: #f9f9f9;
+      border-radius: 12px;
+    }
+
+    .chat-loading,
+    .no-messages {
+      text-align: center;
+      padding: 20px 12px;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    .chat-message {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .message-username {
+      font-weight: 700;
+      color: #667eea;
+      font-size: 0.85rem;
+    }
+
+    .message-time {
+      font-size: 0.7rem;
+      color: #999;
+    }
+
+    .message-content {
+      color: #333;
+      line-height: 1.4;
+      word-wrap: break-word;
+      font-size: 0.9rem;
+    }
+
+    .chat-input-section {
+      border-top: 2px solid #f0f0f0;
+      padding-top: 12px;
+    }
+
+    .chat-login-prompt {
+      text-align: center;
+      padding: 12px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .chat-login-prompt a {
+      color: #667eea;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .chat-login-prompt a:hover {
+      text-decoration: underline;
+    }
+
+    .chat-input-container {
+      display: flex;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: border-color 0.3s;
+    }
+
+    .score-report-msg {
+      background: linear-gradient(135deg, #fff8e1, #fff3cd) !important;
+      border-left: 4px solid #f59e0b !important;
+      padding: 10px 12px !important;
+    }
+
+    .score-report-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #b45309;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .score-report-score {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #1a1a1a;
+      letter-spacing: 0.02em;
+    }
+
+    .score-report-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      gap: 8px;
+    }
+
+    .score-report-meta {
+      font-size: 0.7rem;
+      color: #999;
+    }
+
+    .score-report-votes {
+      display: flex;
+      gap: 6px;
+    }
+
+    .vote-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      border: 2px solid #e5e7eb;
+      background: white;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: #6b7280;
+    }
+
+    .vote-btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .vote-btn:not(:disabled):hover {
+      border-color: #d1d5db;
+      background: #f9fafb;
+    }
+
+    .vote-btn.vote-up.active {
+      background: #d1fae5;
+      border-color: #34d399;
+      color: #065f46;
+    }
+
+    .vote-btn.vote-down.active {
+      background: #fee2e2;
+      border-color: #f87171;
+      color: #991b1b;
+    }
+
+    .score-report-toggle-btn {
+      padding: 8px 10px;
+      background: #fff8e1;
+      border: 2px solid #f59e0b;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .score-report-toggle-btn:hover {
+      background: #fef3c7;
+    }
+
+    .score-report-form {
+      margin-top: 10px;
+      padding: 12px;
+      background: #fff8e1;
+      border: 2px solid #f59e0b;
+      border-radius: 10px;
+    }
+
+    .score-report-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .score-team-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #374151;
+      flex: 1;
+      min-width: 60px;
+    }
+
+    .score-input {
+      width: 52px;
+      padding: 6px 8px;
+      border: 2px solid #f59e0b;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: center;
+      background: white;
+    }
+
+    .score-input:focus {
+      outline: none;
+      border-color: #d97706;
+    }
+
+    .score-sep {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #6b7280;
+    }
+
+    .score-report-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .submit-score-btn {
+      flex: 1;
+      padding: 7px 14px;
+      background: #f59e0b;
+      color: white;
+      border: none;
+      border-radius: 7px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .submit-score-btn:hover:not(:disabled) {
+      background: #d97706;
+    }
+
+    .submit-score-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .cancel-score-btn {
+      padding: 7px 14px;
+      background: white;
+      color: #6b7280;
+      border: 2px solid #e5e7eb;
+      border-radius: 7px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .cancel-score-btn:hover {
+      background: #f9fafb;
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .send-btn {
+      padding: 8px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .send-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .chat-error {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: #ffe0e0;
+      color: #cc0000;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .chat-closed-badge {
+      background: #ffcc00;
+      color: #333;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .chat-closed-message {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+      font-style: italic;
+    }
+
+    /* Responsive adjustments for expanded view */
+    @media (max-width: 1024px) {
+      .expanded-content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .expanded-info-section {
+        grid-template-columns: 1fr;
+      }
+
+      .current-odds {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .expanded-game-modal {
+        width: 98%;
+        max-height: 95vh;
+      }
+
+      .expanded-header {
+        padding: 16px 20px;
+      }
+
+      .expanded-body {
+        padding: 16px 20px;
+      }
+
+      .expanded-title {
+        flex-wrap: wrap;
+      }
+
+      .expanded-title h2 {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* ===== RAFFLE TAB ===== */
+    .raffle-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    .raffle-balance-bar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      padding: 20px 24px;
+      color: white;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .raffle-balance-main {
+      flex: 1;
+    }
+
+    .raffle-sponsor-logo {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+      flex-shrink: 0;
+    }
+
+    .raffle-balance-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .raffle-balance-label {
+      font-size: 1rem;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+
+    .raffle-balance-amount {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .raffle-balance-hint {
+      font-size: 0.8rem;
+      opacity: 0.75;
+      margin: 0;
+    }
+
+    .raffle-login-prompt {
+      text-align: center;
+      padding: 16px;
+      background: #f9fafb;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      color: #6b7280;
+    }
+
+    .raffle-login-prompt a {
+      color: #667eea;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .raffle-prize-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: linear-gradient(135deg, #fff8e1 0%, #fef3c7 100%);
+      border: 2px solid #f59e0b;
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .prize-logo {
+      height: 56px;
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background: white;
+      padding: 6px 10px;
+    }
+
+    .prize-info {
+      flex: 1;
+    }
+
+    .prize-name {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #92400e;
+      margin: 0 0 6px;
+    }
+
+    .prize-desc {
+      font-size: 0.9rem;
+      color: #78350f;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .prize-odds {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      border-radius: 12px;
+      padding: 12px 18px;
+      border: 2px solid #f59e0b;
+      flex-shrink: 0;
+      gap: 2px;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .odds-number {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #92400e;
+      line-height: 1;
+    }
+
+    .odds-label {
+      font-size: 0.65rem;
+      color: #b45309;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .odds-divider {
+      font-size: 1rem;
+      color: #d97706;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .raffle-success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 2px solid #34d399;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .raffle-error-msg {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #f87171;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .tiers-heading {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin: 0 0 16px;
+    }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .tiers-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .tier-card {
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .tier-card:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+    }
+
+    .tier-badge {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .tier-count {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #1a1a2e;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .tier-unit {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+
+    .tier-label {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .tier-cost {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #667eea;
+      margin-bottom: 4px;
+    }
+
+    .tier-savings {
+      font-size: 0.75rem;
+      color: #16a34a;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .tier-savings-placeholder {
+      height: 18px;
+      margin-bottom: 14px;
+    }
+
+    .tier-buy-btn {
+      width: 100%;
+      padding: 9px 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .tier-buy-btn:hover:not(:disabled) {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .tier-buy-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .tier-buy-btn.cant-afford {
+      background: #e5e7eb;
+      color: #9ca3af;
+    }
+
+    .raffle-loading {
+      text-align: center;
+      padding: 40px;
+      color: #9ca3af;
+    }
+
+    /* ======= ADMIN PANEL ======= */
+    .tab-admin { background: #1a1a2e !important; color: #f59e0b !important; }
+    .tab-admin.active { background: #0f0f1a !important; border-bottom-color: #f59e0b !important; }
+
+    .admin-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .admin-heading {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin: 0 0 4px;
+    }
+
+    .admin-card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .admin-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 0;
+    }
+
+    .admin-card-hint {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin: -8px 0 0;
+    }
+
+    .admin-closed-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+
+    .admin-open-badge {
+      display: inline-block;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+
+    .admin-raffle-status-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .admin-draws-count {
+      font-size: 0.82rem;
+      color: #6b7280;
+      font-weight: 600;
+    }
+
+    .admin-raffle-btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .admin-winners-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .admin-btn-outline {
+      background: white;
+      color: #374151;
+      border: 2px solid #d1d5db;
+    }
+
+    .admin-btn-outline:hover:not(:disabled) {
+      border-color: #9ca3af;
+    }
+
+    .admin-winner-box {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border: 1px solid #86efac;
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .admin-winner-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #15803d;
+    }
+
+    .admin-winner-name {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #14532d;
+    }
+
+    .admin-winner-email {
+      font-size: 0.95rem;
+      color: #166534;
+      font-weight: 600;
+    }
+
+    .admin-winner-meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .admin-btn {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      width: fit-content;
+    }
+
+    .admin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .admin-btn-primary {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+    }
+
+    .admin-btn-danger {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: white;
+    }
+
+    .admin-error {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+
+    .admin-success {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      color: #15803d;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+
+    .admin-settle-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .admin-form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .admin-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .admin-select {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: white;
+      color: #1a1a2e;
+      width: 100%;
+    }
+
+    .admin-form-scores {
+      display: flex;
+      align-items: flex-end;
+      gap: 14px;
+    }
+
+    .admin-score-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .admin-score-input {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-align: center;
+      width: 100%;
+    }
+
+    .admin-score-sep {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #6b7280;
+      padding-bottom: 6px;
     }
   </style>
 </body>

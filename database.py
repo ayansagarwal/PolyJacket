@@ -25,7 +25,7 @@ def init_database():
             username TEXT UNIQUE NOT NULL,
             email TEXT UNIQUE NOT NULL,
             hashed_password TEXT NOT NULL,
-            balance REAL DEFAULT 10000,
+            balance REAL DEFAULT 500,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             last_login TIMESTAMP
         )
@@ -90,6 +90,13 @@ def init_database():
         )
     """)
 
+    # Migrate: add raffle_tokens column if it doesn't exist yet
+    try:
+        cursor.execute("ALTER TABLE users ADD COLUMN raffle_tokens REAL DEFAULT 0")
+        conn.commit()
+    except sqlite3.OperationalError:
+        pass  # Column already exists
+
     # Create indexes
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_markets_status ON markets(status)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_positions_user ON positions(user_id)")
@@ -110,7 +117,7 @@ def get_connection():
 
 # ============== USER OPERATIONS ==============
 
-def create_user(username: str, email: str, hashed_password: str, starting_balance: float = 10000) -> Optional[int]:
+def create_user(username: str, email: str, hashed_password: str, starting_balance: float = 500) -> Optional[int]:
     """Create new user, returns user_id or None if username/email exists"""
     try:
         conn = get_connection()
@@ -293,6 +300,37 @@ def get_position(user_id: int, market_id: str) -> Optional[Dict]:
     if row:
         return dict(row)
     return None
+
+
+def add_raffle_tokens(user_id: int, amount: float):
+    """Add raffle tokens to a user's balance"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET raffle_tokens = COALESCE(raffle_tokens, 0) + ? WHERE id = ?", (amount, user_id))
+    conn.commit()
+    conn.close()
+
+
+def deduct_raffle_tokens(user_id: int, amount: float):
+    """Deduct raffle tokens from a user's balance"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET raffle_tokens = COALESCE(raffle_tokens, 0) - ? WHERE id = ?", (amount, user_id))
+    conn.commit()
+    conn.close()
+
+
+def get_positions_for_market(market_id: str) -> List[Dict]:
+    """Get all positions for a market (across all users with non-zero shares)"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT * FROM positions
+        WHERE market_id = ? AND (home_shares > 0 OR away_shares > 0)
+    """, (market_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
 
 
 def delete_empty_positions(user_id: int):
