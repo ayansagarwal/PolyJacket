@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PolyJacket - GT IM Prediction Market</title>
+</head>
+<body>
+  <div id="app"></div>
+  
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  
+  <script type="module">
+    const { createApp, ref, computed, onMounted } = Vue;
+    
+    createApp({
+      setup() {
+        // State
+        const loading = ref(true);
+        const error = ref(null);
+        const markets = ref([]);
+        const portfolio = ref(null);
+        const userBalance = ref(0);
+        const selectedSport = ref('All');
+        const selectedDate = ref('All');
+        const activeTab = ref('markets'); // 'markets' or 'portfolio'
+        const showTradeModal = ref(false);
+        const selectedMarket = ref(null);
+        const tradeOutcome = ref('home');
+        const tradeAmount = ref(100);
+        const tradeProcessing = ref(false);
+        const tradeResult = ref(null);
+
+        // Computed
+        const uniqueSports = computed(() => {
+          const sports = new Set(markets.value.map(m => m.sport));
+          return Array.from(sports).sort();
+        });
+
+        const uniqueDates = computed(() => {
+          const dates = new Set(markets.value.map(m => m.game_date).filter(d => d));
+          return Array.from(dates).sort();
+        });
+
+        const filteredMarkets = computed(() => {
+          let filtered = markets.value;
+          
+          // Filter by sport
+          if (selectedSport.value !== 'All') {
+            filtered = filtered.filter(m => m.sport === selectedSport.value);
+          }
+          
+          // Filter by date
+          if (selectedDate.value !== 'All') {
+            filtered = filtered.filter(m => m.game_date === selectedDate.value);
+          }
+          
+          return filtered;
+        });
+
+        const openMarkets = computed(() => 
+          filteredMarkets.value.filter(m => m.status === 'open')
+        );
+
+        const closedMarkets = computed(() => 
+          filteredMarkets.value.filter(m => m.status === 'closed')
+        );
+
+        const settledMarkets = computed(() => 
+          filteredMarkets.value.filter(m => m.status === 'settled')
+        );
+
+        const totalValue = computed(() => {
+          if (!portfolio.value) return 0;
+          return portfolio.value.total_value;
+        });
+
+        const openPositions = computed(() => {
+          if (!portfolio.value) return [];
+          return portfolio.value.open_positions || [];
+        });
+
+        const settledPositions = computed(() => {
+          if (!portfolio.value) return [];
+          return portfolio.value.settled_positions || [];
+        });
+
+        // Helper to get today's date in the same format as game dates
+        function getTodayDate() {
+          const today = new Date();
+          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const month = months[today.getMonth()];
+          const day = today.getDate();
+          const year = today.getFullYear();
+          return `${month} ${day}, ${year}`;
+        }
+
+        // Methods
+        async function fetchMarkets() {
+          try {
+            loading.value = true;
+            error.value = null;
+            const response = await fetch('/api/markets');
+            const data = await response.json();
+            if (data.success) {
+              markets.value = data.markets;
+              // Sort by status: open first, then closed, then settled
+              markets.value.sort((a, b) => {
+                const statusOrder = { 'open': 0, 'closed': 1, 'settled': 2 };
+                return statusOrder[a.status] - statusOrder[b.status];
+              });
+              
+              // Auto-select today's date if available
+              const todayDate = getTodayDate();
+              const dates = new Set(markets.value.map(m => m.game_date).filter(d => d));
+              if (dates.has(todayDate) && selectedDate.value === 'All') {
+                selectedDate.value = todayDate;
+              }
+            } else {
+              error.value = 'Failed to load markets';
+            }
+          } catch (err) {
+            error.value = 'Error connecting to server';
+            console.error(err);
+          } finally {
+            loading.value = false;
+          }
+        }
+
+        async function fetchUser() {
+          try {
+            const response = await fetch('/api/user');
+            const data = await response.json();
+            userBalance.value = data.balance;
+          } catch (err) {
+            console.error('Error fetching user:', err);
+          }
+        }
+
+        async function fetchPortfolio() {
+          try {
+            const response = await fetch('/api/portfolio');
+            const data = await response.json();
+            portfolio.value = data;
+            userBalance.value = data.balance;
+          } catch (err) {
+            console.error('Error fetching portfolio:', err);
+          }
+        }
+
+        async function executeTrade() {
+          try {
+            tradeProcessing.value = true;
+            tradeResult.value = null;
+            
+            const response = await fetch('/api/trade', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                market_id: selectedMarket.value.market_id,
+                outcome: tradeOutcome.value,
+                amount: parseFloat(tradeAmount.value)
+              })
+            });
+
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
+              tradeResult.value = {
+                success: true,
+                message: `Successfully purchased ${data.shares_purchased} shares at ${data.price_per_share.toFixed(2)} tokens per share!`,
+                data: data
+              };
+              
+              // Refresh data
+              await fetchMarkets();
+              await fetchPortfolio();
+              
+              // Reset form
+              setTimeout(() => {
+                showTradeModal.value = false;
+                tradeResult.value = null;
+                tradeAmount.value = 100;
+              }, 2000);
+            } else {
+              tradeResult.value = {
+                success: false,
+                message: data.detail || 'Trade failed'
+              };
+            }
+          } catch (err) {
+            tradeResult.value = {
+              success: false,
+              message: 'Error executing trade'
+            };
+            console.error(err);
+          } finally {
+            tradeProcessing.value = false;
+          }
+        }
+
+        function openTradeModal(market) {
+          selectedMarket.value = market;
+          showTradeModal.value = true;
+          tradeOutcome.value = 'home';
+          tradeAmount.value = 100;
+          tradeResult.value = null;
+        }
+
+        function closeTradeModal() {
+          showTradeModal.value = false;
+          selectedMarket.value = null;
+          tradeResult.value = null;
+        }
+
+        function getStatusColor(status) {
+          return {
+            'open': 'status-open',
+            'closed': 'status-closed',
+            'settled': 'status-settled'
+          }[status] || '';
+        }
+
+        function getStatusIcon(status) {
+          return {
+            'open': '🟢',
+            'closed': '🔴',
+            'settled': '✅'
+          }[status] || '';
+        }
+
+        function getStatusText(status) {
+          return {
+            'open': 'Open',
+            'closed': 'Closed',
+            'settled': 'Settled'
+          }[status] || status;
+        }
+
+        function formatTokens(amount) {
+          return `${amount.toFixed(0)} 🪙`;
+        }
+
+        // Initialize
+        onMounted(async () => {
+          await fetchUser();
+          await fetchMarkets();
+          await fetchPortfolio();
+        });
+
+        return {
+          loading,
+          error,
+          markets,
+          portfolio,
+          userBalance,
+          selectedSport,
+          selectedDate,
+          uniqueDates,
+          activeTab,
+          showTradeModal,
+          selectedMarket,
+          tradeOutcome,
+          tradeAmount,
+          tradeProcessing,
+          tradeResult,
+          uniqueSports,
+          filteredMarkets,
+          openMarkets,
+          closedMarkets,
+          settledMarkets,
+          totalValue,
+          openPositions,
+          settledPositions,
+          fetchMarkets,
+          fetchPortfolio,
+          executeTrade,
+          openTradeModal,
+          closeTradeModal,
+          getStatusColor,
+          getStatusIcon,
+          getStatusText,
+          formatTokens
+        };
+      },
+      
+      template: `
+        <div class="app-container">
+          <header class="header">
+            <div class="header-content">
+              <div class="branding">
+                <h1>⚡ PolyJacket</h1>
+                <p class="subtitle">GT Intramural Prediction Markets</p>
+              </div>
+              <div class="wallet">
+                <div class="balance">
+                  <span class="label">Balance</span>
+                  <span class="amount">{{ formatTokens(userBalance) }}</span>
+                </div>
+                <div class="total-value">
+                  <span class="label">Total Value</span>
+                  <span class="amount">{{ formatTokens(totalValue) }}</span>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <!-- Navigation Tabs -->
+          <div class="tabs">
+            <button 
+              :class="['tab', { active: activeTab === 'markets' }]"
+              @click="activeTab = 'markets'"
+            >
+              📊 Markets ({{ markets.length }})
+            </button>
+            <button 
+              :class="['tab', { active: activeTab === 'portfolio' }]"
+              @click="activeTab = 'portfolio'"
+            >
+              💼 Portfolio ({{ openPositions.length }})
+            </button>
+          </div>
+
+          <!-- Loading State -->
+          <div v-if="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Loading markets...</p>
+          </div>
+
+          <!-- Error State -->
+          <div v-else-if="error" class="error">
+            <p>❌ {{ error }}</p>
+            <button @click="fetchMarkets" class="retry-btn">Retry</button>
+          </div>
+
+          <!-- Markets Tab -->
+          <div v-else-if="activeTab === 'markets'" class="markets-tab">
+            <!-- Date Filter (Top Bar) -->
+            <div class="date-filter-bar">
+              <button 
+                :class="['date-chip', { active: selectedDate === 'All' }]"
+                @click="selectedDate = 'All'"
+              >
+                All Dates
+              </button>
+              <button 
+                v-for="date in uniqueDates" 
+                :key="date"
+                :class="['date-chip', { active: selectedDate === date }]"
+                @click="selectedDate = date"
+              >
+                {{ date }}
+              </button>
+            </div>
+
+            <!-- Markets Container -->
+            <div class="markets-container">
+              <!-- Sport Sidebar -->
+              <div class="sport-sidebar">
+                <h3 class="sidebar-title">🏀 Filter by Sport</h3>
+                <div class="sport-list">
+                  <button 
+                    :class="['sport-btn', { active: selectedSport === 'All' }]"
+                    @click="selectedSport = 'All'"
+                  >
+                    All Sports
+                  </button>
+                  <button 
+                    v-for="sport in uniqueSports" 
+                    :key="sport"
+                    :class="['sport-btn', { active: selectedSport === sport }]"
+                    @click="selectedSport = sport"
+                  >
+                    {{ sport }}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Markets Content -->
+              <div class="markets-content">
+
+            <!-- Open Markets -->
+            <div v-if="openMarkets.length > 0" class="market-section">
+              <h2 class="section-title">🟢 Open Markets</h2>
+              <div class="markets-grid">
+                <div 
+                  v-for="market in openMarkets" 
+                  :key="market.market_id"
+                  class="market-card open"
+                >
+                  <div class="market-header">
+                    <span class="sport-badge">{{ market.sport }}</span>
+                    <span class="status-badge status-open">{{ getStatusIcon(market.status) }} {{ getStatusText(market.status) }}</span>
+                  </div>
+                  
+                  <div class="matchup">
+                    <h3>{{ market.home_team }} vs {{ market.away_team }}</h3>
+                    <div class="game-info">
+                      <span>📅 {{ market.game_date }}</span>
+                      <span>⏰ {{ market.game_time }}</span>
+                    </div>
+                  </div>
+
+                  <div class="odds-section">
+                    <div class="outcome-card home">
+                      <div class="team-name">{{ market.home_team }}</div>
+                      <div class="price">{{ market.home_price.toFixed(1) }}¢</div>
+                      <button 
+                        class="buy-btn"
+                        @click="openTradeModal(market); tradeOutcome = 'home'"
+                      >
+                        Buy
+                      </button>
+                    </div>
+                    
+                    <div class="outcome-card away">
+                      <div class="team-name">{{ market.away_team }}</div>
+                      <div class="price">{{ market.away_price.toFixed(1) }}¢</div>
+                      <button 
+                        class="buy-btn"
+                        @click="openTradeModal(market); tradeOutcome = 'away'"
+                      >
+                        Buy
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="market-stats">
+                    <span>Volume: {{ formatTokens(market.total_volume) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Closed Markets -->
+            <div v-if="closedMarkets.length > 0" class="market-section">
+              <h2 class="section-title">🔴 Closed Markets (Awaiting Results)</h2>
+              <div class="markets-grid">
+                <div 
+                  v-for="market in closedMarkets" 
+                  :key="market.market_id"
+                  class="market-card closed"
+                >
+                  <div class="market-header">
+                    <span class="sport-badge">{{ market.sport }}</span>
+                    <span class="status-badge status-closed">{{ getStatusIcon(market.status) }} {{ getStatusText(market.status) }}</span>
+                  </div>
+                  
+                  <div class="matchup">
+                    <h3>{{ market.home_team }} vs {{ market.away_team }}</h3>
+                    <div class="game-info">
+                      <span>📅 {{ market.game_date }}</span>
+                      <span>⏰ {{ market.game_time }}</span>
+                    </div>
+                  </div>
+
+                  <div class="odds-section disabled">
+                    <div class="outcome-card home">
+                      <div class="team-name">{{ market.home_team }}</div>
+                      <div class="price">{{ market.home_price.toFixed(1) }}¢</div>
+                    </div>
+                    
+                    <div class="outcome-card away">
+                      <div class="team-name">{{ market.away_team }}</div>
+                      <div class="price">{{ market.away_price.toFixed(1) }}¢</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Settled Markets -->
+            <div v-if="settledMarkets.length > 0" class="market-section">
+              <h2 class="section-title">✅ Settled Markets</h2>
+              <div class="markets-grid">
+                <div 
+                  v-for="market in settledMarkets" 
+                  :key="market.market_id"
+                  class="market-card settled"
+                >
+                  <div class="market-header">
+                    <span class="sport-badge">{{ market.sport }}</span>
+                    <span class="status-badge status-settled">{{ getStatusIcon(market.status) }} {{ getStatusText(market.status) }}</span>
+                  </div>
+                  
+                  <div class="matchup">
+                    <h3>{{ market.home_team }} vs {{ market.away_team }}</h3>
+                    <div v-if="market.home_score && market.away_score && market.home_score !== '--' && market.away_score !== '--'" class="final-score">
+                      <span :class="['score', market.winner === 'home' ? 'winner' : 'loser']">{{ market.home_score }}</span>
+                      <span class="score-separator">-</span>
+                      <span :class="['score', market.winner === 'away' ? 'winner' : 'loser']">{{ market.away_score }}</span>
+                    </div>
+                  </div>
+
+                  <div class="settlement-info">
+                    <div :class="['winner-banner', market.winner === 'home' ? 'home' : 'away']">
+                      <span class="trophy">🏆</span>
+                      <span>{{ market.winner === 'home' ? market.home_team : market.away_team }} Won</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="filteredMarkets.length === 0" class="no-markets">
+              <p>No markets available</p>
+            </div>
+            </div>
+            <!-- End markets-content -->
+            </div>
+            <!-- End markets-container -->
+          </div>
+          <!-- End markets-tab -->
+
+          <!-- Portfolio Tab -->
+          <div v-else-if="activeTab === 'portfolio'" class="portfolio-container">
+            <div v-if="openPositions.length === 0 && settledPositions.length === 0" class="no-positions">
+              <h2>📭 No Positions Yet</h2>
+              <p>Visit the Markets tab to start predicting!</p>
+            </div>
+
+            <div v-else>
+              <!-- Open Positions -->
+              <div v-if="openPositions.length > 0" class="positions-section">
+                <h2 class="section-title">📊 Open Positions</h2>
+                <div class="positions-grid">
+                  <div 
+                    v-for="position in openPositions" 
+                    :key="position.market_id"
+                    class="position-card"
+                  >
+                    <h3>{{ position.game }}</h3>
+                    <div class="position-details">
+                      <div v-if="position.home_shares > 0" class="shares-info">
+                        <span class="label">Home Shares:</span>
+                        <span class="value">{{ position.home_shares.toFixed(2) }} @ {{ position.avg_home_price.toFixed(1) }}¢</span>
+                      </div>
+                      <div v-if="position.away_shares > 0" class="shares-info">
+                        <span class="label">Away Shares:</span>
+                        <span class="value">{{ position.away_shares.toFixed(2) }} @ {{ position.avg_away_price.toFixed(1) }}¢</span>
+                      </div>
+                      <div class="shares-info highlight">
+                        <span class="label">Current Value:</span>
+                        <span class="value">{{ formatTokens(position.current_value) }}</span>
+                      </div>
+                      <div class="shares-info highlight">
+                        <span class="label">Max Return:</span>
+                        <span class="value">{{ formatTokens(position.potential_return) }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Settled Positions -->
+              <div v-if="settledPositions.length > 0" class="positions-section">
+                <h2 class="section-title">✅ Settled Positions</h2>
+                <div class="positions-grid">
+                  <div 
+                    v-for="position in settledPositions" 
+                    :key="position.market_id"
+                    class="position-card settled"
+                  >
+                    <h3>{{ position.game }}</h3>
+                    <div class="position-details">
+                      <div v-if="position.home_shares > 0" class="shares-info">
+                        <span class="label">Home Shares:</span>
+                        <span class="value">{{ position.home_shares.toFixed(2) }}</span>
+                      </div>
+                      <div v-if="position.away_shares > 0" class="shares-info">
+                        <span class="label">Away Shares:</span>
+                        <span class="value">{{ position.away_shares.toFixed(2) }}</span>
+                      </div>
+                      <div class="shares-info highlight">
+                        <span class="label">Payout:</span>
+                        <span class="value">{{ formatTokens(position.current_value) }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trade Modal -->
+          <div v-if="showTradeModal" class="modal-overlay" @click="closeTradeModal">
+            <div class="modal" @click.stop>
+              <div class="modal-header">
+                <h2>Place Prediction</h2>
+                <button class="close-btn" @click="closeTradeModal">×</button>
+              </div>
+              
+              <div class="modal-body">
+                <div class="market-summary">
+                  <h3>{{ selectedMarket.home_team }} vs {{ selectedMarket.away_team }}</h3>
+                  <p class="game-time">{{ selectedMarket.game_date }} at {{ selectedMarket.game_time }}</p>
+                </div>
+
+                <div class="trade-form">
+                  <div class="form-group">
+                    <label>Predict Winner</label>
+                    <div class="outcome-selector">
+                      <button 
+                        :class="['outcome-option', { active: tradeOutcome === 'home' }]"
+                        @click="tradeOutcome = 'home'"
+                      >
+                        <div class="team">{{ selectedMarket.home_team }}</div>
+                        <div class="price">{{ selectedMarket.home_price.toFixed(1) }}¢</div>
+                      </button>
+                      <button 
+                        :class="['outcome-option', { active: tradeOutcome === 'away' }]"
+                        @click="tradeOutcome = 'away'"
+                      >
+                        <div class="team">{{ selectedMarket.away_team }}</div>
+                        <div class="price">{{ selectedMarket.away_price.toFixed(1) }}¢</div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Amount (tokens)</label>
+                    <input 
+                      type="number" 
+                      v-model.number="tradeAmount"
+                      min="1"
+                      :max="userBalance"
+                      step="10"
+                      class="amount-input"
+                    >
+                    <div class="quick-amounts">
+                      <button @click="tradeAmount = 100" class="quick-btn">100</button>
+                      <button @click="tradeAmount = 500" class="quick-btn">500</button>
+                      <button @click="tradeAmount = 1000" class="quick-btn">1000</button>
+                      <button @click="tradeAmount = userBalance" class="quick-btn">Max</button>
+                    </div>
+                  </div>
+
+                  <div class="trade-summary">
+                    <p>You'll receive approximately <strong>{{ (tradeAmount / (tradeOutcome === 'home' ? selectedMarket.home_price : selectedMarket.away_price) * 100).toFixed(2) }}</strong> shares</p>
+                    <p class="potential">Potential return: <strong>{{ formatTokens(tradeAmount / (tradeOutcome === 'home' ? selectedMarket.home_price : selectedMarket.away_price) * 100) }}</strong></p>
+                  </div>
+
+                  <div v-if="tradeResult" :class="['trade-result', tradeResult.success ? 'success' : 'error']">
+                    {{ tradeResult.message }}
+                  </div>
+
+                  <button 
+                    class="submit-btn" 
+                    @click="executeTrade"
+                    :disabled="tradeProcessing || tradeAmount <= 0 || tradeAmount > userBalance"
+                  >
+                    <span v-if="tradeProcessing">Processing...</span>
+                    <span v-else>Confirm Prediction</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+    }).mount('#app');
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      border-radius: 16px;
+      padding: 24px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .branding h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .wallet {
+      display: flex;
+      gap: 32px;
+    }
+
+    .balance, .total-value {
+      text-align: right;
+    }
+
+    .label {
+      display: block;
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .amount {
+      display: block;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #333;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 16px;
+      background: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .tab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    /* Loading & Error */
+    .loading, .error, .no-markets, .no-positions {
+      background: white;
+      padding: 60px 40px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Date Filter Bar (Top) */
+    .date-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 20px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow-x: auto;
+    }
+
+    .date-chip {
+      padding: 10px 20px;
+      background: #f5f5f5;
+      border: 2px solid transparent;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      font-size: 0.9rem;
+    }
+
+    .date-chip:hover {
+      background: #e8e8e8;
+      border-color: #667eea;
+    }
+
+    .date-chip.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    /* Markets Container Layout */
+    .markets-container {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .markets-content {
+      flex: 1;
+    }
+
+    /* Sport Sidebar (Left) */
+    .sport-sidebar {
+      width: 200px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 20px;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+
+    .sidebar-title {
+      font-size: 1rem;
+      margin-bottom: 16px;
+      color: #333;
+      font-weight: 700;
+    }
+
+    .sport-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sport-btn {
+      padding: 10px 16px;
+      background: #f5f5f5;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .sport-btn:hover {
+      background: #e8e8e8;
+      border-color: #667eea;
+    }
+
+    .sport-btn.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    /* Market Section */
+    .market-section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      color: white;
+    }
+
+    .markets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+    }
+
+    .market-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+
+    .market-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .market-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .sport-badge {
+      padding: 6px 12px;
+      background: #f0f0f0;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #666;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .status-open {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-closed {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .status-settled {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .matchup h3 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .game-info {
+      display: flex;
+      gap: 16px;
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .odds-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .odds-section.disabled {
+      opacity: 0.6;
+    }
+
+    .outcome-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .outcome-card.home {
+      border: 2px solid #667eea;
+    }
+
+    .outcome-card.away {
+      border: 2px solid #764ba2;
+    }
+
+    .team-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .price {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 12px;
+    }
+
+    .buy-btn {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .buy-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .market-stats {
+      font-size: 0.875rem;
+      color: #666;
+      text-align: center;
+      padding-top: 12px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .settlement-info {
+      margin-top: 16px;
+    }
+
+    .winner-banner {
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .winner-banner.home {
+      background: linear-gradient(135deg, #667eea20, #667eea40);
+      color: #667eea;
+    }
+
+    .winner-banner.away {
+      background: linear-gradient(135deg, #764ba220, #764ba240);
+      color: #764ba2;
+    }
+
+    .trophy {
+      font-size: 1.5rem;
+      margin-right: 8px;
+    }
+
+    .final-score {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 12px;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .final-score .score {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #f0f0f0;
+    }
+
+    .final-score .score.winner {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+    }
+
+    .final-score .score.loser {
+      background: #e9ecef;
+      color: #6c757d;
+    }
+
+    .final-score .score-separator {
+      color: #999;
+    }
+
+    /* Portfolio */
+    .portfolio-container {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .positions-section {
+      margin-bottom: 40px;
+    }
+
+    .positions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .position-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid #667eea;
+    }
+
+    .position-card.settled {
+      border-left-color: #28a745;
+    }
+
+    .position-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    .position-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .shares-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95rem;
+    }
+
+    .shares-info.highlight {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #667eea;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .modal-header h2 {
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #666;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+
+    .close-btn:hover {
+      background: #f0f0f0;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .market-summary {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .market-summary h3 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .game-time {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .trade-form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .outcome-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .outcome-option {
+      padding: 20px;
+      background: #f8f9fa;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .outcome-option:hover {
+      border-color: #667eea;
+    }
+
+    .outcome-option.active {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #667eea10, #764ba210);
+    }
+
+    .outcome-option .team {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .outcome-option .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .amount-input {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.25rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      transition: all 0.3s;
+    }
+
+    .amount-input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .quick-amounts {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .quick-btn {
+      flex: 1;
+      padding: 10px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .quick-btn:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .trade-summary {
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .trade-summary p {
+      margin-bottom: 8px;
+      color: #666;
+    }
+
+    .trade-summary .potential {
+      font-size: 1.1rem;
+      color: #28a745;
+    }
+
+    .trade-result {
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .trade-result.success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .trade-result.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .wallet {
+        width: 100%;
+        justify-content: space-around;
+      }
+
+      .branding h1 {
+        font-size: 2rem;
+      }
+
+      .date-filter-bar {
+        padding: 15px;
+      }
+
+      .date-chip {
+        font-size: 0.85rem;
+        padding: 8px 16px;
+      }
+
+      .markets-container {
+        flex-direction: column;
+      }
+
+      .sport-sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+      }
+
+      .sport-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .markets-grid, .positions-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs {
+        flex-direction: column;
+      }
+    }
+  </style>
+</body>
+</html>

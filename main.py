@@ -3,18 +3,20 @@ FastAPI Backend for Georgia Tech IM Prediction Market
 Fetches game data from IMLeagues API endpoint
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Cookie
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 import httpx
 from bs4 import BeautifulSoup
-from typing import List, Optional
+from typing import List, Optional, Dict
 from pydantic import BaseModel
 import os
 import json
 from pathlib import Path
 from datetime import datetime, timedelta
+import uuid
+import math
 
 app = FastAPI(title="GT IM Prediction Market API")
 
@@ -34,6 +36,18 @@ if os.path.exists("static"):
 # Cache file for development
 CACHE_FILE = Path("games_cache.json")
 
+# In-memory storage (use database in production)
+users: Dict[str, dict] = {}
+markets: Dict[str, dict] = {}
+user_positions: Dict[str, dict] = {}  # user_id -> {market_id: {home_shares, away_shares}}
+games_data = []  # Cached games loaded on startup (List[Game])
+
+# Constants
+STARTING_BALANCE = 10000  # Starting tokens for new users
+LIQUIDITY_PARAMETER = 100  # For AMM pricing (b parameter in LMSR)
+
+
+# ============== MODELS ==============
 
 class Game(BaseModel):
     """Game data model"""
@@ -60,36 +74,483 @@ class GamesResponse(BaseModel):
     message: Optional[str] = None
 
 
+class Market(BaseModel):
+    """Prediction market for a game"""
+    market_id: str
+    game_id: str
+    home_team: str
+    away_team: str
+    sport: str
+    game_time: str
+    game_date: str
+    status: str  # 'open', 'closed', 'settled'
+    home_price: float  # Current price for home team win (0-100)
+    away_price: float  # Current price for away team win (0-100)
+    home_shares: float  # Total shares for home team
+    away_shares: float  # Total shares for away team
+    total_volume: float  # Total tokens traded
+    winner: Optional[str] = None  # 'home', 'away', or None
+    home_score: Optional[str] = None  # Final score for home team
+    away_score: Optional[str] = None  # Final score for away team
+
+
+class Position(BaseModel):
+    """User's position in a market"""
+    market_id: str
+    game: str
+    home_shares: float
+    away_shares: float
+    avg_home_price: float
+    avg_away_price: float
+    current_value: float
+    potential_return: float
+
+
+class Portfolio(BaseModel):
+    """User's portfolio"""
+    user_id: str
+    balance: float
+    total_value: float
+    open_positions: List[Position]
+    settled_positions: List[Position]
+
+
+class TradeRequest(BaseModel):
+    """Request to buy shares"""
+    market_id: str
+    outcome: str  # 'home' or 'away'
+    amount: float  # Amount in tokens to spend
+
+
+class TradeResponse(BaseModel):
+    """Response from trade execution"""
+    success: bool
+    shares_purchased: float
+    price_per_share: float
+    total_cost: float
+    new_balance: float
+    new_position: Position
+    message: str
+
+
+class MarketsResponse(BaseModel):
+    """Response with all markets"""
+    success: bool
+    total_markets: int
+    open_markets: int
+    closed_markets: int
+    settled_markets: int
+    markets: List[Market]
+
+
+# ============== UTILITY FUNCTIONS ==============
+
+def get_or_create_user(user_id: Optional[str] = None) -> str:
+    """Get existing user or create new one"""
+    if not user_id or user_id not in users:
+        user_id = str(uuid.uuid4())
+        users[user_id] = {
+            "balance": STARTING_BALANCE,
+            "created_at": datetime.now().isoformat()
+        }
+        user_positions[user_id] = {}
+    return user_id
+
+
+def calculate_lmsr_price(shares_yes: float, shares_no: float, b: float = LIQUIDITY_PARAMETER) -> tuple:
+    """
+    Calculate prices using Logarithmic Market Scoring Rule (LMSR)
+    Returns (price_yes, price_no) as probabilities (0-100)
+    """
+    try:
+        exp_yes = math.exp(shares_yes / b)
+        exp_no = math.exp(shares_no / b)
+        total = exp_yes + exp_no
+        price_yes = (exp_yes / total) * 100
+        price_no = (exp_no / total) * 100
+        return (price_yes, price_no)
+    except:
+        return (50.0, 50.0)
+
+
+def calculate_cost(current_shares: float, new_shares: float, other_shares: float, b: float = LIQUIDITY_PARAMETER) -> float:
+    """
+    Calculate cost to buy shares using LMSR
+    """
+    try:
+        before = b * math.log(math.exp(current_shares / b) + math.exp(other_shares / b))
+        after = b * math.log(math.exp(new_shares / b) + math.exp(other_shares / b))
+        return max(0, after - before)
+    except:
+        return 0
+
+
+def is_market_closed(game_time: str, game_date: str) -> bool:
+    """Check if market should be closed based on game time"""
+    try:
+        # Parse the game date and time
+        game_datetime_str = f"{game_date} {game_time}"
+        # Try multiple formats
+        for fmt in ["%m/%d/%Y %I:%M %p", "%m/%d/%Y %H:%M", "%m/%d/%Y TBD"]:
+            try:
+                game_datetime = datetime.strptime(game_datetime_str, fmt)
+                # Market closes at game start time
+                return datetime.now() >= game_datetime
+            except:
+                continue
+        # If time is TBD, keep market open
+        if game_time == "TBD":
+            return False
+        return False
+    except:
+        return False
+
+
+def create_markets_from_games(games: List[Game]):
+    """Create or update markets from game data"""
+    for game in games:
+        market_id = f"market_{game.game_id}"
+        
+        # Determine market status
+        if game.status in ['completed', 'forfeit']:
+            status = 'settled'
+            winner = None
+            if game.home_score != '--' and game.away_score != '--':
+                try:
+                    home_score_int = int(game.home_score)
+                    away_score_int = int(game.away_score)
+                    winner = 'home' if home_score_int > away_score_int else 'away'
+                except:
+                    pass
+        elif is_market_closed(game.time, game.date or ""):
+            status = 'closed'
+            winner = None
+        else:
+            status = 'open'
+            winner = None
+        
+        # Create or update market
+        if market_id not in markets:
+            markets[market_id] = {
+                "market_id": market_id,
+                "game_id": game.game_id,
+                "home_team": game.home_team,
+                "away_team": game.away_team,
+                "sport": game.sport,
+                "game_time": game.time,
+                "game_date": game.date or "",
+                "status": status,
+                "home_shares": 0.0,
+                "away_shares": 0.0,
+                "total_volume": 0.0,
+                "winner": winner,
+                "home_score": game.home_score,
+                "away_score": game.away_score
+            }
+        else:
+            # Update status, winner, and scores
+            markets[market_id]["status"] = status
+            markets[market_id]["winner"] = winner
+            markets[market_id]["home_score"] = game.home_score
+            markets[market_id]["away_score"] = game.away_score
+        
+        # Calculate current prices
+        home_price, away_price = calculate_lmsr_price(
+            markets[market_id]["home_shares"],
+            markets[market_id]["away_shares"]
+        )
+        markets[market_id]["home_price"] = round(home_price, 2)
+        markets[market_id]["away_price"] = round(away_price, 2)
+
+
+def get_user_portfolio(user_id: str) -> Portfolio:
+    """Get user's complete portfolio"""
+    if user_id not in users:
+        return Portfolio(
+            user_id=user_id,
+            balance=0,
+            total_value=0,
+            open_positions=[],
+            settled_positions=[]
+        )
+    
+    balance = users[user_id]["balance"]
+    open_positions = []
+    settled_positions = []
+    
+    positions = user_positions.get(user_id, {})
+    
+    for market_id, pos in positions.items():
+        if market_id not in markets:
+            continue
+            
+        market = markets[market_id]
+        home_shares = pos.get("home_shares", 0)
+        away_shares = pos.get("away_shares", 0)
+        
+        if home_shares == 0 and away_shares == 0:
+            continue
+        
+        # Calculate current value
+        if market["status"] == "settled":
+            # Settled: winning shares pay 1 token each
+            if market["winner"] == "home":
+                current_value = home_shares
+            elif market["winner"] == "away":
+                current_value = away_shares
+            else:
+                current_value = 0
+        else:
+            # Open/Closed: value at current market price (convert cents to tokens)
+            current_value = ((home_shares * market["home_price"]) + (away_shares * market["away_price"])) / 100
+        
+        # Calculate potential return (best case) - 1 token per winning share
+        potential_return = max(home_shares, away_shares)
+        
+        position = Position(
+            market_id=market_id,
+            game=f"{market['home_team']} vs {market['away_team']}",
+            home_shares=home_shares,
+            away_shares=away_shares,
+            avg_home_price=pos.get("avg_home_price", 0),
+            avg_away_price=pos.get("avg_away_price", 0),
+            current_value=round(current_value, 2),
+            potential_return=round(potential_return, 2)
+        )
+        
+        if market["status"] == "settled":
+            settled_positions.append(position)
+        else:
+            open_positions.append(position)
+    
+    total_value = balance + sum(p.current_value for p in open_positions)
+    
+    return Portfolio(
+        user_id=user_id,
+        balance=round(balance, 2),
+        total_value=round(total_value, 2),
+        open_positions=open_positions,
+        settled_positions=settled_positions
+    )
+
+
+# ============== API ENDPOINTS ==============
+
+
 @app.get("/")
-async def root():
+async def root(user_id: Optional[str] = Cookie(None)):
     """Serve the frontend"""
+    # Create user if doesn't exist
+    user_id = get_or_create_user(user_id)
+    
     if os.path.exists("static/index.html"):
-        return FileResponse("static/index.html")
+        response = FileResponse("static/index.html")
+        response.set_cookie(key="user_id", value=user_id, max_age=31536000)  # 1 year
+        return response
     return {"message": "GT IM Prediction Market API", "docs": "/docs"}
+
+
+@app.get("/api/user")
+async def get_user(user_id: Optional[str] = Cookie(None)):
+    """Get or create user"""
+    user_id = get_or_create_user(user_id)
+    user_data = users[user_id]
+    
+    response = JSONResponse({
+        "user_id": user_id,
+        "balance": round(user_data["balance"], 2),
+        "created_at": user_data["created_at"]
+    })
+    response.set_cookie(key="user_id", value=user_id, max_age=31536000)
+    return response
+
+
+@app.get("/api/markets", response_model=MarketsResponse)
+async def get_markets(user_id: Optional[str] = Cookie(None)):
+    """Get all prediction markets"""
+    # Ensure user exists
+    user_id = get_or_create_user(user_id)
+    
+    # Update markets from cached games data (loaded on startup)
+    if games_data:
+        create_markets_from_games(games_data)
+    
+    market_list = [Market(**m) for m in markets.values()]
+    
+    open_count = sum(1 for m in market_list if m.status == 'open')
+    closed_count = sum(1 for m in market_list if m.status == 'closed')
+    settled_count = sum(1 for m in market_list if m.status == 'settled')
+    
+    return MarketsResponse(
+        success=True,
+        total_markets=len(market_list),
+        open_markets=open_count,
+        closed_markets=closed_count,
+        settled_markets=settled_count,
+        markets=market_list
+    )
+
+
+@app.post("/api/trade", response_model=TradeResponse)
+async def execute_trade(trade: TradeRequest, user_id: Optional[str] = Cookie(None)):
+    """Execute a prediction trade (buy shares)"""
+    # Ensure user exists
+    user_id = get_or_create_user(user_id)
+    
+    # Validate market exists
+    if trade.market_id not in markets:
+        raise HTTPException(status_code=404, detail="Market not found")
+    
+    market = markets[trade.market_id]
+    
+    # Check market is open
+    if market["status"] != "open":
+        raise HTTPException(status_code=400, detail=f"Market is {market['status']}, not accepting predictions")
+    
+    # Validate outcome
+    if trade.outcome not in ['home', 'away']:
+        raise HTTPException(status_code=400, detail="Outcome must be 'home' or 'away'")
+    
+    # Validate amount
+    if trade.amount <= 0:
+        raise HTTPException(status_code=400, detail="Amount must be positive")
+    
+    # Check user balance
+    if users[user_id]["balance"] < trade.amount:
+        raise HTTPException(status_code=400, detail="Insufficient balance")
+    
+    # Calculate shares to purchase
+    current_home = market["home_shares"]
+    current_away = market["away_shares"]
+    
+    if trade.outcome == 'home':
+        current_outcome_shares = current_home
+        other_shares = current_away
+    else:
+        current_outcome_shares = current_away
+        other_shares = current_home
+    
+    # Binary search to find how many shares can be bought with the amount
+    low, high = 0.0, trade.amount * 10  # Max possible shares
+    shares_to_buy = 0.0
+    
+    for _ in range(100):  # Iterations for precision
+        mid = (low + high) / 2
+        cost = calculate_cost(current_outcome_shares, current_outcome_shares + mid, other_shares)
+        
+        if abs(cost - trade.amount) < 0.01:  # Close enough
+            shares_to_buy = mid
+            break
+        elif cost < trade.amount:
+            low = mid
+            shares_to_buy = mid
+        else:
+            high = mid
+    
+    # Recalculate exact cost
+    actual_cost = calculate_cost(current_outcome_shares, current_outcome_shares + shares_to_buy, other_shares)
+    
+    if shares_to_buy <= 0:
+        raise HTTPException(status_code=400, detail="Amount too small to purchase shares")
+    
+    # Execute trade
+    users[user_id]["balance"] -= actual_cost
+    
+    if trade.outcome == 'home':
+        market["home_shares"] += shares_to_buy
+    else:
+        market["away_shares"] += shares_to_buy
+    
+    market["total_volume"] += actual_cost
+    
+    # Update prices
+    home_price, away_price = calculate_lmsr_price(market["home_shares"], market["away_shares"])
+    market["home_price"] = round(home_price, 2)
+    market["away_price"] = round(away_price, 2)
+    
+    # Update user position
+    if user_id not in user_positions:
+        user_positions[user_id] = {}
+    
+    if trade.market_id not in user_positions[user_id]:
+        user_positions[user_id][trade.market_id] = {
+            "home_shares": 0,
+            "away_shares": 0,
+            "avg_home_price": 0,
+            "avg_away_price": 0,
+            "total_home_cost": 0,
+            "total_away_cost": 0
+        }
+    
+    position = user_positions[user_id][trade.market_id]
+    
+    if trade.outcome == 'home':
+        old_shares = position["home_shares"]
+        old_cost = position["total_home_cost"]
+        position["home_shares"] += shares_to_buy
+        position["total_home_cost"] += actual_cost
+        position["avg_home_price"] = position["total_home_cost"] / position["home_shares"] if position["home_shares"] > 0 else 0
+    else:
+        old_shares = position["away_shares"]
+        old_cost = position["total_away_cost"]
+        position["away_shares"] += shares_to_buy
+        position["total_away_cost"] += actual_cost
+        position["avg_away_price"] = position["total_away_cost"] / position["away_shares"] if position["away_shares"] > 0 else 0
+    
+    # Calculate current value (convert cents to tokens)
+    current_value = ((position["home_shares"] * market["home_price"]) + (position["away_shares"] * market["away_price"])) / 100
+    # Calculate potential return - 1 token per winning share
+    potential_return = max(position["home_shares"], position["away_shares"])
+    
+    new_position = Position(
+        market_id=trade.market_id,
+        game=f"{market['home_team']} vs {market['away_team']}",
+        home_shares=position["home_shares"],
+        away_shares=position["away_shares"],
+        avg_home_price=round(position["avg_home_price"], 2),
+        avg_away_price=round(position["avg_away_price"], 2),
+        current_value=round(current_value, 2),
+        potential_return=round(potential_return, 2)
+    )
+    
+    price_per_share = actual_cost / shares_to_buy if shares_to_buy > 0 else 0
+    
+    return TradeResponse(
+        success=True,
+        shares_purchased=round(shares_to_buy, 2),
+        price_per_share=round(price_per_share, 2),
+        total_cost=round(actual_cost, 2),
+        new_balance=round(users[user_id]["balance"], 2),
+        new_position=new_position,
+        message=f"Successfully purchased {round(shares_to_buy, 2)} shares"
+    )
+
+
+@app.get("/api/portfolio", response_model=Portfolio)
+async def get_portfolio(user_id: Optional[str] = Cookie(None)):
+    """Get user's portfolio"""
+    user_id = get_or_create_user(user_id)
+    return get_user_portfolio(user_id)
 
 
 @app.get("/api/games", response_model=GamesResponse)
 async def get_games():
     """
-    Get games from cache file (for development)
+    Get games from memory (loaded from cache on startup)
     Use /api/games/refresh to fetch fresh data from API
     """
     
     try:
-        # Read from cache file
-        if CACHE_FILE.exists():
-            with open(CACHE_FILE, 'r') as f:
-                data = json.load(f)
-                games = [Game(**game) for game in data.get('games', [])]
-                
-                print(f"Returning {len(games)} games from cache")
-                
-                return GamesResponse(
-                    success=True,
-                    total_games=len(games),
-                    games=games,
-                    message=f"Loaded {len(games)} games from cache"
-                )
+        # Return from in-memory games data
+        if games_data:
+            print(f"Returning {len(games_data)} games from memory")
+            
+            return GamesResponse(
+                success=True,
+                total_games=len(games_data),
+                games=games_data,
+                message=f"Loaded {len(games_data)} games from cache"
+            )
         else:
             return GamesResponse(
                 success=False,
@@ -136,7 +597,12 @@ async def refresh_games():
         with open(CACHE_FILE, 'w') as f:
             json.dump(cache_data, f, indent=2)
         
-        print(f"Fetched and cached {len(games)} games")
+        # Update global games data and create/update markets
+        global games_data
+        games_data = games
+        create_markets_from_games(games)
+        
+        print(f"Fetched and cached {len(games)} games, created/updated {len(games)} markets")
         
         return GamesResponse(
             success=True,
@@ -619,6 +1085,23 @@ def parse_games_html(html_content: str, date_str: str = None) -> List[Game]:
 async def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "service": "GT IM Prediction Market API"}
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Load games from cache on startup"""
+    global games_data
+    
+    if CACHE_FILE.exists():
+        print(f"Loading games from cache: {CACHE_FILE}")
+        with open(CACHE_FILE, 'r') as f:
+            data = json.load(f)
+            games_data = [Game(**game) for game in data.get('games', [])]
+            create_markets_from_games(games_data)
+            print(f"Loaded {len(games_data)} games and created {len(markets)} markets")
+    else:
+        print("No cache file found. Use /api/games/refresh to fetch games.")
+        games_data = []
 
 
 if __name__ == "__main__":
