@@ -952,7 +952,9 @@ async def execute_trade(trade: TradeRequest, user: Optional[Dict] = Depends(get_
         raise HTTPException(status_code=400, detail="Amount too small to purchase shares")
     
     # Execute trade
-    new_balance = user["balance"] - actual_cost
+    actual_cost = min(actual_cost, user["balance"])  # never deduct more than available
+    _raw = round(user["balance"] - actual_cost, 2)
+    new_balance = 0.0 if _raw <= 0 else _raw  # guard against -0.0 floating-point artifact
     db.update_user_balance(user_id, new_balance)
 
     # Credit raffle tokens equal to tokens wagered (lets users earn raffle entries by betting)

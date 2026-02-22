@@ -214,10 +214,11 @@ def get_user_by_id(user_id: int) -> Optional[Dict]:
 
 
 def update_user_balance(user_id: int, new_balance: float):
-    """Update user's balance"""
+    """Update user's balance, clamped to a minimum of 0."""
+    safe = 0.0 if new_balance <= 0 else new_balance
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("UPDATE users SET balance = ? WHERE id = ?", (new_balance, user_id))
+    cursor.execute("UPDATE users SET balance = ? WHERE id = ?", (safe, user_id))
     conn.commit()
     conn.close()
 
