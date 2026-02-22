@@ -2170,6 +2170,22 @@ async def admin_raffle_status(user: Optional[Dict] = Depends(get_current_user)):
     }
 
 
+@app.get("/api/admin/users")
+async def admin_get_users(user: Optional[Dict] = Depends(get_current_user)):
+    """Admin: return all registered users."""
+    require_admin(user)
+    users = db.get_all_users()
+    return {"success": True, "users": users}
+
+
+@app.get("/api/admin/positions")
+async def admin_get_positions(user: Optional[Dict] = Depends(get_current_user)):
+    """Admin: return all active positions."""
+    require_admin(user)
+    positions = db.get_all_positions()
+    return {"success": True, "positions": positions}
+
+
 @app.on_event("startup")
 async def startup_event():
     """Initialize database, load Elo ratings, seed from cache, then start background refresh loop"""

@@ -607,3 +607,48 @@ def get_raffle_winners() -> List[Dict]:
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]
+
+
+def get_all_users() -> List[Dict]:
+    """Return all users (excluding hashed passwords)."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, username, email, balance,
+               COALESCE(raffle_tokens, 0) AS raffle_tokens,
+               created_at, last_login
+        FROM users
+        ORDER BY username COLLATE NOCASE ASC
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+
+def get_all_positions() -> List[Dict]:
+    """Return all non-zero positions joined with username and market details."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT
+            p.id,
+            u.username,
+            m.home_team,
+            m.away_team,
+            m.sport,
+            m.game_date,
+            m.status AS market_status,
+            p.home_shares,
+            p.away_shares,
+            p.avg_home_price,
+            p.avg_away_price,
+            p.updated_at
+        FROM positions p
+        JOIN users u ON u.id = p.user_id
+        JOIN markets m ON m.market_id = p.market_id
+        WHERE p.home_shares > 0 OR p.away_shares > 0
+        ORDER BY p.updated_at DESC
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]

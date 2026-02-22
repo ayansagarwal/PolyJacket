@@ -81,6 +81,10 @@
 
         // Admin state
         const isAdmin = computed(() => isLoggedIn.value && user.value?.username === 'superuser');
+        const adminUsers = ref([]);
+        const adminUsersLoading = ref(false);
+        const adminPositions = ref([]);
+        const adminPositionsLoading = ref(false);
         const adminRaffleWinners = ref([]);
         const adminRaffleLastWinner = ref(null);
         const adminRaffleRunning = ref(false);
@@ -864,7 +868,7 @@
             const data = await response.json();
             adminAllMarkets.value = (data.markets || []).filter(m => m.status !== 'settled');
           } catch (e) { console.error('admin fetch markets', e); }
-          // Also load raffle winners + closed state
+          // Load raffle winners + closed state
           try {
             const r = await fetch('/api/admin/raffle/status', { headers: { 'Authorization': `Bearer ${token.value}` } });
             if (r.ok) {
@@ -872,6 +876,18 @@
               adminRaffleWinners.value = d.winners || [];
             }
           } catch (e) { /* ignore */ }
+          // Load users
+          adminUsersLoading.value = true;
+          try {
+            const r = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${token.value}` } });
+            if (r.ok) { const d = await r.json(); adminUsers.value = d.users || []; }
+          } catch (e) { /* ignore */ } finally { adminUsersLoading.value = false; }
+          // Load positions
+          adminPositionsLoading.value = true;
+          try {
+            const r = await fetch('/api/admin/positions', { headers: { 'Authorization': `Bearer ${token.value}` } });
+            if (r.ok) { const d = await r.json(); adminPositions.value = d.positions || []; }
+          } catch (e) { /* ignore */ } finally { adminPositionsLoading.value = false; }
           fetchRaffleData();
         }
 
@@ -1468,6 +1484,10 @@
           voteOnScoreReport,
           // Admin
           isAdmin,
+          adminUsers,
+          adminUsersLoading,
+          adminPositions,
+          adminPositionsLoading,
           adminRaffleWinners,
           adminRaffleLastWinner,
           adminRaffleRunning,
@@ -1525,9 +1545,16 @@
           </nav>
 
           <!-- Date Subnav -->
-          <div v-if="activeTab === 'markets'" class="subnav">
+          <div v-if="activeTab === 'markets'" class="subnav subnav-chips">
             <button :class="['date-chip', { active: selectedDate === 'All' }]" @click="selectedDate = 'All'">All</button>
             <button v-for="date in uniqueDates" :key="date" :class="['date-chip', { active: selectedDate === date }]" @click="selectedDate = date">{{ date }}</button>
+          </div>
+          <!-- Date Dropdown (mobile only) -->
+          <div v-if="activeTab === 'markets'" class="subnav-dropdown-wrap">
+            <select class="date-dropdown" :value="selectedDate" @change="selectedDate = $event.target.value">
+              <option value="All">All Dates</option>
+              <option v-for="date in uniqueDates" :key="date" :value="date">{{ date }}</option>
+            </select>
           </div>
 
           <!-- Loading State -->
@@ -1907,6 +1934,74 @@
                   <span v-if="adminRaffleClosing">Opening…</span>
                   <span v-else>Reopen Raffle</span>
                 </button>
+              </div>
+            </div>
+
+            <!-- Users Section -->
+            <div class="admin-card">
+              <h3 class="admin-card-title">All Users ({{ adminUsers.length }})</h3>
+              <div v-if="adminUsersLoading" class="admin-card-hint">Loading…</div>
+              <div v-else-if="adminUsers.length === 0" class="admin-card-hint">No users found.</div>
+              <div v-else class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Balance</th>
+                      <th>Raffle Tokens</th>
+                      <th>Joined</th>
+                      <th>Last Login</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="u in adminUsers" :key="u.id">
+                      <td class="admin-td-bold">{{ u.username }}</td>
+                      <td>{{ u.email }}</td>
+                      <td class="admin-td-num">{{ u.balance.toFixed(2) }}</td>
+                      <td class="admin-td-num">{{ u.raffle_tokens.toFixed(0) }}</td>
+                      <td class="admin-td-muted">{{ u.created_at ? u.created_at.slice(0,10) : '—' }}</td>
+                      <td class="admin-td-muted">{{ u.last_login ? u.last_login.slice(0,16).replace('T',' ') : '—' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Positions Section -->
+            <div class="admin-card">
+              <h3 class="admin-card-title">Active Predictions ({{ adminPositions.length }})</h3>
+              <div v-if="adminPositionsLoading" class="admin-card-hint">Loading…</div>
+              <div v-else-if="adminPositions.length === 0" class="admin-card-hint">No active predictions.</div>
+              <div v-else class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Matchup</th>
+                      <th>Sport</th>
+                      <th>Date</th>
+                      <th>Home Shares</th>
+                      <th>Away Shares</th>
+                      <th>Avg Home Price</th>
+                      <th>Avg Away Price</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="p in adminPositions" :key="p.id">
+                      <td class="admin-td-bold">{{ p.username }}</td>
+                      <td>{{ p.home_team }} vs {{ p.away_team }}</td>
+                      <td><span class="sport-badge">{{ p.sport }}</span></td>
+                      <td class="admin-td-muted">{{ p.game_date }}</td>
+                      <td class="admin-td-num">{{ p.home_shares > 0 ? p.home_shares.toFixed(2) : '—' }}</td>
+                      <td class="admin-td-num">{{ p.away_shares > 0 ? p.away_shares.toFixed(2) : '—' }}</td>
+                      <td class="admin-td-num">{{ p.home_shares > 0 ? p.avg_home_price.toFixed(1) + '¢' : '—' }}</td>
+                      <td class="admin-td-num">{{ p.away_shares > 0 ? p.avg_away_price.toFixed(1) + '¢' : '—' }}</td>
+                      <td><span :class="['status-badge', 'status-' + p.market_status]">{{ p.market_status }}</span></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -2652,6 +2747,30 @@
       border-top: none;
       border-radius: 0 0 8px 8px;
       overflow: hidden;
+    }
+
+    .subnav-dropdown-wrap {
+      display: none;
+      margin-bottom: 16px;
+    }
+
+    .date-dropdown {
+      width: 100%;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239370DB' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
     }
 
     .date-chip {
@@ -3434,18 +3553,143 @@
 
     /* ── Responsive ──────────────────────────────── */
     @media (max-width: 768px) {
-      body { padding: 8px; }
-      .header-content { flex-direction: column; text-align: center; }
-      .wallet { width: 100%; justify-content: space-around; }
-      .branding h1 { font-size: 1.2rem; }
-      .subnav { overflow-x: auto; }
-      .date-chip { min-width: 56px; }
-      .nav-tab { padding: 0 12px; font-size: 0.62rem; }
-      .navbar-inner { padding: 0 12px; }
-      .markets-container { flex-direction: column; }
-      .sport-sidebar { width: 100%; position: static; max-height: none; }
-      .sport-list { flex-direction: row; flex-wrap: wrap; }
-      .markets-grid, .positions-grid { grid-template-columns: 1fr; }
+      /* ── Layout ── */
+      body { padding: 6px; }
+
+      /* ── Navbar: 2-row layout ── */
+      .navbar-inner {
+        flex-direction: column;
+        height: auto;
+        padding: 0;
+      }
+
+      /* Top row: brand + actions */
+      .navbar-brand {
+        order: 1;
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 10px 14px;
+        margin-right: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .navbar-actions {
+        order: 1; /* same row as brand via absolute trick below */
+      }
+
+      /* Wrap brand and actions in same row */
+      .navbar-inner {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-template-rows: auto auto;
+        padding: 0;
+      }
+
+      .navbar-brand {
+        grid-column: 1;
+        grid-row: 1;
+        border-right: none;
+        border-bottom: none;
+        padding: 10px 14px;
+        margin-right: 0;
+      }
+
+      .navbar-tabs {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        border-top: 1px solid #e2e8f0;
+        height: 40px;
+      }
+
+      .navbar-actions {
+        grid-column: 3;
+        grid-row: 1;
+        padding: 0 10px;
+        gap: 8px;
+      }
+
+      /* Compact user info */
+      .user-info { gap: 6px; }
+
+      .balance .label { display: none; }
+      .balance .amount { font-size: 0.82rem; font-weight: 700; }
+
+      .username span { display: none; }  /* hide username text, keep logout */
+
+      .btn-logout { padding: 5px 10px; font-size: 0.75rem; }
+      .btn-login  { padding: 5px 10px; font-size: 0.75rem; }
+      .btn-register { padding: 5px 10px; font-size: 0.75rem; }
+
+      .dark-mode-toggle { width: 32px; height: 18px; }
+
+      /* Tabs */
+      .nav-tab { font-size: 0.6rem; letter-spacing: 0.06em; padding: 0 10px; }
+
+      /* Date subnav */
+      .subnav-chips { display: none !important; }
+      .subnav-dropdown-wrap { display: block; }
+
+      /* Markets layout */
+      .markets-container { flex-direction: column; gap: 8px; }
+
+      /* Sport sidebar: horizontal scrolling chip strip */
+      .sport-sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+        padding: 8px 10px;
+        border-radius: 6px;
+      }
+      .sidebar-title { display: none; }
+      .sport-list {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 6px;
+        padding-bottom: 2px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .sport-list::-webkit-scrollbar { display: none; }
+      .sport-btn {
+        white-space: nowrap;
+        flex-shrink: 0;
+        padding: 5px 12px;
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+        font-size: 0.78rem;
+      }
+      .sport-btn.active {
+        border-color: #9370DB;
+      }
+
+      /* Markets grid */
+      .markets-grid, .positions-grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Market card */
+      .market-card { padding: 12px; }
+      .market-header { margin-bottom: 8px; }
+      .matchup h3 { font-size: 0.84rem; }
+      .game-info { font-size: 0.72rem; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+      .odds-section { gap: 6px; margin-bottom: 8px; }
+      .outcome-card { padding: 8px; }
+      .price { font-size: 1.15rem; margin-bottom: 6px; }
+      .team-name { font-size: 0.74rem; }
+      .elo-badge { font-size: 0.62rem; }
+      .buy-btn { padding: 6px; font-size: 0.75rem; }
+      .market-stats { font-size: 0.7rem; }
+      .section-title { font-size: 0.7rem; }
+
+      /* Inner tabs (buy/sell in modal) */
       .tabs { padding: 3px; }
       .tab { font-size: 0.8rem; padding: 7px 10px; }
     }
@@ -4002,11 +4246,18 @@
     }
 
     @media (max-width: 768px) {
-      .expanded-game-modal { width: 98%; max-height: 95vh; }
-      .expanded-header { padding: 12px 16px; }
-      .expanded-body { padding: 12px 16px; }
-      .expanded-title { flex-wrap: wrap; }
-      .expanded-title h2 { font-size: 0.9rem; }
+      .expanded-game-modal { width: 99%; max-height: 96vh; border-radius: 6px; }
+      .expanded-header { padding: 10px 12px; }
+      .expanded-body { padding: 10px 12px; }
+      .expanded-title { flex-wrap: wrap; gap: 6px; }
+      .expanded-title h2 { font-size: 0.85rem; }
+      .expanded-info-section { grid-template-columns: 1fr; gap: 10px; padding: 10px 12px; }
+      .current-odds { flex-wrap: wrap; justify-content: center; }
+      .odds-card { min-width: 80px; padding: 8px 10px; }
+      /* Remove the fixed height so the stacked sections auto-size */
+      .expanded-content-grid { height: auto; }
+      .expanded-chart-section { min-height: 260px; }
+      .expanded-chat-section { min-height: 200px; max-height: 260px; }
     }
 
     /* ── Raffle Tab ───────────────────────────────── */
@@ -4438,6 +4689,50 @@
       font-size: 0.8rem;
     }
 
+    /* ── Admin Tables ─── */
+    .admin-table-wrap {
+      overflow-x: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .admin-table thead tr {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .admin-table th {
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9ca3af;
+      white-space: nowrap;
+    }
+
+    .admin-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    .admin-table tbody tr:last-child td { border-bottom: none; }
+    .admin-table tbody tr:hover td { background: #f8fafc; }
+
+    .admin-td-bold { font-weight: 600; color: #0f172a; }
+    .admin-td-num  { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+    .admin-td-muted { color: #9ca3af; font-size: 0.75rem; }
+
     .admin-settle-form { display: flex; flex-direction: column; gap: 10px; }
     .admin-form-row { display: flex; flex-direction: column; gap: 3px; }
 
@@ -4537,6 +4832,12 @@
       background: #0f172a;
       color: #cbd5e1;
     }
+    html.dark .date-dropdown {
+      background-color: #1e293b;
+      border-color: #334155;
+      color: #e2e8f0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    }
     html.dark .navbar,
     html.dark .subnav,
     html.dark .market-card,
@@ -4620,6 +4921,7 @@
     }
     html.dark .sport-btn {
       color: #94a3b8;
+      border-color: #334155;
     }
     html.dark .sport-btn:hover {
       background: #162032;
@@ -4627,6 +4929,7 @@
     html.dark .sport-btn.active {
       background: #3b1a6e;
       color: #c4b5fd;
+      border-color: #9370DB;
     }
     html.dark .brand-name {
       color: #f1f5f9;
@@ -4653,6 +4956,13 @@
     html.dark .tier-count {
       color: #f1f5f9;
     }
+    html.dark .admin-table-wrap { border-color: #334155; }
+    html.dark .admin-table thead tr { background: #162032; border-color: #334155; }
+    html.dark .admin-table th { color: #64748b; }
+    html.dark .admin-table td { color: #cbd5e1; border-bottom-color: #1e293b; }
+    html.dark .admin-table tbody tr:hover td { background: #162032; }
+    html.dark .admin-td-bold { color: #f1f5f9; }
+    html.dark .admin-td-muted { color: #475569; }
     html.dark .game-info,
     html.dark .market-stats,
     html.dark .admin-card-hint,
@@ -4861,6 +5171,11 @@
     }
     html.dark * {
       scrollbar-color: #7c3aed #1e293b;
+    }
+
+    /* ── Dark mode + mobile overrides ── */
+    @media (max-width: 768px) {
+      html.dark .navbar-tabs { border-top-color: #334155; }
     }
   </style>
 </body>
