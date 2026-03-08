@@ -156,7 +156,20 @@
         });
 
         const uniqueDates = computed(() => {
-          const dates = new Set(markets.value.map(m => m.game_date).filter(d => d));
+          const now = new Date();
+          const cutoff = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3);
+          const dates = new Set(
+            markets.value
+              .map(m => m.game_date)
+              .filter(d => {
+                if (!d) return false;
+                const parts = d.split('/');
+                if (parts.length < 3) return true;
+                const [mo, da, yr] = parts;
+                const gameDate = new Date(+yr, +mo - 1, +da);
+                return gameDate >= cutoff;
+              })
+          );
           return Array.from(dates).sort();
         });
 

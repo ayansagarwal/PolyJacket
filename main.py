@@ -28,8 +28,6 @@ import uuid
 import math
 import csv
 import asyncio
-import zoneinfo
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # Import authentication and database modules
 import database as db
@@ -80,7 +78,7 @@ STARTING_BALANCE = 500  # Starting tokens for new users
 LIQUIDITY_PARAMETER = 100  # For AMM pricing (b parameter in LMSR)
 MIN_INITIAL_SHARES = 500  # Minimum shares per side to ensure meaningful price movement
 ELO_BASE = 1000  # Default Elo rating for unknown teams
-REFRESH_INTERVAL_MINUTES = 30  # How often the background loop re-fetches games
+REFRESH_INTERVAL_MINUTES = 5  # How often to auto-refresh games from IMLeagues
 
 # Team names that represent placeholder/unscheduled slots — never create markets for these
 GENERIC_TEAMS = {"tbd", "bye", "generic team", "unknown", "home", "away", "team", ""}
@@ -2218,20 +2216,6 @@ async def startup_event():
     # Kick off the background refresh loop (first run is immediate)
     asyncio.create_task(_refresh_loop())
 
-    # APScheduler: guaranteed refresh at 8 am and 8 pm Eastern Time
-    et = zoneinfo.ZoneInfo("America/New_York")
-    scheduler = AsyncIOScheduler(timezone=et)
-    scheduler.add_job(
-        _scheduled_game_refresh,
-        trigger="cron",
-        hour="8,20",
-        minute=0,
-        id="twice_daily_refresh",
-        replace_existing=True,
-    )
-    scheduler.start()
-    print("[scheduler] APScheduler started — game refresh scheduled at 08:00 and 20:00 ET")
-
     # Push any stale closed markets immediately on startup
     pushed = push_stale_closed_markets()
     if pushed:
@@ -2249,46 +2233,37 @@ async def startup_event():
         print(f"[startup] Admin user '{ADMIN_USERNAME}' already registered")
 
 
-async def _do_game_refresh(label: str = "refresh"):
-    """Shared logic: fetch games, update cache and markets, push stale markets."""
-    global games_data
-    try:
-        print(f"[{label}] Fetching live games from IMLeagues...")
-        fresh_games = await fetch_all_games()
-        if fresh_games:
-            games_data = fresh_games
-            cache_data = {
-                'games': [g.dict() for g in fresh_games],
-                'count': len(fresh_games),
-                'last_updated': str(datetime.now())
-            }
-            with open(CACHE_FILE, 'w') as f:
-                json.dump(cache_data, f, indent=2)
-            create_markets_from_games(games_data)
-            print(f"[{label}] Updated {len(fresh_games)} games")
-        else:
-            print(f"[{label}] No games returned; keeping existing data")
-    except Exception as e:
-        print(f"[{label}] Error during refresh: {e}")
-
-    try:
-        pushed = push_stale_closed_markets()
-        if pushed:
-            print(f"[{label}] Pushed {pushed} stale market(s)")
-    except Exception as e:
-        print(f"[{label}] Error during push check: {e}")
-
-
-async def _scheduled_game_refresh():
-    """APScheduler job: runs at 8am and 8pm ET."""
-    print(f"[scheduler] Scheduled refresh triggered at {datetime.now().strftime('%Y-%m-%d %H:%M')}")
-    await _do_game_refresh(label="scheduler")
-
-
 async def _refresh_loop():
     """Background task: fetch fresh games from IMLeagues, then repeat every REFRESH_INTERVAL_MINUTES."""
+    global games_data
     while True:
-        await _do_game_refresh(label="loop")
+        try:
+            print(f"[refresh] Fetching live games from IMLeagues...")
+            fresh_games = await fetch_all_games()
+            if fresh_games:
+                games_data = fresh_games
+                cache_data = {
+                    'games': [g.dict() for g in fresh_games],
+                    'count': len(fresh_games),
+                    'last_updated': str(datetime.now())
+                }
+                with open(CACHE_FILE, 'w') as f:
+                    json.dump(cache_data, f, indent=2)
+                create_markets_from_games(games_data)
+                print(f"[refresh] Updated {len(fresh_games)} games and {len(markets)} markets")
+            else:
+                print("[refresh] No games returned; keeping existing data")
+        except Exception as e:
+            print(f"[refresh] Error during background refresh: {e}")
+
+        # Push any closed markets that went unresolved past their game day (outside try so it always runs)
+        try:
+            pushed = push_stale_closed_markets()
+            if pushed:
+                print(f"[refresh] Pushed {pushed} stale market(s)")
+        except Exception as e:
+            print(f"[refresh] Error during push check: {e}")
+
         await asyncio.sleep(REFRESH_INTERVAL_MINUTES * 60)
 
 
